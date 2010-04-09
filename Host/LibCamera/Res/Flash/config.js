@@ -1,0 +1,1 @@
+var customer = "default";

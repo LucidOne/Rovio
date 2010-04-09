@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Indicators</title>
+<link rel="stylesheet" type="text/css" href="../css/main.css" />
+<link rel="stylesheet" type="text/css" href="../css/help.css" />
+</head>
+
+<body>
+<script>parent.selectNavItem(7);</script>
+<div class="page_nav"><a href="Rovio-AuxiliaryControls.html">&lt; Previous</a> | <a href="Rovio-SettingsMain.html">Next &gt;</a></div>
+<h3>Indicators</h3>
+<p>This section  describes Rovio's indicators. </p>
+
+<table border="1" cellspacing="0" cellpadding="0" width="600">
+  <tr>
+    <th colspan="2">Indicator</th>
+    <th colspan="3">Description</th>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top"><p>Nav</p>
+        <p> <div id="nav_signal" style="border-bottom: 0;" class="signal0"></div> </p>      <p><br />
+        </p></td>
+    <td>
+	<p>Indicates the strength of the navigation signal received from the charging dock or a TrueTrack Room Beacon. Full bars indicate a strong signal. </p>	</td>
+  </tr>
+  <tr>
+    <td width="53" valign="top">&nbsp;</td>
+    <td width="76" valign="top"><p>0-9</p>
+        <p>&nbsp;</p></td>
+    <td width="463" valign="top"><p>Indicates the room ID number assigned to a room. as set on the TrueTrack Room Beacon (sold separately). 0 is always assigned to the  
+      charging dock.</p>
+        <p>0 is always assigned to the charging dock.</p>
+      <p> Note that the room ID numbers only appear when the Beacon is in range.<br />
+      </p></td>
+  </tr>
+  <tr>
+    <td valign="top" colspan="2"><p>Battery </p>
+        <p><div id="battery_level" class="battery0"></div></p></td>
+    <td valign="top"><p>Indicates the strength of Rovio&rsquo;s battery. </p>
+        <p> Full bars indicate a fully charged battery.</p></td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top"><p>Status</p>
+        <p>&nbsp;</p></td>
+    <td valign="top"><p>Indicates Rovio&rsquo;s current driving status. </p>
+	  <p>Options: Roaming, Saving Home, Home Saved, Going Home, Docked, Recording Path, Following a [name of a path], Low navigation signal, No navigation signal.</p></td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top"><p>Wi-Fi</p>
+        <p><div id="wifi_signal" style="border-bottom: 0;" class="signal0" /></p>      <p>&nbsp;</p></td>
+    <td valign="top"><p>Indicates the strength of the wireless    Internet connection (Wi-Fi signal).</p>
+	  <p>Full bars indicate a strong signal.</p></td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top"><p>Online</p></td>
+    <td valign="top">
+        <p>Indicates the online status of Rovio and whether it can be accessed from the internet. Clicking on the online icon will pop up more information about the current state.</p>
+        <table style="border: none;">
+        <tr>
+        <td><img src="../img/status/connecting_settings.gif" />&nbsp;&nbsp;</td>
+       <td>
+        Trying to open ports using UPnP or trying to verify internet access<br /><br />
+        </td>
+        </tr>
+        
+        <tr>
+        <td>
+        <div class="online_error"></div>
+        </td>
+        <td>Unable to get an external IP address from the Rovio or unable to open ports on your router using UPnP<br /><br />
+        </td>
+        </tr>
+        
+        <tr>
+            <td><div class="online_unknown" /></td>
+            <td>Can't verify internet access<br /><br /></td>
+        </tr>
+        
+        <tr>
+            <td><div class="online_ok" /></td>
+            <td>Internet access verified<br /><br /></td>
+        </tr>
+    </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

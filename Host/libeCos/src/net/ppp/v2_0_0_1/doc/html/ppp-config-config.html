@@ -1,0 +1,417 @@
+<!-- Copyright (C) 2003 Red Hat, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<HTML
+><HEAD
+><TITLE
+>Configuring PPP</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="eCos PPP User Guide"
+HREF="ppp.html"><LINK
+REL="UP"
+TITLE="Installing and Configuring PPP"
+HREF="ppp-config.html"><LINK
+REL="PREVIOUS"
+TITLE="Including PPP in a Configuration"
+HREF="ppp-config-include.html"><LINK
+REL="NEXT"
+TITLE="CHAT Scripts"
+HREF="ppp-chat.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+><SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+> PPP User Guide</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ppp-config-include.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. Installing and Configuring PPP</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ppp-chat.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PPP-CONFIG-CONFIG"
+></A
+>Configuring PPP</H1
+><P
+>The PPP package contains a number of configuration options that may be
+changed to affect its behaviour.
+
+<P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>CYGNUM_PPP_PPPD_THREAD_PRIORITY</DT
+><DD
+><P
+>    The PPP system contains two threads, One is used for receiving
+    data from the link and processing control packets.  The other is
+    used to transmit data asynchronously to the link when it cannot be
+    completed synchronously. The receive thread runs at the priority
+    given here, and the transmit thread runs at the next lower
+    priority.  The exact priority needed here depends on the
+    importance of the PPP subsystem relative to the rest of the
+    system. The default is to put it in the middle of the priority
+    range to provide reasonable response without impacting genuine
+    high priority threads.
+    </P
+><P
+>    Default value: <TT
+CLASS="LITERAL"
+>CYGNUM_KERNEL_SCHED_PRIORITIES/2</TT
+>
+    </P
+></DD
+><DT
+>CYGPKG_PPP_AUTH_DEFAULT_USER</DT
+><DD
+><P
+>    This option gives the default value for the user name used to
+    initialize the <TT
+CLASS="STRUCTFIELD"
+><I
+>user</I
+></TT
+> field in the PPP
+    options.
+    </P
+><P
+>    Default value: <TT
+CLASS="LITERAL"
+>"eCos"</TT
+>
+    </P
+></DD
+><DT
+>CYGPKG_PPP_AUTH_DEFAULT_PASSWD</DT
+><DD
+><P
+>    This option gives the default value for the password used to
+    initialize the <TT
+CLASS="STRUCTFIELD"
+><I
+>passwd</I
+></TT
+> field in the PPP
+    options.
+    </P
+><P
+>    Default value: <TT
+CLASS="LITERAL"
+>"secret"</TT
+>
+    </P
+></DD
+><DT
+>CYGPKG_PPP_DEFAULT_DIALUP_NUMBER</DT
+><DD
+><P
+>    This option provides a default dialup number for use in
+    <B
+CLASS="COMMAND"
+>chat</B
+> scripts. This value is not used anywhere
+    in the PPP package, but is provided to complete the information
+    needed, alongside the user name and password, for accessing a
+    typical dialup server.
+    </P
+><P
+>    Default value: <TT
+CLASS="LITERAL"
+>"5551234"</TT
+>
+    </P
+></DD
+><DT
+>CYGPKG_PPP_PAP</DT
+><DD
+><P
+>    This component enables the inclusion of PAP authentication
+    support.
+    </P
+><P
+>    Default value: 1
+    </P
+></DD
+><DT
+>CYGPKG_PPP_CHAP</DT
+><DD
+><P
+>    This component enables the inclusion of CHAT authentication
+    support.
+    </P
+><P
+>    Default value: 1
+    </P
+></DD
+><DT
+>CYGPKG_PPP_COMPRESSION</DT
+><DD
+><P
+>    This component provides control over PPP compression
+    features. WARNING: at present there are problems with this option,
+    and and in any case the compression code needs to allocate large
+    amounts of memory. Hence this option is currently disabled and
+    should remain so.
+    </P
+><P
+>    Default value: 0
+    </P
+></DD
+><DT
+>PPP_BSDCOMP</DT
+><DD
+><P
+>    This option enables inclusion of BSD compression into the PPP
+    protocol.
+    </P
+><P
+>    Default value: 0
+    </P
+></DD
+><DT
+>PPP_DEFLATE</DT
+><DD
+><P
+>    This option enables inclusion of ZLIB compression into the PPP
+    protocol.
+    </P
+><P
+>    Default value: 0
+    </P
+></DD
+><DT
+>CYGPKG_PPP_CHAT</DT
+><DD
+><P
+>    This component enables the inclusion of a simple scripting system
+    to bring up PPP connections.  It implements a subset of the
+    <B
+CLASS="COMMAND"
+>chat</B
+> scripting language.
+    </P
+><P
+>    Default value: 1
+    </P
+></DD
+><DT
+>CYGNUM_PPP_CHAT_ABORTS_MAX</DT
+><DD
+><P
+>    This option defines the maximum number of <TT
+CLASS="LITERAL"
+>ABORT</TT
+>
+    strings that the CHAT system will store.
+    </P
+><P
+>    Default value: 10
+    </P
+></DD
+><DT
+>CYGNUM_PPP_CHAT_ABORTS_SIZE</DT
+><DD
+><P
+>    This option defines the maximum size of each
+    <TT
+CLASS="LITERAL"
+>ABORT</TT
+> strings that the <B
+CLASS="COMMAND"
+>chat</B
+>
+    system will store.
+    </P
+><P
+>    Default value: 20
+    </P
+></DD
+><DT
+>CYGNUM_PPP_CHAT_STRING_LENGTH</DT
+><DD
+><P
+>    This option defines the maximum size of any expect or reply
+    strings that the <B
+CLASS="COMMAND"
+>chat</B
+> system will be given.
+    </P
+><P
+>    Default value: 256
+    </P
+></DD
+><DT
+>CYGPKG_PPP_TEST_DEVICE</DT
+><DD
+><P
+>    This option defines the serial device to be used for PPP test
+    programs.
+    </P
+><P
+>    Default value: <TT
+CLASS="LITERAL"
+>"/dev/ser0"</TT
+>
+    </P
+></DD
+><DT
+>CYGPKG_PPP_TESTS_AUTOMATE</DT
+><DD
+><P
+>    This option enables automated testing features in certain test
+    programs. These programs will interact with a test server at the
+    remote end of the serial link to run a variety of tests in
+    different conditions. Without this option most tests default to
+    running a single test instance and are suitable for being run by
+    hand for debugging purposes.
+    </P
+><P
+>    Default value: 0
+    </P
+></DD
+><DT
+>CYGDAT_PPP_TEST_BAUD_RATES</DT
+><DD
+><P
+>    This option supplies a list of baud rates at which certain tests
+    will run if the <TT
+CLASS="LITERAL"
+>CYGPKG_PPP_TESTS_AUTOMATE</TT
+>
+    option is set.
+    </P
+><P
+>    Default value: <TT
+CLASS="LITERAL"
+>"CYGNUM_SERIAL_BAUD_19200,CYGNUM_SERIAL_BAUD_38400,CYGNUM_SERIAL_BAUD_57600,CYGNUM_SERIAL_BAUD_115200"</TT
+>
+    </P
+></DD
+></DL
+></DIV
+>
+&#13;</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ppp-config-include.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ppp-chat.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Including PPP in a Configuration</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp-config.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CHAT Scripts</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

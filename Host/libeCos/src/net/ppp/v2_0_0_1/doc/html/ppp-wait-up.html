@@ -1,0 +1,223 @@
+<!-- Copyright (C) 2003 Red Hat, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<HTML
+><HEAD
+><TITLE
+>cyg_ppp_wait_up()</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="eCos PPP User Guide"
+HREF="ppp.html"><LINK
+REL="UP"
+TITLE="PPP Interface"
+HREF="ppp-interface.html"><LINK
+REL="PREVIOUS"
+TITLE="cyg_ppp_down()"
+HREF="ppp-down.html"><LINK
+REL="NEXT"
+TITLE="cyg_ppp_wait_down()"
+HREF="ppp-wait-down.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+><SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+> PPP User Guide</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ppp-down.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ppp-wait-down.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="PPP-WAIT-UP"
+></A
+>cyg_ppp_wait_up()</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN256"
+></A
+><H2
+>Name</H2
+>cyg_ppp_wait_up&nbsp;--&nbsp;Wait for PPP connection to come up</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN259"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><A
+NAME="AEN260"
+></A
+><P
+></P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/ppp/ppp.h&gt;
+        </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_int32 cyg_ppp_wait_up</CODE
+>(cyg_ppp_handle_t handle);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN267"
+></A
+><H2
+>Description</H2
+><P
+>This function waits until the PPP connection is running and then
+returns. This is needed because the actual bring up of the connection
+happens mostly after the call to <TT
+CLASS="FUNCTION"
+>cyg_ppp_up()</TT
+>
+returns, and may take some time to complete, especially if dialling a
+remote server.</P
+><P
+>The result of this call will be zero when the connection is running,
+or -1 if the connection failed to start for some reason. If the
+connection is already running when this call is made it will return
+immediately with a zero result. If the connection is not in the
+process of coming up, or has failed, or has terminated, then a result
+of -1 will be returned immediately. Thus this function may also be
+used to test that the connection is still running at any point.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ppp-down.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ppp-wait-down.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>cyg_ppp_down()</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp-interface.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>cyg_ppp_wait_down()</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

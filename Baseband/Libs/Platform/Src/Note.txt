@@ -1,0 +1,2 @@
+For ADS(W90N740) source, see ../rom/
+For gcc arm-semihost(W90N740) source, see ../semihost/

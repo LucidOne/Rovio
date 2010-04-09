@@ -1,0 +1,420 @@
+<html>
+<head>
+	<title>IPCam builder</title>
+	<hta:application
+		id="oHTA"
+		applicationname="IPCam builder"
+		border="thick"
+		borderstyle="normal"
+		caption="yes"
+		icon=""
+		maximizebutton="yes"
+		minimizebutton="yes"
+		showintaskbar="yes"
+		singleinstance="no"
+		Sysmenu="yes"
+		version="1.0"
+		navigable="yes"
+		windowstate="maximize"
+	/>
+
+<script language="JScript" src="IPCam_Builder.js"></script>
+
+<script language="JScript">
+function ui_msg_clean( )
+{
+	document.getElementById( "oInfo" ).innerHTML = "";
+}
+
+function ui_msg_out( s )
+{
+	var node = document.createElement( "<font>" );
+	node.color = "green";
+	node.innerText = s;
+	document.getElementById( "oInfo" ).insertBefore( node );
+}
+
+function ui_err_out( s )
+{
+	var node = document.createElement( "<font>" );
+	node.color = "red";
+	node.innerText = s;
+	oInfo.insertBefore( node );
+}
+
+function ui_componet_from_id( id )
+{
+	eval( "var module = [this.g_app.build_modules.module][" + id.split( "_" ).join("].submods[") + "]" );
+	return module;
+}
+
+
+function ui_select( id )
+{
+	function ui_set_check_state( id, checked )
+	{
+		var module = ui_componet_from_id( id );
+
+		for ( var i = 0; i < module.submods.length; i++ )
+		{
+			ui_set_check_state( module.submods[i].id, checked );
+		}
+		document.getElementById( 'oCheckBox_' + id ).checked = checked;
+		module.selected = checked;
+	}
+
+	var checked = document.getElementById( 'oCheckBox_' + id ).checked;	
+	ui_set_check_state( id, checked );
+
+	if ( checked )
+	{
+		while ( ( id = id.replace( /(^[0-9]+$|_[0-9]+$)/, "" ) ) != "" )
+		{
+			document.getElementById( 'oCheckBox_' + id ).checked = checked;
+			var module = ui_componet_from_id( id );
+			module.selected = checked;
+		}
+	}
+
+	return true;
+}
+
+function ui_set_expand( id, expand )
+{
+	var oChild = document.getElementById( 'oChild_' + id );
+	if ( !oChild )
+		return;
+
+	var oScroll = document.getElementById( 'oScroll_' + id );
+	if ( expand )
+	{
+		oScroll.innerHTML = '-';
+		oChild.style.display = "inline";
+	}
+	else
+	{
+		oScroll.innerHTML = '+';
+		oChild.style.display = "none";
+	}
+}
+
+function ui_expand( id )
+{
+	var oScroll = document.getElementById( 'oScroll_' + id );
+	var oChild = document.getElementById( 'oChild_' + id );
+
+	if ( oScroll.innerHTML == '-' )
+		ui_set_expand( id, false );
+	else if ( oScroll.innerHTML == '+' )
+		ui_set_expand( id, true );
+	return true;
+}
+
+
+
+function ui_set_all_expand( expand )
+{
+	function ui_set_check_state( id, expand )
+	{
+		var module = ui_componet_from_id( id );
+
+		for ( var i = 0; i < module.submods.length; i++ )
+		{
+			ui_set_check_state( module.submods[i].id, expand );
+		}
+		ui_set_expand( id, expand );
+	}
+
+	ui_set_check_state( "0", expand );
+
+	return false;
+}
+
+
+function ui_build( )
+{
+	var config = ui_build_config_header ( );
+	var path = this.g_app.app_folder + "/../Host/custom_config.h";
+	
+	var old_config = "";
+	if ( this.g_app.fso.FileExists( path ) )
+	{
+		var file =  this.g_app.fso.OpenTextFile( path, 1 );
+		if ( file )
+		{
+			old_config = file.ReadAll( );	
+			file.Close( );
+		}
+	}
+	
+	if ( old_config != config )
+	{
+		var file = this.g_app.fso.CreateTextFile(path, true, false );
+		file.Write( config );
+		file.Close( );
+	}
+	
+	this.g_app.build_modules.build( document.forms.fm.custom_config.value );
+	alert( "Build completed! " );
+	return false;
+}
+
+function ui_build_config_header( )
+{
+	var rt = "";
+
+	rt += "#ifndef __IPCAM_CUSTOM_CONFIG__\n";
+	rt += "#define __IPCAM_CUSTOM_CONFIG__\n";
+	
+	var arr = document.forms.config_info.definitions.value.split(/\s+/);
+	for ( var i = 0; i < arr.length; i++ )
+	{
+		if ( arr[i].length > 0 )
+			rt += "#define " + arr[i] + "\n";
+	}
+
+	var s = document.forms.config_info.default_essid.value;
+	if ( s.length == 0 )
+		alert( "You dont input an ESSID" );	
+	else
+		rt += '#define CONFIG_DEFAULT_ESSID "' + s + '"\n';
+
+	var s = document.forms.config_info.default_wifi_mode.value.toLowerCase();
+	if ( s == "ad-hoc" )
+		rt += '#define CONFIG_DEFAULT_WIFI_AD_HOC 1\n';
+	else
+		rt += '#define CONFIG_DEFAULT_WIFI_AD_HOC 0\n';
+
+	var s = document.forms.config_info.default_mac.value;
+	if ( s.length == 0 )
+		alert( "You dont input a MAC" );	
+	else
+		rt += '#define CONFIG_DEFAULT_MAC {0x' + s.split(':').join(", 0x") + '}\n';
+
+	var s = document.forms.config_info.default_ip.value;
+	if ( s.length == 0 )
+		alert( "You dont input an IP" );	
+	else
+		rt += '#define CONFIG_DEFAULT_IP "' + s + '"\n';
+
+	var s = document.forms.config_info.default_netmask.value;
+	if ( s.length == 0 )
+		alert( "You dont input a netmask" );	
+	else
+		rt += '#define CONFIG_DEFAULT_NETMASK "' + s + '"\n';
+
+	var s = document.forms.config_info.default_gateway.value;
+	if ( s.length == 0 )
+		alert( "You dont input a gateway" );	
+	else
+		rt += '#define CONFIG_DEFAULT_GATEWAY "' + s + '"\n';
+
+	var s = document.forms.config_info.default_dhcp.checked;
+	rt += '#define CONFIG_DEFAULT_IP_METHOD ' + ( s ? "IP_ASSIGNMENT_DHCP" : "IP_ASSIGNMENT_MANUALLY" ) + '\n';
+
+	var s = document.forms.config_info.sensor.value;
+	rt += '#define CONFIG_SENSOR ' + s + '\n';
+
+	var s = document.forms.config_info.audio.value;
+	rt += '#define CONFIG_AUDIO_' + s + '\n';
+
+	var s = document.forms.config_info.sdio_bits.value;
+	rt += '#define CONFIG_SDIO_BIT ' + s + '\n';
+
+	var s = document.forms.config_info.memory_size.value;
+	rt += '#define CONFIG_MEMORY_SIZE ' + s + '\n';
+
+	var s = document.forms.config_info.uart_message.checked;
+	rt += '#define CONFIG_USE_UART_MSG ' + ( s ? "1" : "0" ) + '\n';
+
+	var s = document.forms.config_info.login_prompt_admin.value;
+	rt += '#define CONFIG_LOGIN_PROMPT_ADMIN "' + s + '"\n';
+
+	var s = document.forms.config_info.login_prompt_user.value;
+	rt += '#define CONFIG_LOGIN_PROMPT_USER "' + s + '"\n';
+
+	rt += "#endif\n";
+
+	return rt;
+}
+
+function ui_config_select( o )
+{
+	if (o.selectedIndex < 0)
+		o.selectedIndex = 0;
+	var index = o.selectedIndex;
+	var config = this.g_app.config.configs[index];
+	
+	document.forms.config_info.definitions.value		= config.definitions;
+	document.forms.config_info.default_essid.value		= config.default_essid;
+	document.forms.config_info.default_wifi_mode.value	= config.default_wifi_mode.toLowerCase();
+	document.forms.config_info.default_mac.value		= config.default_mac;
+	document.forms.config_info.default_ip.value		= config.default_ip;
+	document.forms.config_info.default_netmask.value	= config.default_netmask;
+	document.forms.config_info.default_gateway.value	= config.default_gateway;
+	document.forms.config_info.default_dhcp.checked		= config.default_dhcp;
+	document.forms.config_info.sensor.value			= config.sensor;
+	document.forms.config_info.audio.value			= config.audio;
+	document.forms.config_info.sdio_bits.value		= config.sdio_bits;
+	document.forms.config_info.memory_size.value	= config.memory_size;
+	document.forms.config_info.uart_message.checked		= config.uart_message;
+	document.forms.config_info.login_prompt_admin.value	= config.login_prompt_admin;
+	document.forms.config_info.login_prompt_user.value	= config.login_prompt_user;
+	if ( typeof( config.other_info ) != "undefined" )
+		document.getElementById( 'config_other' ).innerText = config.other_info;
+	else
+		document.getElementById( 'config_other' ).innerText = "";
+}
+
+
+function ui_draw_componet_tree( aModules )
+{
+	if ( aModules.length <= 0 )
+		return '';
+
+	var s = '<table border="0" style="font-size:10pt;">';
+	for ( var i = 0; i < aModules.length; i++ )
+	{
+		var id = aModules[i].id;
+
+		s += '<tr><td><span id="oScroll_' + id + '" onclick="javascript:return ui_expand( \'' + id + '\' );">' + ( aModules[i].submods.length > 0 ? '-' : '' ) + '</span></td><td><input id="oCheckBox_' + id + '" type="checkbox" ' + (aModules[i].selected ? 'checked="checked"' : '') + ' onclick="javascript:return ui_select( \'' + id + '\' );" /></td><td>' + aModules[i].name + '</td></tr>';
+		
+		if ( aModules[i].submods.length > 0 )
+			s += '<tr id="oChild_' + id + '"><td></td><td></td><td>' + ui_draw_componet_tree( aModules[i].submods ) + '</td></tr>';
+	}
+	s += '</table>\n';
+
+	return s;
+}
+
+function save_state( )
+{
+	this.g_app.build_modules.save_state( );
+}
+
+</script>
+
+
+
+
+</head>
+<body onunload="javascript:save_state();">
+<table border="1" width="100%">
+<tr>
+<td valign="top">
+
+<form name="fm" id="oFM">
+<div style="float: left; border: solid 1px #A9A9A9; padding: 5px; margin: 3px;">
+<input type="button" onclick="javascript:return ui_set_all_expand( true );" value="Expand All" />
+<input type="button" onclick="javascript:return ui_set_all_expand( false );" value="Collapse All" />
+</div>
+<div style="float: left; border: solid 1px #A9A9A9; padding: 5px; margin: 3px;">
+<input type="button" onclick="javascript:return ui_build( );" value="Build" />
+<script>
+	var s = '<select name="custom_config" onchange="ui_config_select( this );">'
+	for ( var i = 0; i < this.g_app.config.configs.length; i++ )
+	{
+		var config = this.g_app.config.configs[i];
+		s += '<option value="' + config.definitions + '">' + config.name + '</option>';
+	}
+	s += '</select>';
+	document.write( s );
+</script>
+</div>
+<script>
+
+
+document.write( ui_draw_componet_tree( [this.g_app.build_modules.module] , "" ) );
+//document.getElementById( "oCheckBox_0" ).checked = true;
+//ui_select( "0" );
+
+
+</script>
+</form>
+
+</td>
+<td valign="top">
+<form name="config_info">
+<table border="0" style="font-size:10pt;">
+	<tr>
+		<td valign="top" width="1%"><nobr>Configuration definition</nobr></td>
+		<td valign="top"><input size="32" name="definitions" value="" readonly style="color: silver;" /></td>
+	</tr>
+	<tr>
+		<td valign="top"><nobr>Default ESSID</nobr></td>
+		<td valign="top"><input size="32" name="default_essid" value="" /></td>
+	</tr>
+	<tr>
+		<td valign="top"><nobr>Default WiFi mode</nobr></td>
+		<td valign="top">
+			<select name="default_wifi_mode">
+				<option value="ad-hoc">Ad-Hoc</option>
+				<option value="infrastructure">Infrastructure</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top"><nobr>Default MAC</nobr></td>
+		<td valign="top"><input size="32" name="default_mac" value="" /></td>
+	</tr>
+	<tr>
+		<td valign="top"><nobr>Default IP</nobr></td>
+		<td valign="top"><input size="32" name="default_ip" value="" /></td>
+	</tr>
+	<tr>
+		<td valign="top"><nobr>Default Netmask</nobr></td>
+		<td valign="top"><input size="32" name="default_netmask" value="" /></td>
+	</tr>
+	<tr>
+		<td valign="top"><nobr>Default gateway</nobr></td>
+		<td valign="top"><input size="32" name="default_gateway" value="" /></td>
+	</tr>
+	<tr>
+		<td valign="top" colspan="2"><nobr><input size="32" name="default_dhcp" type="checkbox" />Default to use DHCP</nobr></td>
+	</tr>
+	<tr>
+		<td valign="top"><nobr>Sensor type</nobr></td>
+		<td valign="top"><input size="32" name="sensor" value="" readonly style="color: silver;" /></td>
+	</tr>
+	<tr>
+		<td valign="top"><nobr>Audio codec</nobr></td>
+		<td valign="top"><input size="32" name="audio" value="" readonly style="color: silver;" /></td>
+	</tr>
+	<tr>
+		<td valign="top"><nobr>SDIO bits</nobr></td>
+		<td valign="top"><input size="32" name="sdio_bits" value="" readonly style="color: silver;" /></td>
+	</tr>
+	<tr>
+		<td valign="top"><nobr>Memory size (M)</nobr></td>
+		<td valign="top"><input size="32" name="memory_size" value="" readonly style="color: silver;" /></td>
+	</tr>
+	<tr>
+		<td valign="top" colspan="2"><nobr><input size="32" name="uart_message" type="checkbox" />Output debug message to UART</nobr></td>
+	</tr>
+	<tr>
+		<td valign="top"><nobr>Prompt for administrator</nobr></td>
+		<td valign="top"><input size="32" name="login_prompt_admin" value="" /></td>
+	</tr>
+	<tr>
+		<td valign="top"><nobr>Prompt for common user</nobr></td>
+		<td valign="top"><input size="32" name="login_prompt_user" value="" /></td>
+	</tr>
+	<tr>
+		<td valign="top"><nobr>Other info</nobr></td>
+		<td valign="top"><span id="config_other"></span></td>
+	</tr>
+</table>
+</form>
+<script>
+	ui_config_select( document.forms.fm.custom_config );
+</script>
+<pre id=oInfo>
+Help
+  Select the items and click "Build" to start to build IPCam projects.
+</pre>
+</td>
+</tr>
+</table>
+
+</body>
+</html>

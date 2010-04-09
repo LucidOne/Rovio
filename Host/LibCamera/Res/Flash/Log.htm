@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="author" content="ChenXiaohui" />
+<title>IPCam</title>
+<link rel="stylesheet" href="ipcam.css" type="text/css" media="all"  />
+<script type="text/javascript" src="ipcam.js"></script>
+<script type="text/javascript">
+function onBack(){	window.location = parent.sMainPath;}
+var sLogConst = ["Information", 0,"Error", 1,"Set user", 11,"Del user", 12,"Set user check", 13,
+"Open camera", 14,"Close camera", 15,"Change resolution", 16,"Change quality",17,"Change brightness", 18,
+"Change contrast", 19,"Change saturation", 20,"Change hue", 21,"Change Sharpness", 22,"Set email", 23,
+"Set ftp server", 24,"Dial (pppoe)", 25,"Dial (modem)", 26,"New client", 27,"Set Motion Detect", 28,
+"Set Monite Area", 29,"Set Server Time", 30,"Set Server IP", 31,"Set Http Port", 32,"Set Name", 33,
+"Set Wireless LAN", 34,"Change framerate", 35,"Change Speaker Volume", 37,"Change Mic Volume", 38,
+"Set Show Time", 39,"Change Logo", 40,"Change Camera Settings", 41,"Set Network Tunnel", 42,
+""];
+function Hex2IP(s){
+	var sRt = "";	var sSuc = false;	var iDec;
+	for (var i = 0; i < 4; i++)	{
+		if (i > 0) sRt += ".";
+		iDec = parseInt(s.substr(i * 2, 2), 16);
+		if (iDec != 0) sSuc = true;
+		sRt += iDec;	}
+	return (sSuc?sRt:"");}
+function Hex2MAC(s){
+	var sRt = "";	var sSuc = false;	var iDec;
+	for (var i = 0; i < 6; i++)	{
+		if (i > 0) sRt += ":";
+		iDec = parseInt(s.substr(i * 2, 2), 16);
+		if (iDec != 0) sSuc = true;
+		sRt += s.substr(i * 2, 2);	}
+	return (sSuc?sRt:"");}
+var oXHR = null;
+function onRefresh(bAutoRefresh){
+	var bAudoRefresh = bAutoRefresh;
+	function onGetLog(s)	{
+		eval(s);
+		var asLog = sLog.Log;
+		if (typeof(asLog) == "string")			asLog = [asLog];	
+		var sLine, sRes, iType, iTime;
+		var iTimeAdjust = parseInt(asLog[0].substr(0, 10), 10);
+		var dTimeAdjust = new Date();
+		sRes = "<table class='tab_logs'>";
+		sRes += "<tr class='tab_title'><td>Main Info</td><td>Append Info</td><td>Operator IP</td><td>Operator MAC</td><td>Time</td></tr>";
+		dTime = new Date(dTimeAdjust - 1000 * iTimeAdjust);
+		sRes += "<tr class='tab_content'><td colspan='4'>System Boot</td><td>" + (dTime.getMonth()+1) + "/" + dTime.getDate() + "/" + dTime.getYear() + " " + dTime.getHours() + ":" + dTime.getMinutes() + "</td></tr>";
+		delete dTime;
+		for (var i = 1; i < asLog.length; i++)		{
+			sLine = asLog[i];
+			iType = parseInt(sLine.substr(0, 2), 10);
+			for (var j = 0; j < sLogConst.length - 1; j += 2)			{
+				if (iType == sLogConst[j + 1])	{sRes += "<tr class='tab_content'><td>" + sLogConst[j];		break;		}
+			}
+			if (j >= sLogConst.length - 1)		sRes += "<tr><td>Unknown log info (" + iType + ")\n";	
+			sRes += "</td><td>" + sLine.substr(2, 4);
+			sRes += "</td><td>" + Hex2IP(sLine.substr(6, 8));
+			sRes += "</td><td>" + Hex2MAC(sLine.substr(14, 12));
+			iTime = parseInt(sLine.substr(26, 10), 10);	
+			dTime = new Date(dTimeAdjust - 1000 * (iTimeAdjust - iTime));
+			sRes += "</td><td>" + (dTime.getMonth()+1) + "/" + dTime.getDate() + "/" + dTime.getYear() + " " + dTime.getHours() + ":" + dTime.getMinutes() + "</td></tr>";
+			delete dTime;		}
+		sRes += "</table>";	
+		$('log').innerHTML = sRes;	
+		if (bAudoRefresh)		setTimeout("onRefresh(true);", 20 * 1000);	}
+	oXHR = DownLoadEx(oXHR, "/GetLog.cgi", "JsObj=sLog", onGetLog);}
+function onPageLoad(){	onRefresh(true);}
+</script>
+</head>
+<body class="tab_body" onload="javascript:onPageLoad();">
+<h1 class="tab_name">Logs</h1>
+<button onclick="javascript:onRefresh(false);">Refresh</button>
+<button onclick="javascript:onBack();">Back</button>
+<div id='log'>
+</div></body></html>

@@ -1,0 +1,34 @@
+Battery status:
+1. Normal
+2. Need_to_charge ( Low battery but not on the charger dock )
+
+
+LED status: 
+
+Head LED has color RED/GREEN. 
++----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
+Blinking  LED1(G)   Blinking  LED2(R)   Color                         Comment
++----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
+Off       Off       Off       Off       OFF                           Power OFF
+Off       Off       Off       On        Red                           Streaming/ in used
+Off       Off       Low       On        OFF/Red blinking low          Streaming and Need_to_charge
+Off       Off       High      On        OFF/Red blinking high 
+Off       On        Off       Off       Green                         Powered On/ Ready/ Connected to network
+Off       On        Off       On        Orange                        connecting/booting and attempting to connect
+Off       On        Low       On        Green/Orange blinking low     
+Off       On        High      On        Green/Orange blinking high
+Low       On        Off       Off       OFF/Green blinking low        connected to network/Need_to_charge
+Low       On        Off       On        Red/Orange blinking low       
+Low       On        Low       On        Orange blinking low 	      trying to connect/Need_to_charge
+High      On        Off       Off       OFF/Green blinking high       
+Hign      On        Off       On        Red/Green blinking high		
+High      On        On        On        Orange blinking high          
+    
+
+LED error code:
+Red: Very high speed blinking
+Green: Blink count = error code
+2 每 WiFi error
+3 每 Video sensor error
+4 每 Audio codec error
+5 每 MCU error

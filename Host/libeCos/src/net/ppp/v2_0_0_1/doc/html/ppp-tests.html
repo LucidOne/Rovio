@@ -1,0 +1,406 @@
+<!-- Copyright (C) 2003 Red Hat, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<HTML
+><HEAD
+><TITLE
+>Testing</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="eCos PPP User Guide"
+HREF="ppp.html"><LINK
+REL="PREVIOUS"
+TITLE="PPP Enabled Device Drivers"
+HREF="ppp-drivers.html"><LINK
+REL="NEXT"
+TITLE="Test Script"
+HREF="x616.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+><SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+> PPP User Guide</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ppp-drivers.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x616.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="PPP-TESTS"
+></A
+>Chapter 1. Testing</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="ppp-tests.html#AEN544"
+>Test Programs</A
+></DT
+><DT
+><A
+HREF="x616.html"
+>Test Script</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN544"
+></A
+>Test Programs</H1
+><P
+>There are a number of test programs supplied with the PPP
+subsystem. By default all of these tests use the device configured by
+<TT
+CLASS="LITERAL"
+>CYGPKG_PPP_TEST_DEVICE</TT
+> as the PPP link device.</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>ppp_up</TT
+></DT
+><DD
+><P
+>This test just brings up the PPP link on
+<TT
+CLASS="LITERAL"
+>CYGPKG_PPP_TEST_DEVICE</TT
+> and waits until the remote end brings
+it back down. No modem lines are used and the program expects a PPP
+connection to be waiting on the other end of the line. Typically the
+remote end will test the link using <B
+CLASS="COMMAND"
+>ping</B
+> or access
+the HTTP system monitor if it is present.</P
+><P
+>If <TT
+CLASS="LITERAL"
+>CYGPKG_PPP_TESTS_AUTOMATE</TT
+> is set, then this test
+attempts to bring PPP up at each of the baud rates specified in
+<TT
+CLASS="LITERAL"
+>CYGDAT_PPP_TEST_BAUD_RATES</TT
+>. If it is not set then
+it will just bring the connection up at 115200 baud.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>ppp_updown</TT
+></DT
+><DD
+><P
+>This test brings the PPP link up on
+<TT
+CLASS="LITERAL"
+>CYGPKG_PPP_TEST_DEVICE</TT
+> and attempts to
+<B
+CLASS="COMMAND"
+>ping</B
+> the remote end of the link. Once the pings
+have finished, the link is then brought down.</P
+><P
+>If <TT
+CLASS="LITERAL"
+>CYGPKG_PPP_TESTS_AUTOMATE</TT
+> is set, then this test
+attempts to bring PPP up at each of the baud rates specified in
+<TT
+CLASS="LITERAL"
+>CYGDAT_PPP_TEST_BAUD_RATES</TT
+>. If it is not set then
+it will just bring the connection up at 115200 baud.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>chat</TT
+></DT
+><DD
+><P
+>This test does not bring the PPP link up but simply executes a chat
+script. It expects a server at the remote end of the link to supply
+the correct responses.</P
+><P
+>This program expects the <B
+CLASS="COMMAND"
+>test_server.sh</B
+> script to
+be running on the remote end and attempts several different tests,
+expecting a variety of different responses for each.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>ppp_auth</TT
+></DT
+><DD
+><P
+>This test attempts to bring up the PPP link under a variety of
+different authentication conditions. This includes checking that both
+PAP and CHAP authentication work, and that the connection is rejected
+when the incorrect authentication protcol or secrets are used. </P
+><P
+>This test expects the <B
+CLASS="COMMAND"
+>test_server.sh</B
+> script to be
+running on the remote end. For this test to work the <TT
+CLASS="FILENAME"
+>/etc/ppp/pap-secrets</TT
+> file on the remote
+end should contain the following two lines:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>eCos       *         secret       *
+eCosPAP    *         secretPAP    *</PRE
+></TD
+></TR
+></TABLE
+><P
+>The <TT
+CLASS="FILENAME"
+>/etc/ppp/chap-secrets</TT
+> file should contain:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>eCos       *         secret       *
+eCosCHAP   *         secretCHAP   *</PRE
+></TD
+></TR
+></TABLE
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>isp</TT
+></DT
+><DD
+><P
+>This test expects the serial test device to be connected to a Hayes
+compatible modem. The test dials the telephone number given in
+<TT
+CLASS="LITERAL"
+>CYGPKG_PPP_DEFAULT_DIALUP_NUMBER</TT
+> and attempts to
+log on to an ISP using the user name and password supplied in
+<TT
+CLASS="LITERAL"
+>CYGPKG_PPP_AUTH_DEFAULT_USER</TT
+> and
+<TT
+CLASS="LITERAL"
+>CYGPKG_PPP_AUTH_DEFAULT_PASSWD</TT
+>. Once the PPP
+connection has been made, the program then attempts to ping a number
+of well known addresses.</P
+><P
+>Since this test is designed to interact with an ISP, it does not run
+within the automated testing system.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>tcp_echo</TT
+></DT
+><DD
+><P
+>This is a version of the standard network <B
+CLASS="COMMAND"
+>tcp_echo</B
+>
+test that brings up the PPP connection before waiting for the
+<B
+CLASS="COMMAND"
+>tcp_sink</B
+> and <B
+CLASS="COMMAND"
+>tcp_source</B
+> programs
+to connect. It is expected that at least one of these programs will
+connect via the PPP link. However, if another network interface is
+present, such as an ethernet device, then one may connect via that
+interface.</P
+><P
+>While this test is supported by the <B
+CLASS="COMMAND"
+>test_server.sh</B
+>
+script, it runs for such a long time that it should not normally be
+used during automated testing.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>nc_test_slave</TT
+></DT
+><DD
+><P
+>This is a version of the standard network
+<B
+CLASS="COMMAND"
+>nc_test_slave</B
+> test that brings up the PPP
+connection before waiting for the <B
+CLASS="COMMAND"
+>nc_test_master</B
+>
+program to connect. It is expected that the master will connect via
+the PPP link.</P
+><P
+>While this test is supported by the <B
+CLASS="COMMAND"
+>test_server.sh</B
+>
+script, it runs for such a long time that it should not normally be
+used during automated testing.</P
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ppp-drivers.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x616.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>PPP Enabled Device Drivers</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Test Script</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

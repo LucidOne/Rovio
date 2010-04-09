@@ -1,0 +1,58 @@
+Linux WAP Supplicant Release Notes
+
+4/6/2007 wpa_supplicant-0-5-7-MSI-2
+
+[1] This is a new release based on Open Source V.0.5.7.
+
+[2] Please refer to the attached document 
+    "supplicant_radius_installation_procedure.doc"
+    for installation procedure.
+
+[3] To build X86 version supplicant
+    (1)rm .config
+    (2)make mkconfig
+    (3)make clean
+    (4)make
+    (5)make build
+    (6)binary file will be copy to wpa_supplicant-linux-x86-0.5.7-MSI-2-bin folder
+
+[4] To build ARM version supplicant
+    (1)rm .config
+    (2)make mkconfig ARCH=ARM
+    (3)make clean
+    (4)make
+    (5)make build
+    (6)binary file will be copy to wpa_supplicant-linux-arm-0.5.7-MSI-2-bin folder
+
+[5] To build Fedora version supplicant
+    (1)rm .config
+    (2)make mkconfig ARCH=FEDORA
+    (3)make clean
+    (4)make
+    (5)make build
+    (6)binary file will be copy to wpa_supplicant-linux-fedora-0.5.7-MSI-2-bin folder
+
+[6] To build scma11 version supplicant
+    (1)rm .config
+    (2)make mkconfig ARCH=SCMA11
+    (3)make clean
+    (4)make
+    (5)make build
+    (6)binary file will be copy to wpa_supplicant-linux-scma11-0.5.7-MSI-2-bin folder
+
+  
+
+
+
+
+
+
+
+
+
+            
+
+
+    
+
+

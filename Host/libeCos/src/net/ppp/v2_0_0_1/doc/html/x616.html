@@ -1,0 +1,288 @@
+<!-- Copyright (C) 2003 Red Hat, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<HTML
+><HEAD
+><TITLE
+>Test Script</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="eCos PPP User Guide"
+HREF="ppp.html"><LINK
+REL="UP"
+TITLE="Testing"
+HREF="ppp-tests.html"><LINK
+REL="PREVIOUS"
+TITLE="Testing"
+HREF="ppp-tests.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+><SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+> PPP User Guide</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ppp-tests.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. Testing</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+>&nbsp;</TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN616"
+></A
+>Test Script</H1
+><P
+>The PPP package additionally contains a shell script
+(<B
+CLASS="COMMAND"
+>test_server.sh</B
+>) that may be used to operate the
+remote end of a PPP test link.</P
+><P
+>The script may be invoked with the following arguments:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>--dev=&lt;devname&gt;</TT
+></DT
+><DD
+><P
+>This mandatory option gives the name of the device to be used for the
+PPP link. Typically <TT
+CLASS="LITERAL"
+>"/dev/ttyS0"</TT
+> or
+<TT
+CLASS="LITERAL"
+>"/dev/ttyS1"</TT
+>.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>--myip=&lt;ipaddress&gt;</TT
+></DT
+><DD
+><P
+>This mandatory option gives the IP address to be attached to this end
+of the PPP link.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>--hisip=&lt;ipaddress&gt;</TT
+></DT
+><DD
+><P
+>This mandatory option gives the IP address to be attached to the
+remote (test target) end of the PPP link.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>--baud=&lt;baud_rate&gt;</TT
+></DT
+><DD
+><P
+>This option gives the baud rate at which the PPP link is to be run. If
+absent then the link will run at the value set for
+<TT
+CLASS="LITERAL"
+>--redboot-baud</TT
+>.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>--redboot</TT
+></DT
+><DD
+><P
+>If this option is present then the script will look for a
+<TT
+CLASS="LITERAL"
+>"RedBoot&gt;"</TT
+> prompt between test runs. This is
+necessary if the serial device being used for testing is also used by
+RedBoot.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>--redboot-baud=&lt;baud_rate&gt;</TT
+></DT
+><DD
+><P
+>This option gives the baud rate at which the search for the RedBoot
+prompt will be made. If absent then the link will run at 38400 baud.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>--debug</TT
+></DT
+><DD
+><P
+>If this option is present, then the script will print out some
+additional debug messages while it runs.</P
+></DD
+></DL
+></DIV
+><P
+>This script operates as follows: If the <TT
+CLASS="LITERAL"
+>--redboot</TT
+>
+option is set it sets the device baud rate to the RedBoot baud rate
+and waits until a <TT
+CLASS="LITERAL"
+>"RedBoot&gt;"</TT
+> prompt is encountered.
+It then sets the baud rate to the value given by the
+<TT
+CLASS="LITERAL"
+>--baud</TT
+> option and reads lines from the device until
+a recognizable test announce string is read. It then executes an
+appropriate set of commands to satisfy the test. This usually means
+bringing up the PPP link by running <B
+CLASS="COMMAND"
+>pppd</B
+> and maybe
+executing various commands. It then either terminates the link itself,
+or waits for the target to terminate it. It then goes back to looking
+for another test announce string. If a string of the form
+<TT
+CLASS="LITERAL"
+>"BAUD:XXX"</TT
+> is received then the baud rate is
+changed depending on the <TT
+CLASS="LITERAL"
+>XXX</TT
+> value. If a
+<TT
+CLASS="LITERAL"
+>"FINISH"</TT
+> string is received it returns to waiting
+for a <TT
+CLASS="LITERAL"
+>"RedBoot&#62;"</TT
+> prompt. The script repeats this
+process until it is terminated with a signal.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ppp-tests.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Testing</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp-tests.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

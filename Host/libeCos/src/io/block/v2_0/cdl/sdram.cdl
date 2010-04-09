@@ -1,0 +1,134 @@
+# ====================================================================
+#
+#      io_flash.cdl
+#
+#      eCos IO configuration data
+#
+# ====================================================================
+#####ECOSGPLCOPYRIGHTBEGIN####
+## -------------------------------------------
+## This file is part of eCos, the Embedded Configurable Operating System.
+## Copyright (C) 1998, 1999, 2000, 2001, 2002 Red Hat, Inc.
+##
+## eCos is free software; you can redistribute it and/or modify it under
+## the terms of the GNU General Public License as published by the Free
+## Software Foundation; either version 2 or (at your option) any later version.
+##
+## eCos is distributed in the hope that it will be useful, but WITHOUT ANY
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or
+## FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+## for more details.
+##
+## You should have received a copy of the GNU General Public License along
+## with eCos; if not, write to the Free Software Foundation, Inc.,
+## 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+##
+## As a special exception, if other files instantiate templates or use macros
+## or inline functions from this file, or you compile this file and link it
+## with other works to produce a work based on this file, this file does not
+## by itself cause the resulting work to be covered by the GNU General Public
+## License. However the source code for this file must still be made available
+## in accordance with section (3) of the GNU General Public License.
+##
+## This exception does not invalidate any other reasons why a work based on
+## this file might be covered by the GNU General Public License.
+##
+## Alternative licenses for eCos may be arranged by contacting Red Hat, Inc.
+## at http://sources.redhat.com/ecos/ecos-license/
+## -------------------------------------------
+#####ECOSGPLCOPYRIGHTEND####
+# ====================================================================
+######DESCRIPTIONBEGIN####
+#
+# Author(s):      gthomas
+# Original data:  gthomas
+# Contributors:
+# Date:           2000-07-06
+#
+#####DESCRIPTIONEND####
+#
+# ====================================================================
+
+cdl_package CYGPKG_IO_SDRAM {
+    display       "SDRAM device drivers"
+    include_dir   cyg/io
+    description   "
+        This option enables drivers for basic I/O services on
+        SDRAM devices."
+  
+    compile       sdram.c sdramiodev.c
+ 
+
+    cdl_option CYGNUM_FLASH_WORKSPACE_SIZE {
+        display       "Extra memory required by SDRAM device drivers"
+	flavor        data
+        default_value 0x1000
+        description   "
+            Use this option to control how much extra memory is used
+            by the SDRAM drivers to perform certain operations. This
+            memory is used to hold driver functions in RAM (for platforms
+            which require it).  The value should thus be large enough
+            to hold any such driver.  Reducing this value will make
+            more RAM available to general programs."
+    }
+
+    cdl_interface CYGHWR_IO_SDRAM_DEVICE {
+        display       "Hardware SDRAM device drivers"
+        description   "
+            This option enables the hardware device drivers
+            for the current platform."
+    }
+
+    cdl_component CYGPKG_IO_SDRAM_BLOCK_DEVICE {
+        display         "Instantiate in I/O block device API"
+        flavor          bool
+        active_if       CYGPKG_IO
+        default_value   1
+        compile         -library=libextras.a sdramiodev.c
+        description     "
+                Provides a block device accessible using the standard I/O
+                API ( cyg_io_read() etc. )"
+
+        cdl_component CYGDAT_IO_SDRAM_BLOCK_DEVICE_NAME_1 {
+                display       "Name of sdram device 1 block device"
+                flavor        data
+                default_value { "\"/dev/rom1\"" }
+			
+			cdl_option CYGNUM_IO_SDRAM_BLOCK_BASE_1 {
+                display         "Start base from sdram base"
+                flavor          data
+                default_value   0
+                description     "
+                    This gives the offset from the base of flash which this
+                    block device corresponds to."
+            }
+            cdl_option CYGNUM_IO_SDRAM_BLOCK_OFFSET_1 {
+                display         "Start offset from sdram base"
+                flavor          data
+                default_value   0x700000
+                description     "
+                    This gives the offset from the base of sdram which this
+                    block device corresponds to."
+            }
+            cdl_option CYGNUM_IO_SDRAM_BLOCK_LENGTH_1 {
+                display         "Length"
+                flavor          data
+                default_value   0x100000
+                description     "
+                    This gives the length of the region of sdram given over
+                    to this block device."
+            }
+        }
+    }
+    # ----------------------------------------------------------------
+    # Tests
+
+    cdl_option CYGPKG_IO_SDRAM_TESTS {
+          display "Sdram tests"
+          flavor  data
+          no_define
+          calculated { "tests/fileio1" }
+          description   "
+              This option specifies the set of tests for the FileIO package."
+    }
+}

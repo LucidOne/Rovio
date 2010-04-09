@@ -1,0 +1,604 @@
+<!-- Copyright (C) 2003 Red Hat, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<HTML
+><HEAD
+><TITLE
+>cyg_ppp_options_init()</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="eCos PPP User Guide"
+HREF="ppp.html"><LINK
+REL="UP"
+TITLE="PPP Interface"
+HREF="ppp-interface.html"><LINK
+REL="PREVIOUS"
+TITLE="PPP Interface"
+HREF="ppp-interface.html"><LINK
+REL="NEXT"
+TITLE="cyg_ppp_up()"
+HREF="ppp-up.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+><SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+> PPP User Guide</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ppp-interface.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ppp-up.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="PPP-OPTIONS-INIT"
+></A
+>cyg_ppp_options_init()</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN62"
+></A
+><H2
+>Name</H2
+>cyg_ppp_options_init&nbsp;--&nbsp;Initialize PPP link options</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN65"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><A
+NAME="AEN66"
+></A
+><P
+></P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/ppp/ppp.h&gt;
+        </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_int32 cyg_ppp_options_init</CODE
+>(cyg_ppp_options_t *options);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN73"
+></A
+><H2
+>Description</H2
+><P
+>This function initializes the PPP options, pointed to by the
+<TT
+CLASS="PARAMETER"
+><I
+>options</I
+></TT
+> parameter, to the default state. Once
+the defaults have been initialized, application code may adjust them
+by assigning new values to the the fields of the
+<SPAN
+CLASS="STRUCTNAME"
+>cyg_ppp_options_t</SPAN
+> structure.</P
+><P
+>This function returns zero if the options were initialized
+successfully. It returns -1 if the <TT
+CLASS="PARAMETER"
+><I
+>options</I
+></TT
+>
+argument is NULL, or the options could not be initialized.</P
+><P
+>The option fields, their functions and default values are as follows:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>debug</DT
+><DD
+><P
+> If set to 1 this enables the reporting of debug messages
+    from the PPP system. These will be generated using
+    <TT
+CLASS="FUNCTION"
+>diag_printf()</TT
+> and will appear on the standard
+    debug channel. Note that <TT
+CLASS="FUNCTION"
+>diag_printf()</TT
+>
+    disables interrupts during output: this may cause the PPP link
+    device to overrun and miss characters. It is quite possible for
+    this option to cause errors and even make the PPP link fail
+    completely. Consequently, this option should be used with care.
+    </P
+><P
+>    Default value: 0
+    </P
+></DD
+><DT
+>kdebugflag</DT
+><DD
+><P
+> If set to 1 this enables low level debugging messages from
+    the PPP device layer in the TCP/IP stack. As with the
+    <TT
+CLASS="STRUCTFIELD"
+><I
+>debug</I
+></TT
+> option, this may result in missed
+    characters and cause errors.
+    </P
+><P
+>    Default value: 0
+    </P
+></DD
+><DT
+>default_route</DT
+><DD
+><P
+> If set to 1 this option causes the PPP subsystem to install
+    a default route in the TCP/IP stack's routing tables using the
+    peer as the gateway. This entry will be removed when the PPP link
+    is broken. If there is already an existing working network
+    connection, such as an ethernet device, then there may already be
+    a default route established. If this is the case, then this option
+    will have no effect.
+    </P
+><P
+>    Default value: 1
+    </P
+></DD
+><DT
+>modem</DT
+><DD
+><P
+> If this option is set to 1, then the modem lines will be
+    used during the connection. Specifically, the PPP subsystem will
+    wait until the <TT
+CLASS="LITERAL"
+>carrier detect</TT
+> signal is
+    asserted before bringing up the PPP link, and will take the PPP
+    link down if this signal is de-asserted.
+    </P
+><P
+>    Default value: 0
+    </P
+></DD
+><DT
+>flowctl</DT
+><DD
+><P
+> This option is used to specify the mechanism used to
+    control data flow across the serial line. It can take one of the
+    following values:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_PPP_FLOWCTL_DEFAULT</TT
+></DT
+><DD
+><P
+>          The flow control mechanism is not changed and is left at
+          whatever value was set before bringing PPP up. This allows
+          a non-standard flow control mechanism to be used, or for it to
+          be chosen and set by some other means.
+          </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_PPP_FLOWCTL_NONE</TT
+></DT
+><DD
+><P
+>          Flow control is turned off. It is not recommended that this
+          option be used unless the baud rate is set low or the two
+          communicating machines are particularly fast.
+          </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_PPP_FLOWCTL_HARDWARE</TT
+></DT
+><DD
+><P
+>          Use hardware flow control via the RTS/CTS lines. This is the
+          most effective flow control mechanism and should always be
+          used if available. Availability of this mechanism depends on
+          whether the serial device hardware has the ability to control
+          these lines, whether they have been connected to the socket
+          pins and whether the device driver has the necessary support.
+          </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_PPP_FLOWCTL_SOFTWARE</TT
+></DT
+><DD
+><P
+>          Use software flow control by embedding XON/XOFF characters in
+          the data stream. This is somewhat less effective that hardware
+          flow control since it is subject to the propagation time of
+          the serial cable and the latency of the communicating
+          devices. Since it does not rely on any hardware support, this
+          flow control mechanism is always available.
+          </P
+></DD
+></DL
+></DIV
+><P
+>    Default value: CYG_PPP_FLOWCTL_HARDWARE
+    </P
+></DD
+><DT
+>refuse_pap</DT
+><DD
+><P
+> If this option is set to 1, then the PPP subsystem will not
+    agree to authenticate itself to the peer with PAP. When dialling
+    in to a remote server it is normal to authenticate the
+    client. There are three ways this can be done, using a
+    straightforward login mechanism via the CHAT script, with the
+    Password Authentication Protocol (PAP), or with the Challenge
+    Handshake Authentication Protocol (CHAP). For PAP to work the
+    <TT
+CLASS="STRUCTFIELD"
+><I
+>user</I
+></TT
+> and
+    <TT
+CLASS="STRUCTFIELD"
+><I
+>passwd</I
+></TT
+> options must be set to the
+    expected values. If they are not, then this option should be set
+    to force CHAP authentication.
+    </P
+><P
+>    Default value: 0
+    </P
+></DD
+><DT
+>refuse_chap</DT
+><DD
+><P
+> If this option is set to 1, then the PPP subsystem will not
+    agree to authenticate itself to the peer with CHAP. CHAP
+    authentication will only work if the
+    <TT
+CLASS="STRUCTFIELD"
+><I
+>passwd</I
+></TT
+> option has been set to the
+    required CHAP secret for the destination server. Otherwise this
+    option should be disabled.
+    </P
+><P
+>    If both <TT
+CLASS="STRUCTFIELD"
+><I
+>refuse_pap</I
+></TT
+> and
+    <TT
+CLASS="STRUCTFIELD"
+><I
+>refuse_chap</I
+></TT
+> are set, then either no
+    authentication will be carried out, or it is the responsibility of
+    the <B
+CLASS="COMMAND"
+>chat</B
+> script to do it. If the peer does not
+    require any authentication, then the setting of these options is
+    irrelevant.
+    </P
+><P
+>    Default value: 0
+    </P
+></DD
+><DT
+>baud</DT
+><DD
+><P
+> This option is set to the baud rate at which the serial
+    connection should be run. The default value is the rate at which
+    modems conventionally operate. This field is an instance of the
+    <SPAN
+CLASS="TYPE"
+>cyg_serial_baud_rate_t</SPAN
+> enum defined in the
+    <TT
+CLASS="LITERAL"
+>serialio.h</TT
+> header and may only take one of the
+    baud rate constants defined in there.
+    </P
+><P
+>    Default value: <TT
+CLASS="LITERAL"
+>CYGNUM_SERIAL_BAUD_115200</TT
+>
+    </P
+></DD
+><DT
+>idle_time_limit</DT
+><DD
+><P
+> This is the number of seconds that the PPP connection may
+    be idle before it is shut down automatically.
+    </P
+><P
+>    Default value: 60
+    </P
+></DD
+><DT
+>maxconnect</DT
+><DD
+><P
+> This causes the connection to terminate when it has been up
+    for this number of seconds. The default value of zero means that
+    the connection will stay up indefinitely, until either end
+    explicitly brings it down, or the link is lost.
+    </P
+><P
+>    Default value: 0
+    </P
+></DD
+><DT
+>our_address</DT
+><DD
+><P
+> This is the IP address, in network byte order, to be
+    attached to the local end of the PPP connection. The default value
+    of <TT
+CLASS="LITERAL"
+>INADDR_ANY</TT
+> causes the local address to be
+    obtained from the peer.
+    </P
+><P
+>    Default value: <TT
+CLASS="LITERAL"
+>INADDR_ANY</TT
+>
+    </P
+></DD
+><DT
+>his_address</DT
+><DD
+><P
+> This is the IP address, in network byte order, to be
+    attached to the remote end of the PPP connection. The default
+    value of <TT
+CLASS="LITERAL"
+>INADDR_ANY</TT
+> causes the remote address
+    to be obtained from the peer.
+    </P
+><P
+>    Default value: <TT
+CLASS="LITERAL"
+>INADDR_ANY</TT
+>
+    </P
+></DD
+><DT
+>script</DT
+><DD
+><P
+> This is a pointer to a CHAT script suitable for passing to
+    <TT
+CLASS="FUNCTION"
+>cyg_ppp_chat()</TT
+>. See <A
+HREF="ppp-chat.html"
+>Chapter 1</A
+>
+    for details of the format and contents of this script.
+    </P
+><P
+>    Default value: <TT
+CLASS="LITERAL"
+>NULL</TT
+>
+    </P
+></DD
+><DT
+>user</DT
+><DD
+><P
+> This array contains the user name to be used for PAP
+    authentication. This field is not used for CHAP authentication. By
+    default the value of this option is set from the
+    <TT
+CLASS="LITERAL"
+>CYGPKG_PPP_AUTH_DEFAULT_USER</TT
+> configuration
+    option.
+    </P
+><P
+>    Default value: <TT
+CLASS="LITERAL"
+>CYGPKG_PPP_AUTH_DEFAULT_USER</TT
+>
+    </P
+></DD
+><DT
+>passwd</DT
+><DD
+><P
+> This array contains the password to be used for PAP
+    authentication, or the secret to be used during CHAP
+    authentication. By default the value of this option is set from
+    the <TT
+CLASS="LITERAL"
+>CYGPKG_PPP_AUTH_DEFAULT_PASSWD</TT
+>
+    configuration option.
+    </P
+><P
+>    Default value: <TT
+CLASS="LITERAL"
+>CYGPKG_PPP_AUTH_DEFAULT_PASSWD</TT
+>
+    </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ppp-interface.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ppp-up.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>PPP Interface</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp-interface.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>cyg_ppp_up()</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

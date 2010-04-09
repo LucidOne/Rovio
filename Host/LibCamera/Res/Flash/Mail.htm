@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="author" content="ChenXiaohui" />
+<title>IPCam</title>
+<link rel="stylesheet" href="ipcam.css" type="text/css" media="all"  />
+<script type="text/javascript" src="ipcam.js"></script>
+<script type="text/javascript">
+function onSetConfig(s){ ConfigEnd(); }
+function onGetConfig(s) {	
+	eval (s);	
+	var fm = document.forms['mail'];	
+	fm.MailServer.value = sMail.MailServer;	
+	fm.Port.value = sMail.Port;
+	fm.Sender.value = sMail.Sender;	
+	fm.Receiver.value = sMail.Receiver;	
+	fm.Subject.value = sMail.Subject;	
+	fm.User.value = sMail.User;	
+	fm.PassWord.value = sMail.PassWord;	
+	fm.CheckFlag.checked = parseInt(sMail.CheckFlag, 10);	
+	fm.Enable[(parseInt(sMail.Enable, 10)==0?1:0)].checked = true;	
+	EnableCheckPass(fm); } 
+function EnableCheckPass(fm) {	
+	var bEnable = fm.CheckFlag.checked;	
+	InputEnable(fm.PassWord,bEnable);	
+	return true; } 
+function onPageLoad() { 	DownLoad("/GetMail.cgi", "JsObj=sMail", onGetConfig); }
+</script> 
+</head> 
+<body class="tab_body" onload="javascript:onPageLoad();">
+<h1 class="tab_name">Email</h1>
+<form name="mail" action="/SetMail.cgi" onsubmit="javascript:return FormSubmit(this, onSetConfig);">	
+<table class="tab_info">		
+<tr> 			
+<td class="tab_title">Mail Server Address</td>			
+<td class="tab_content"><input class="tab_input" name="MailServer" /></td> 		
+</tr>		
+<tr>
+<td class="tab_title">Mail Server Port</td>			
+<td class="tab_content"><input class="tab_input" name="Port" /></td> 		
+</tr>		
+<tr> 			
+<td class="tab_title">User Name</td>	
+<td class="tab_content"><input class="tab_input" name="User" /></td> 		
+</tr>		
+<tr> 			
+<td class="tab_title"><input name="CheckFlag" value="CHECK" type="checkbox" onclick="return EnableCheckPass(this.form);" />Password</td>			
+<td class="tab_content"><input class="tab_input" name="PassWord" type="password" /></td> 		
+</tr>		
+<tr> 			
+<td class="tab_title">Sender</td>			
+<td class="tab_content"><input class="tab_input" name="Sender" /></td> 		
+</tr>		
+<tr> 			
+<td class="tab_title">Receiver</td>			
+<td class="tab_content"><input class="tab_input" name="Receiver" /></td> 		
+</tr>		
+<tr> 			
+<td class="tab_title">Subject</td>			
+<td class="tab_content"><input class="tab_input" name="Subject" /></td> 		
+</tr>	
+<!--	
+<tr> 			
+<td class="tab_content" colspan="2">				
+<input name="Enable" value="true" type="radio" />Send mail				
+<input name="Enable" value="false" type="radio" />Not send mail			
+</td> 		
+</tr>		
+-->
+<tr> 			
+<td colspan="2" class="tab_title">				
+<input class="tab_submit" type="submit" value="Apply" /> 			
+</td> 		
+</tr>	
+</table>
+</form>
+</body>
+</html>

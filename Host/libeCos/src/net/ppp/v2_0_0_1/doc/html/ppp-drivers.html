@@ -1,0 +1,269 @@
+<!-- Copyright (C) 2003 Red Hat, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<HTML
+><HEAD
+><TITLE
+>PPP Enabled Device Drivers</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="eCos PPP User Guide"
+HREF="ppp.html"><LINK
+REL="PREVIOUS"
+TITLE="Escape Sequences"
+HREF="ppp-chat-escape.html"><LINK
+REL="NEXT"
+TITLE="Testing"
+HREF="ppp-tests.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+><SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+> PPP User Guide</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ppp-chat-escape.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ppp-tests.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="PPP-DRIVERS"
+></A
+>Chapter 1. PPP Enabled Device Drivers</H1
+><P
+>For PPP to function fully over a serial device, its driver must
+implement certain features. At present not all
+<SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+> serial drivers implement these
+features. A driver indicates that it supports a certain feature by
+including an <TT
+CLASS="LITERAL"
+>"implements"</TT
+> line in its CDL for the
+following interfaces:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>CYGINT_IO_SERIAL_FLOW_CONTROL_HW</TT
+></DT
+><DD
+><P
+>This interface indicates that the driver implements hardware flow
+control using the RTS and CTS lines. When data is being transferred
+over high speed data lines, it is essential that flow control be used
+to prevent buffer overrun.</P
+><P
+>The PPP subsystem functions best with hardware flow control. If this
+is not available, then it can be configured to use software flow
+control. Since software flow control is implemented by the device
+independent part of the serial device infrastructure, it is available
+for all serial devices. However, this will have an effect on the
+performance and reliability of the PPP link.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYGINT_IO_SERIAL_LINE_STATUS_HW</TT
+></DT
+><DD
+><P
+>This interface indicates that the driver implements a callback
+interface for indicating the status of various RS232 control lines. Of
+particular interest here is the ability to detect changes in the
+Carrier Detect (CD) line. Not all drivers that implement this
+interface can indicate CD status.</P
+><P
+>This functionality is only needed if it is important that the link be
+dropped immediately a telephone connection fails. Without it, a
+connection will only be dropped after it times out. This may be
+acceptable in many situations.</P
+></DD
+></DL
+></DIV
+><P
+>At the time of writing, the serial device drivers for the following
+platforms implement some or all of the required functionality:</P
+><P
+></P
+><UL
+><LI
+><P
+>All drivers that use the generic 16x5x driver implement all functions:</P
+><P
+></P
+><UL
+><LI
+><P
+>ARM CerfPDA</P
+></LI
+><LI
+><P
+>ARM IQ80321</P
+></LI
+><LI
+><P
+>ARM PID</P
+></LI
+><LI
+><P
+>ARM IOP310</P
+></LI
+><LI
+><P
+>i386 PC</P
+></LI
+><LI
+><P
+>MIPS Atlas</P
+></LI
+><LI
+><P
+>MIPS Ref4955</P
+></LI
+><LI
+><P
+>SH3 SE77x9</P
+></LI
+></UL
+></LI
+><LI
+><P
+>The following drivers implement flow control but either do not support
+line status callbacks, or do not report CD changes:</P
+><P
+></P
+><UL
+><LI
+><P
+>SH4 SCIF</P
+></LI
+></UL
+></LI
+><LI
+><P
+>All other drivers can support software flow control only.</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ppp-chat-escape.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ppp-tests.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Escape Sequences</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Testing</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

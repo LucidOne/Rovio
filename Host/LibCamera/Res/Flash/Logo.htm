@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="author" content="ChenXiaohui" />
+<title>IPCam</title>
+<link rel="stylesheet" href="ipcam.css" type="text/css" media="all"  />
+<script type="text/javascript" src="ipcam.js"></script>
+<script type="text/javascript">
+function onSetLogo(s){	ConfigEnd();}
+function onGetLogo(s)
+{	
+    eval(s);
+	var fm = document.forms['logo'];	
+    fm.showstring0.value = sLogo.ShowString[0];
+	fm.pos0.value = sLogo.ShowPos[0];
+	fm.showstring1.value = sLogo.ShowString[1];
+	fm.pos1.value = sLogo.ShowPos[1];
+}
+function onPageLoad()
+{	
+	DownLoad("/GetLogo.cgi", "JsObj=sLogo", onGetLogo);
+}
+</script>
+</head>
+<body class="tab_body" onload="javascript:onPageLoad();">
+<h1 class="tab_name">Logo</h1>
+<form name="logo" action="/SetLogo.cgi" onsubmit="javascript:return FormSubmit(this, onSetLogo);">
+	<table class="tab_info">
+		<tr>
+			<td class="tab_title">&nbsp;</td>
+			<td class="tab_title">Show String 1</td>
+			<td class="tab_content"><input class="tab_input" name= "showstring0" maxlength="128"/></td>
+		</tr>
+        <tr><td class="tab_title">&nbsp;</td>
+            <td class="tab_title">Position 1</td>
+            <td class="tab_content">
+                <select class="tab_input"  name="pos0" >
+                    <option value="0">Top Left</option>
+                    <option value="1">Top Right</option>
+                    <option value="2">Bottom Left</option>
+                    <option value="3">Bottom Right</option>
+                </select>
+            </td>
+        </tr>
+			<tr>
+			<td class="tab_title">&nbsp;</td>
+			<td class="tab_title">Show String 2</td>
+			<td class="tab_content"><input class="tab_input" name= "showstring1" maxlength="128"/></td>
+		</tr>
+        <tr><td class="tab_title">&nbsp;</td>
+            <td class="tab_title">Position 2</td>
+            <td class="tab_content">
+                <select class="tab_input"  name="pos1" >
+                    <option value="0">Top Left</option>
+                    <option value="1">Top Right</option>
+                    <option value="2">Bottom Left</option>
+                    <option value="3">Bottom Right</option>
+                </select>
+            </td>
+        </tr>
+		<tr>
+			<td class="tab_title"  colspan='3'>  
+				<input class="tab_submit" type='submit' value="Adjust" />
+			</td>
+		</tr>	
+	</table>
+</form>
+<pre>Replacement macro
+	{time} Time of captured image
+	{date} Date of captured image
+	{ver} Code version of firmware
+</pre>
+</body></html>

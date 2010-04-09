@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="author" content="ChenXiaohui" />
+<title>IPCam</title>
+<link rel="stylesheet" href="ipcam.css" type="text/css" media="all"  />
+<script type="text/javascript" src="ipcam.js"></script>
+<script type="text/javascript">
+var aUsers = [];
+function onClickUser(index)
+{
+document.forms['setuser'].User.value = aUsers[index];
+document.forms['deluser'].User.value = aUsers[index];
+}
+function onGetUser(s)
+{
+eval(s);
+aUsers = Users.Name;
+if (typeof (aUsers) == "string")
+aUsers = [aUsers];
+var s = '<table class="tab_info">';
+for (var i = 0; i < aUsers.length; i++)
+s += '<tr><td class="tab_content"><a href="javascript:onClickUser(' + i + ');">' + escapeHTML (aUsers[i]) + '</a></td></tr>';
+s += '</table>';
+$('UserList').innerHTML = s;
+}
+var sMyName;
+function onClickMe()
+{
+document.forms['setuser'].User.value = sMyName;
+}
+function onUserCmd(s)
+{
+eval(s);
+if (typeof (sParam) == "object")
+{
+var sStatus = sParam.GetStatus.Status;
+var bUserCheck = (parseInt(sStatus.substr(31, 1), 10) == 0 ? false : true);
+var iPrivilege = parseInt(sStatus.substr(23, 1), 10);
+if (iPrivilege == 0)
+{
+DownLoad("/GetUser.cgi", "JsObj=Users", onGetUser);
+}
+
+var fm = document.forms['authorization'];
+fm.Check[(bUserCheck?0:1)].checked = true;
+
+sMyName = sParam.GetMyself.Name;
+$('Myself').innerHTML = 'Welcome: <a href="javascript:onClickMe();">' + sMyName + '</a>';
+}
+}
+function onPageLoad()
+{
+DownLoad("/Cmd.cgi", "Cmd=GetMyself.cgi&Cmd=GetStatus.cgi&JsObj=sParam", onUserCmd);
+}
+function onSetUserCheckCmd(s)
+{
+ConfigEnd();
+}
+function onSetUserCmd(s)
+{
+ConfigEnd();
+}
+function onSetUser(o)
+{
+if (Trim(o.form.User.value).length == 0)
+{
+alert ("Please do not use an empty username.");
+return false;
+}
+if (o.form.Pass.value.length == 0)
+{
+alert ("Please do not use an empty password.");
+return false;
+}
+if (o.form.Pass.value != o.form.PassConfirm.value)
+{
+alert ("Passwords not match. Please confirm the passwords.");
+return false;
+}
+return true;
+}
+function onDelUserCmd(s)
+{
+ConfigEnd();
+}
+function onDelUser(o)
+{
+if (Trim(o.form.User.value).length == 0)
+{
+alert ("Please do not use an empty username.");
+return false;
+}
+
+if (!confirm("About to delete user " + o.form.User.value + ", are you sure?"))
+return false;
+return true;
+}
+</script>
+</head>
+<body class="tab_body" onload="javascript:onPageLoad();">
+<div id='Myself'></div>
+<h1 class="tab_name">Authorization</h1>
+<form name="authorization" action="/SetUserCheck.cgi" onsubmit="javascript:return FormSubmit(this, onSetUserCheckCmd);">
+<table class="tab_info">
+<tr>
+<td class="tab_title">Check users</td>
+<td class="tab_content">
+<input type="radio" name="Check" value="true" />Yes
+<input type="radio" name="Check" value="false" />No
+</td>
+</tr>
+<tr>
+<td colspan="2" class="tab_title">
+<input class="tab_submit" type="submit" value="Set" />
+</td>
+</tr>
+</table>
+</form>
+<h1 class="tab_name">Add new user or change password</h1>
+<form name="setuser" action="/SetUser.cgi" onsubmit="javascript:return FormSubmit(this, onSetUserCmd);">
+<table class="tab_info">
+<tr>
+<td class="tab_title">User</td>
+<td class="tab_content"><input class="tab_input" name="User" /></td>
+</tr>
+<tr>
+<td class="tab_title">Password</td>
+<td class="tab_content"><input class="tab_input" type="password" name="Pass" /></td>
+</tr>
+<tr>
+<td class="tab_title">Confirm password</td>
+<td class="tab_content"><input class="tab_input" type="password" name="PassConfirm" /></td>
+</tr>
+<tr>
+<td colspan="2" class="tab_title">
+<input class="tab_submit" type="submit" value="Add/Change" onclick="javascript:return onSetUser(this);"/>
+</td>
+</tr>
+</table>
+</form>
+<h1 class="tab_name">Delete user</h1>
+<form name="deluser" action="/DelUser.cgi" onsubmit="javascript:return FormSubmit(this, onDelUserCmd);">
+<table class="tab_info">
+<tr>
+<td class="tab_title">User</td>
+<td class="tab_content"><input class="tab_input" name="User" /></td>
+</tr>
+<tr>
+<td colspan="2" class="tab_title">
+<input class="tab_submit" type="submit" value="Delete" onclick="javascript:return onDelUser(this);" />
+</td>
+</tr>
+</table>
+</form>
+<h1 class="tab_name">User list</h1>
+<div id="UserList"></div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Rovio DS</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Josh Savage">
+    <meta name="copyright" content="WowWee Group Ltd.">
+
+    <script type="text/javascript" src="../lib/rovio_mobile.js"></script>
+
+    <link rel="stylesheet" href="../css/mobile.css" type="text/css" media="screen" />
+</head>
+<body>
+    <div id="camera_container" style="width: 240px; height: 170px;">
+        <script>
+            document.write ('<img id="oCamCtl" src="../Jpeg/CamImg' + Math.floor (10000 * Math.random ()) + '.jpg" width="240px" height="170px" />');
+            setInterval("$('oCamCtl').src='../Jpeg/CamImg' + Math.floor (10000 * Math.random ()) + '.jpg';", 2000);
+        </script>
+    </div>
+    <img id="cmd_frame" src="" style="display: none; position:relative; top: 30px; width: 1px; height: 1px;" alt="" />
+    <img id="Img4" src="../img/filler.gif" /><br />
+    <a id="rot_left" onclick="javascript: move2(this.id);" style="padding-left: 9px;"><img src="../img/btns/rotate_left_sml.gif" /></a>
+    <a id="move_forward" onclick="javascript: move2(this.id);"><img src="../img/btns/arrow_up.gif" /></a>
+    <a id="rot_right" onclick="javascript: move2(this.id);"><img src="../img/btns/rotate_right_sml.gif" /></a>
+    <br />
+    <a id="move_left" onclick="javascript: move2(this.id);" style="padding-left: 9px;"><img src="../img/btns/arrow_left.gif" /></a>
+    <a id="move_back" onclick="javascript: move2(this.id);"><img src="../img/btns/arrow_down.gif" /></a>
+    <a id="move_right" onclick="javascript: move2(this.id);"><img src="../img/btns/arrow_right.gif" /></a>
+    <br />
+    <a id="godock" onclick="javascript: goDock();"><img src="../img/btns/mobile_home.gif" width="30px;" /></a>
+    <a id="stop" onclick="javascript: stop();" style="padding-left: 2px;"><img src="../img/btns/mobile_stop.gif" width="30px;" /></a>
+    <a id="cam" onclick="javascript: move2(this.id);"  style="padding-left: 2px;"><img src="../img/btns/rovio_mobile_cam.gif" width="30px;" /></a>
+    <a id="snapshot" onclick="javascript: sendPhoto()" ><img src="../img/btns/mobile_photo.gif" width="30px;" /></a>
+    <img id="Img2" src="../img/filler.gif" /><br />
+    <img id="Img3" src="../img/filler.gif" /><br />
+    <img id="Img5" src="../img/filler.gif" /><br />
+    <br />
+        
+        <script>
+            function sendCmd(url, postData, rtn_function){
+                $('cmd_frame').src = url + '?' + postData + '&rand=' + Math.floor (10000 * Math.random ());
+            }
+            //refreshPathList();
+            params = 'Cmd=ChangeResolution.cgi&ResType=0';
+            params += '&Cmd=ChangeCompressRatio.cgi&Ratio=0';
+            params += '&Cmd=ChangeFramerate.cgi&Framerate=0';
+            sendCmd('../Cmd.cgi', params, doNothing);
+            
+            function move2(move_id){
+                var drive_cmd = 0;
+                var speed = DEFAULT_SPEED;
+                        
+                switch(move_id){
+                    case 'rot_left':
+                        drive_cmd = 5;
+                        speed = DEFAULT_TURNING_SPEED;
+                        break;
+                    case 'rot_right':
+                        drive_cmd = 6;
+                        speed = DEFAULT_TURNING_SPEED;
+                        break;
+                    case 'move_forward':
+                        drive_cmd = 1;
+                        break;
+                    case 'move_left':
+                        drive_cmd = 3;
+                        break;
+                    case 'move_right':
+                        drive_cmd = 4;
+                        break;
+                    case 'move_back':
+                        drive_cmd = 2;
+                        break;   
+                    case 'move_fwd_left':
+                        drive_cmd = 7;
+                        break;
+                    case 'move_fwd_right':
+                        drive_cmd = 8;
+                        break;
+                    case 'move_bck_left':
+                        drive_cmd = 9;
+                        break;
+                    case 'move_bck_right':
+                        drive_cmd = 10;
+                        break;
+                    case 'cam':
+                        if(head_pos == 'cam_down') { head_pos = 'cam_mid'; drive_cmd = "13"; 
+                        } else if(head_pos == 'cam_mid') { head_pos = 'cam_up'; drive_cmd = "11"; 
+                        } else if(head_pos == 'cam_up') { head_pos = 'cam_down'; drive_cmd = "12"; }
+                        break;
+                }
+                if(drive_cmd){
+                    sendCmd('../rev.cgi', 'Cmd=nav&action=18&drive=' + drive_cmd + '&speed=' + DEFAULT_TURNING_SPEED, doNothing);
+                }
+            }
+        </script>
+</body>
+</html>

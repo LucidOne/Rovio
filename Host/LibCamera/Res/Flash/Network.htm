@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="author" content="ChenXiaohui" />
+<title>IPCam</title>
+<link rel="stylesheet" href="ipcam.css" type="text/css" media="all"  />
+<script type="text/javascript" src="ipcam.js"></script>
+<script type="text/javascript">
+function onSetNetwork(s)
+{
+	ConfigEnd();
+}
+
+function onGetIP(sConfig)
+{
+	var fm = document.forms['network'];
+	for (var i = 0; i < fm.IPWay.length; i++)
+	{
+	if (fm.IPWay[i].value == sConfig.IPWay)
+	{
+		fm.IPWay[i].checked = true;
+		break;
+	}
+	}
+	fm.IP.value = sConfig.IP;
+	fm.Netmask.value = sConfig.Netmask;
+	fm.Gateway.value = sConfig.Gateway;
+	for (var i = 0; i < 3; i++)
+		fm["DNS" + i].value = sConfig["DNS" + i];
+
+	EnableIP(fm);
+}
+
+function EnableIP(fm)
+{
+	var bEnable = fm.IPWay[0].checked;
+	InputEnable(fm.IP,bEnable);
+	InputEnable(fm.Netmask,bEnable);
+	InputEnable(fm.Gateway,bEnable);
+	for (var i = 0; i < 3; i++)
+		InputEnable(fm["DNS" + i],bEnable);
+	return true;
+}
+
+function CheckFormSubmit(oForm, sFun)
+{
+	if (! confirm("About to change Network configurations. Continue?"))
+		return false;
+	return FormSubmit(oForm, sFun);
+}
+
+function $(s)
+{
+	return document.getElementById(s);
+}
+
+function onGetWlan(sConfig)
+{
+	var fm = document.forms['network'];
+	fm.ESSID.value = sConfig.ESSID;
+	fm.Mode.value = sConfig.Mode;
+	fm.Key.value = sConfig.Key;
+}
+
+function onGetConfig(s)
+{
+	eval(s);
+	if (typeof(sConfig) == "object")
+	{
+		onGetWlan(sConfig.GetWlan);
+		onGetIP(sConfig.GetIP);
+	}
+}
+
+function onPageLoad()
+{
+    DownLoad("/Cmd.cgi", "Cmd=GetWlan.cgi&Cmd=GetIP.cgi&JsObj=sConfig", onGetConfig);
+}
+</script>
+</head>
+<body class="tab_body" onload="javascript:onPageLoad();">
+<h1 class="tab_name">NetWork settings</h1>
+<form name="network" action="/Cmd.cgi" onsubmit="javascript:return CheckFormSubmit(this, onSetNetwork);">
+<table class="tab_info">
+<tr>
+<td class="tab_title" colspan="2">
+<input type="hidden" name="Cmd" value="SetWlan.cgi" />
+WiFi Setting
+</td>
+</tr>
+<tr>
+<td class="tab_title">ESSID</td>
+<td class="tab_content"><input class="tab_input" name="ESSID" /></td>
+</tr>
+<tr>
+<td class="tab_title">Mode</td>
+<td class="tab_content">
+ <select class="tab_input"  name="Mode"
+ onchange="return change_select(this);" 
+		 >
+    <option value="Managed">Infrastructure</option>
+    <option value="Ad-Hoc">Ad-Hoc</option>   
+  </select>
+ </td>
+</tr>
+<tr>
+<td class="tab_title" >Key</td>
+<td class="tab_content"><input class="tab_input" name="Key" /></td>
+</tr>
+<tr><td class="tab_title" colspan="2">&nbsp;</td></tr>
+<tr>
+<td class="tab_title" colspan="2">
+IP Setting
+</td>
+</tr>
+<tr>
+<td class="tab_title" colspan="2">
+<input type="hidden" name="Cmd" value="SetIP.cgi" />
+<input type="hidden" name = "Enable" value="1" />
+<input type="radio" name="IPWay" value="manually" onclick="javascript:return EnableIP(this.form);" />Manually
+</td>
+</tr>
+<tr>
+<td class="tab_title">IP address</td>
+<td class="tab_content"><input class="tab_input" name="IP" /></td>
+</tr>
+<tr>
+<td class="tab_title">Subnet mask</td>
+<td class="tab_content"><input class="tab_input" name="Netmask" /></td>
+</tr>
+<tr>
+<td class="tab_title">Default gateway</td>
+<td class="tab_content"><input class="tab_input" name="Gateway" /></td>
+</tr>
+<tr>
+<td class="tab_title">1st DNS</td>
+<td class="tab_content"><input class="tab_input" name="DNS0" /></td>
+</tr>
+<tr>
+<td class="tab_title">2nd DNS</td>
+<td class="tab_content"><input class="tab_input" name="DNS1" /></td>
+</tr>
+<tr>
+<td class="tab_title">3rd DNS</td>
+<td class="tab_content"><input class="tab_input" name="DNS2" /></td>
+</tr>
+<tr>
+<td class="tab_title" colspan="2">
+<input type="radio" name="IPWay" value="dhcp" onclick="javascript:return EnableIP(this.form);" />Automatically by DHCP
+</td>
+</tr>
+</table>
+<input type=submit value=OK>
+</form>
+</body>
+</html>

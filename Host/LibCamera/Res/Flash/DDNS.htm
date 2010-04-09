@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="author" content="ChenXiaohui" />
+<title>IPCam</title>
+<link rel="stylesheet" href="ipcam.css" type="text/css" media="all"  />
+<script type="text/javascript" src="ipcam.js"></script>
+<script type="text/javascript">
+function onSetConfig(s){ ConfigEnd(); }
+function onGetConfig(s) {	
+	eval (s);	
+	var fm = document.forms['ddns'];
+	fm.Service.value = sDDNS.Service;
+	fm.User.value = sDDNS.User;	
+	fm.Pass.value = sDDNS.Pass;
+	fm.DomainName.value = sDDNS.DomainName;	
+	fm.IP.value = sDDNS.IP;
+	fm.Proxy.value = sDDNS.Proxy;	
+	fm.ProxyPort.value = sDDNS.ProxyPort;	
+	fm.ProxyUser.value = sDDNS.ProxyUser;	
+	fm.ProxyPass.value = sDDNS.ProxyPass;	
+	fm.Enable.checked = (parseInt(sDDNS.Enable, 10) ? true : false);
+} 
+
+function onPageLoad() {
+	DownLoad("/GetDDNS.cgi", "JsObj=sDDNS", onGetConfig);
+}
+</script> 
+</head> 
+<body class="tab_body" onload="javascript:onPageLoad();">
+<h1 class="tab_name">Dynamic DNS</h1>
+<form name="ddns" action="/SetDDNS.cgi" onsubmit="javascript:return FormSubmit(this, onSetConfig);">	
+<table class="tab_info">		
+<tr>
+<td class="tab_title">Service</td>
+<td>
+<select name="Service">
+<option value="">-- Select a service --</option>
+<option value="dyndns">dyndns</option>
+<option value="no-ip">no-ip</option>
+<option value="dnsomatic">dnsomatic</option>
+</select>
+</td>
+</tr>
+<tr> 			
+<td class="tab_title">Username</td>			
+<td class="tab_content"><input class="tab_input" name="User" /></td> 		
+</tr>		
+<tr>
+<td class="tab_title">Password</td>			
+<td class="tab_content"><input class="tab_input" name="Pass" /></td> 		
+</tr>		
+<tr> 			
+<td class="tab_title">Domain Name</td>	
+<td class="tab_content"><input class="tab_input" name="DomainName" /></td> 		
+</tr>		
+<tr>
+<td class="tab_title">IP (Null for auto detect)</td>	
+<td class="tab_content"><input class="tab_input" name="IP" /></td> 		
+</tr>
+<tr> 			
+<td class="tab_title">Proxy</td>			
+<td class="tab_content"><input class="tab_input" name="Proxy" /></td> 		
+</tr>		
+<tr> 			
+<td class="tab_title">Proxy Port</td>			
+<td class="tab_content"><input class="tab_input" name="ProxyPort" /></td> 		
+</tr>		
+<tr> 			
+<td class="tab_title">Proxy User</td>			
+<td class="tab_content"><input class="tab_input" name="ProxyUser" /></td> 		
+</tr>		
+<tr> 			
+<td class="tab_title">Proxy Pass</td>			
+<td class="tab_content"><input class="tab_input" name="ProxyPass" /></td> 		
+</tr>		
+<tr> 			
+<td class="tab_content" colspan="2">				
+<input name="Enable" value="true" type="checkbox" />Use Dynamic DNS			
+</td> 		
+</tr>		
+<tr> 			
+<td colspan="2" class="tab_title">				
+<input class="tab_submit" type="submit" value="Apply" /> 			
+</td> 		
+</tr>	
+</table>
+</form>
+</body>
+</html>

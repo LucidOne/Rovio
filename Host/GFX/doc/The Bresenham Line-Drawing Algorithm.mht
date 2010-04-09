@@ -1,0 +1,1018 @@
+From: <¥Ñ Microsoft Internet Explorer 5 Àx¦s>
+Subject: The Bresenham Line-Drawing Algorithm
+Date: Wed, 29 Sep 2004 09:22:58 +0800
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	boundary="----=_NextPart_000_0000_01C4A605.E8ED2740";
+	type="text/html"
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/bresenh.html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>The Bresenham Line-Drawing Algorithm</TITLE>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META content=3D"MSHTML 6.00.2800.1106" name=3DGENERATOR></HEAD>
+<BODY>
+<H2>The Bresenham Line-Drawing Algorithm</H2>
+<HR>
+
+<P>
+<H3><A name=3Dbasic>The basic Bresenham algorithm</A></H3>Consider =
+drawing a line=20
+on a raster grid where we restrict the allowable slopes of the line to =
+the range=20
+<IMG =
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/slopelt1.gif">=
+.
+<P>If we further restrict the line-drawing routine so that it always =
+increments=20
+<EM>x</EM> as it plots, it becomes clear that, having plotted a point at =
+
+<EM>(x,y)</EM>, the routine has a severely limited range of options as =
+to where=20
+it may put the <EM>next</EM> point on the line:
+<P>
+<UL>
+  <LI>It may plot the point <EM>(x+1,y)</EM>, or:=20
+  <LI>It may plot the point <EM>(x+1,y+1)</EM>. </LI></UL>
+<P>So, working in the <EM>first positive octant</EM> of the plane, line =
+drawing=20
+becomes a matter of deciding between two possibilities at each step.
+<P>We can draw a diagram of the situation which the plotting program =
+finds=20
+itself in having plotted <EM>(x,y)</EM>.
+<P>
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/bres1.gif"></C=
+ENTER>
+<P>In plotting <EM>(x,y)</EM> the line drawing routine will, in general, =
+be=20
+making a compromise between what it would like to draw and what the =
+resolution=20
+of the screen actually allows it to draw. Usually the plotted point=20
+<EM>(x,y)</EM> will be in error, the actual, mathematical point on the =
+line will=20
+not be addressable on the pixel grid. So we associate an error, <IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/eps.gif">, =
+with each=20
+<EM>y</EM> ordinate, the real value of <EM>y</EM> should be <IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/y_eps.gif">. =
+This error=20
+will range from -0.5 to just under +0.5.
+<P>In moving from <EM>x</EM> to <EM>x+1</EM> we increase the value of =
+the true=20
+(mathematical) y-ordinate by an amount equal to the slope of the line,=20
+<EM>m</EM>. We will choose to plot <EM>(x+1,y)</EM> if the difference =
+between=20
+this new value and <EM>y</EM> is less than 0.5.
+<P>
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/yemlty5.gif"><=
+/CENTER>
+<P>Otherwise we will plot <EM>(x+1,y+1)</EM>. It should be clear that by =
+so=20
+doing we minimise the total error between the mathematical line segment =
+and what=20
+actually gets drawn on the display.
+<P>The error resulting from this new point can now be written back into =
+<IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/eps.gif">, =
+this will=20
+allow us to repeat the whole process for the next point along the line, =
+at=20
+<EM>x+2</EM>.
+<P>The new value of error can adopt one of two possible values, =
+depending on=20
+what new point is plotted. If <EM>(x+1,y)</EM> is chosen, the new value =
+of error=20
+is given by:=20
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsnew1.gif"><=
+/CENTER>
+<P>Otherwise it is:=20
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsnew2.gif"><=
+/CENTER>
+<P>This gives an algorithm for a DDA which avoids rounding operations, =
+instead=20
+using the error variable <IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/eps.gif"> to =
+control=20
+plotting:=20
+<P>
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/pseudo1.gif"><=
+/CENTER>
+<P>This still employs floating point values. Consider, however, what =
+happens if=20
+we multiply across both sides of the plotting test by <IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/dx.gif"> and =
+then by 2:=20
+
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/derive1.gif"><=
+/CENTER>
+<P>All quantities in this inequality are now integral.
+<P>Substitute <IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsprime.gif">=
+ for <IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsdx.gif">. =
+The test=20
+becomes:=20
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/test1.gif"></C=
+ENTER>
+<P>This gives an <EM>integer-only</EM> test for deciding which point to =
+plot.
+<P>The update rules for the error on each step may also be cast into =
+<IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsprime.gif">=
+ form.=20
+Consider the floating-point versions of the update rules:=20
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/update1.gif"><=
+/CENTER>
+<P>Multiplying through by <IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/dx.gif"> =
+yields:=20
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/update2.gif"><=
+/CENTER>
+<P>which is in <IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsprime.gif">=
+ form.
+<P>
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/update3.gif"><=
+/CENTER>
+<P>Using this new ``error'' value, <IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsprime.gif">=
+, with=20
+the new test and update equations gives Bresenham's integer-only line =
+drawing=20
+algorithm:
+<P>
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/pseudo2.gif"><=
+/CENTER>
+<P>
+<UL>
+  <LI>Integer only - hence efficient (fast).=20
+  <LI>Multiplication by 2 can be implemented by left-shift.=20
+  <LI>This version limited to slopes in the first octant, <IMG=20
+  =
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/slopelt1.gif">=
+.=20
+</LI></UL>
+<P>Here is a C++ implementation of the Bresenham algorithm for line =
+segments in=20
+the first octant.
+<P><PRE>    void linev6(Screen &amp;s,
+              unsigned x1, unsigned y1,
+              unsigned x2, unsigned y2,
+              unsigned char colour )
+    {
+      int dx  =3D x2 - x1,
+          dy  =3D y2 - y1,
+          y   =3D y1,
+          eps =3D 0;
+   =20
+      for ( int x =3D x1; x &lt;=3D x2; x++ )  {
+        s.Plot(x,y,colour);
+        eps +=3D dy;
+        if ( (eps &lt;&lt; 1) &gt;=3D dx )  {
+          y++;  eps -=3D dx;
+        }
+      }
+    }
+</PRE>This is an all-integer function, employs left shift for =
+multiplication and=20
+eliminates redundant operations by tricky use of the <CODE>eps</CODE> =
+variable.
+<P>This implementation of Bresenham's algorithm is incomplete, it does =
+not check=20
+the validity of its arguments. A real implementation should do this. In =
+fact, a=20
+real implementation of Bresenham's algorithm should do more than simply =
+reject=20
+lines with slopes lying outside the first octant, it should handle lines =
+of=20
+arbitrary slope.
+<P>
+<HR>
+
+<P>
+<H3><A name=3Dslopes>Handling multiple slopes</A></H3>If we try out the =
+C++=20
+implementation of the Bresenham algorithm, we find it has some peculiar=20
+properties.
+<P>As expected, it fails to plot lines with negative slopes (try it and =
+see what=20
+happens). It also fails to plot lines of positive slope greater than 1 =
+(this is=20
+an interesting case, try it also and see if you can explain what is =
+happening).
+<P>More unusually, we find that the order in which the endpoints are =
+supplied to=20
+this routine is significant, it will only work as long as =
+<CODE>x1</CODE> is=20
+smaller than <CODE>x2</CODE>.
+<P>In fact, if we have two line segments with the same endpoints, and =
+the same=20
+slope, this routine may draw one of them successfully but fails to draw =
+the=20
+other one.
+<P>
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/lsdlfp.gif"></=
+CENTER>
+<P>Of course, this is not surprising really, when we consider that the =
+function=20
+works by <STRONG>incrementing</STRONG> <EM>x</EM>. It does emphasise, =
+however,=20
+that the routine is plotting <EM>vectors</EM>, direction is significant. =
+
+Considering all the vectors from <EM>(x1,y1)</EM> to <EM>(x2,y2)</EM> we =
+find=20
+that there are eight regions, (the ``octants'') and the basic Bresenham=20
+algorithm works in only one of them.
+<P>
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/octants.gif"><=
+/CENTER>
+<P>A full implementation of the Bresenham algorithm must, of course, be =
+able to=20
+handle all combinations of slope and endpoint order.
+<P>Some of the regions in the plane, those for which <EM>x2</EM> is =
+smaller than=20
+<EM>x1</EM> can be handled by exchanging the endpoints of the line =
+segment.
+<P>It is also clear that we will need a piece of code to handle large =
+slopes by=20
+stepping over <EM>y</EM> instead of <EM>x</EM> values.
+<P>However, careful consideration of the diagram will reveal that there =
+is one=20
+case which cannot be reduced to a version of the algorithm we have =
+already=20
+looked at. If we want to draw a line having a small <EM>negative</EM> =
+slope, we=20
+will have to consider a modification of the basic Bresenham algorithm to =
+do=20
+this. (The same point applies to lines of <EM>large</EM> negative slope =
+as well,=20
+but the code for small negative slopes may be adapted to this case by =
+stepping=20
+over <EM>y</EM> instead of <EM>x</EM>).
+<P>
+<HR>
+
+<P>
+<H3><A name=3Dbasic>Bresenham for negative slopes</A></H3>
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/bres2.gif"></C=
+ENTER>
+<P>Consider a line with negative slope between 0 and 1 (i.e., small =
+negative=20
+slope. Given that a line-drawing algorithm has plotted a point at=20
+<EM>(x,y)</EM>, its choice about where to plot the next point is between =
+
+<EM>(x+1,y-1)</EM> and <EM>(x+1,y)</EM>.
+<P>As usual there will be an error, <IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/eps.gif">, =
+associated=20
+with <EM>y</EM>. Choice of the next point to plot will be based on an =
+attempt to=20
+minimise error, so plot <EM>(x+1,y)</EM> if:
+<P>
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/yyemlt5.gif"><=
+/CENTER>
+<P>Otherwise plot <EM>(x+1,y-1)</EM>. Notice that the error generated by =
+the=20
+above is <EM>negative</EM>. A little manipulation gives a decision =
+inequality:=20
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/emgt5.gif"></C=
+ENTER>
+<P>It is worth comparing this with the decision inequality for the case =
+of=20
+positive slope.
+<P>The error update rules are also subtly different for this case of =
+negative=20
+slope.
+<P>If plotting <EM>(x+1,y)</EM> the <EM>new</EM> value of error is given =
+by:
+<P>
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsnew3.gif"><=
+/CENTER>
+<P>Otherwise, plotting <EM>(x+1,y-1)</EM> gives new error:
+<P>
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsnew4.gif"><=
+/CENTER>
+<P>A pseudocode algorithm for this routine may be written as:=20
+<CENTER><IMG=20
+src=3D"http://www.cs.helsinki.fi/group/goa/mallinnus/lines/pseudo3.gif"><=
+/CENTER>
+<P>This is cast in terms of floating-point values.. It is, however, a =
+trivial=20
+matter to convert the algorithm into an integer-only form.
+<P>
+<HR>
+
+<P>
+<ADDRESS>Colin Flanagan / flanaganc@ul.ie </ADDRESS></BODY></HTML>
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/slopelt1.gif
+
+R0lGODlhdAAYAPAAAAAAAP///yH5BAEAAAEALAAAAAB0ABgAAALLjI+py+0Po5y02ouz3rx7BIRi
+F34kIJXPGLCYiJoZvNKO28aWLV/8/VuoQLoUrkcJRoYMpsEJhCKXx4mUqLgmlNQYj9usJotCcq6m
+RdvW6ae40oam36lcERdvW81b85xeY4d1AGjHt3NI6JdIxBg46OaoKPnYIEdp6EPGpNeIWVapCFfY
+1wg51lkKlPU5iYl3p9KaOYZ2OlroxOn1AsYKsbuRuxn7pEHq1oXMARubKgyzPDVNXW19jW0YvZ29
+7f089e3dLR6dfY5uUQAAOw==
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/bres1.gif
+
+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
+ohMCM6emgyjkKKcPxyYks67+9d+UKPtay0bjTYab4zeM+1GWIlV2WdVXFU97g9r6FoWjfYWtostd
+G9T2oMAVUHbDR1GtclahPjOFusjr3ttW9BEYXEDB6Fvc9963nNpb7zSz2V/7ahO2hbAZf9lB3QM7
+F4Lz2259uwtfQVxNwJXtCkMaHLr0TgHD5ZJwgSn834CWAcRdJDCD/etg/H4BxeBF5W6/CzgDd7il
+TYCx5t543Fxw2G44RpRs0etM3PqYxTe+LhuHfAVLtnYXP65xkCVVmDOK+JLIjS+JWwxgIuh4RVcO
+rYddcF5XhXSZVV6Xk8U85RiUGadtrhWT1Rzm5dJYcTYGspJvOWfj1TmJd8b+85aTjFg+p1nKKp4u
+kvVc6Bh8GVh/VkaUBb3nFTx6o0UesXkrfDMYXNqkmV5xnhHd6HT1GWaRRsakDXZmCnz6gGvuxqrZ
+1moIvJqpoVb0qCld6n2e2sWpNsasVzfmjP4awe3VdA3ebN1eG/vQsliwrgfN6PA+W9ax7umiSY25
+K7pRAremw3A3TGFmh6kJOWRzVW19bGE31dwpK7d0ea1BLDprp9CecBhpCmXU8hvXmIujb88QbkQ4
+rWv/jra/4a1OdPMWG9kouCIgkvCEv2I2iWO1w9WtmGFI/BFeeVqisb1rjTPB3iXpyUagwvKWuzwn
+TEkKT2L+8prb/OYspzn+znd+lB5wB+JZ1odEvtKyXD1hgZ6lakBCznBnAw0VNA60LJjWdGuPbOPM
+xaNaLD6R/MZuCfBjJdmKTvbRLXaNY19W1pBddp3izelPf7vai824tV+d7iDxuv3kzva5p93tcc6Z
+3WVWa0kPXvB47/rh4x54xhud7w/2++P/HnnAT/7yBsq85jfP+c57/vOgD73oR0/60pv+9KhPvepX
+z/rWu/71sI+97GdP+81Lvfa4L33Qc897z692970PfuZrpHTh554YwGcH8W9vfNPjkPloQP56lt/8
+6q+0qMp4vlcVY/3uPzz7vRUqWrpP/uSCf7nmE5GQyl/94psCO5FdP/tCe499DnWj+NSfP/3J4n5F
+1N/8TzJ++sd70td/iPASMaRb/jGADCgLBfhZeoF0DTiB90eBFjh8F5iBGriBHNiBMZAAADs=
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/eps.gif
+
+R0lGODlhEgATAPAAAAAAAP///yH5BAEAAAEALAAAAAASABMAAAIdjI+py+0PowMU0gtslpdXj23N
+50kGWZpBqLYuUwAAOw==
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/y_eps.gif
+
+R0lGODlhOgAZAPAAAAAAAP///yH5BAEAAAEALAAAAAA6ABkAAAJyjI+py+0Po5y02isB3lTz/3ig
+ApSJmW2liJio8UJstsaH967THNmnpoP5GrzQkJQrBmrMpnJ5RLaUzurT6YhFF09udyracjvfW7JS
+njJmweAOXeRhOxbmLSsmjZDh9Gn/g+MHiCc0SLhWg7jI2Oj4+FgAADs=
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/yemlty5.gif
+
+R0lGODlh4QAeAPAAAAAAAP///yH5BAEAAAEALAAAAADhAB4AAAL+jI+py+0Po5y02ouz3rz7D4bi
+SJbmiabqyrbuC8cyBNQ2XRv3zPf+sds1bEQZYHX8JXKnZEQYYA6JTli1qQRCSVeHVOtVdktj45Y8
++erKus9WHcach5SgsGjBP9VwugTeB+SR8xW4wDalR5NGlYQ3l4ioQFhlOMk4idgo6ScFeZjHCfoX
+VWj699nplLqEuaS5aslAGSvaVic7i1pa2cupiHmXK7j7ipshPLu5nIiz3Oh1ZSrJuher/EylnIlr
+yw12mK2NDawlnsrX6+y9DZ55HgjIXt2+VncsVzGNMMzLbuzuiSt+bKDQexdQ4MA83QgSdGTtH6+E
+i4o5xPbwQrJ7ewv14QvIZN7BNdc4WrtoL2E/hBNNWvTY8VSUUP3s/BOJsmWpjHKguUQ1ciZQniQl
+mhO1CSYjYG/GcQgqNIVRqSt1ksqCMeVPE1N7bNyKlaTWsGSXji2LzFFVtGFDrmX77i3cLE7n2r2L
+N6/evXz7+v0LOLDgwYQLYygAADs=
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsnew1.gif
+
+R0lGODlhBgEfAPAAAAAAAP///yH5BAEAAAEALAAAAAAGAR8AAAL+jI+py+0P4wGy2ovzorr7D4YX
+J5ZmSJ7qyopA2say8c72fdf4rur8D9TAgkTMsIhM+kxHVtP5TEp3y1L0dO1Nt8GqFZfFhrmI11jr
+OpoT3sZZsZa842ZS3f02VtuVOn+W5+BVs/QHp3cn1+fHkRgHF7gYUBg5UWl1CXk4aWfIppdxRvHI
+mcLn6dHYeUn6g2qxN+rTKjjyuglBSFl2mikouyp0u8JYbBzV28lwXIyXxcz4y2ba6wx99TgM6ed6
+bSy9Qb3s/dccTg5uyYtnDf2wK6zkOz2+3gfLassrXh8DH9pER5tCZWhE0PZOzaw8c/It4kdDoKYW
+2TIla2QPo52liAcxnVMHC1+HhvRAKvS38EM1gxxZcmqJEMRAgQgZViJpD2Y4lKrmcQM5yRIpmkVm
+/rxni1YtOZSonQIUzYnJgBhdUsFWE8zVq/P6vfxachaQWMpGaAXT1RnQHqqCumVJ9G23fS3JdEmr
+FiyxYKWaHh2bMaZdjygj4h2MYpVgxImhKmVc9DDkeJMrW76MObPmzZw7e/4MOrTo0aRLmz6NOrVq
+DQUAADs=
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsnew2.gif
+
+R0lGODlhOwEiAPAAAAAAAP///yH5BAEAAAEALAAAAAA7ASIAAAL+jI+py+0Po5y02ouz3rz7D4bi
+SJbmiabqyrbuC8cBINcR/eI2o+9+7wsegCmi0GA8sgBJpYy5bAahThe1KryetDUuwos1ScOw8cdc
+ZIKH5DQJ3YF71iD6Rj5TS+3tOJ7ylxF4h8IneME32CdheFjU0iioeIM4Fvl1GTKpsKaWcKnoyVgh
+qjckyrkJ0ckFWvkAqqfq6LcApeUKKDuBJ0tlmmeUaQF225NLaik3LMLcUIykg7qajAgYjHksPOsA
+nXe6/NoNN23FfZqKHR3O67xMM41bfM5DZCyNrAuLVh7l+/9v3LMrrAD6qmfGYECBmLLZ2qMQ2MOB
++BBGNJSI30H+SBcBMpyI7mHHJAtTjdz3SVu9cR0HugxpsiXKjzQbfkvHJmdCejdBRrvGaFIgeSp9
+jqAjD2i1mitF4ij6dIbOnWdIEvzzjlbQouuQpBRjtaJSfUyNfvX6E+3NX/yqIoQ5KqjWG0CSSj37
+JixcSsSUyfWJL95TnktNdh27KlThtGntEcabcjBWcS/pxgvJSu1juhb7wUrm+ZkubaSFFQorMe7W
+XbY4XGVsk2COnZMfrXC2+C3iObPY3j3WOOpsw7BVb4lymnhPXkd7B15HlPVwh8sX5VXRyvcO3NaZ
+x+benTP2s6HNhS8RffP54ltKq6e8vtn7+JCxz3d9n77+/fwa+/v/D2CAAg5IYIEGHohgggouyGCD
+Dj7oQQEAOw==
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/pseudo1.gif
+
+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
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/dx.gif
+
+R0lGODlhJQAVAPAAAAAAAP///yH5BAEAAAEALAAAAAAlABUAAAJUjI+py+0PFQCxskmtDjjv2E0f
+aGAj5JnnhaiXyMFv69Jl6EmS3B5mbUt0hKlUI0dDElHKG2/5aPqeU+nUMdz1dFEZjKfEiUMxios6
+TmeG2ZX7DSkAADs=
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/derive1.gif
+
+R0lGODlh4gB5APAAAAAAAP///yH5BAEAAAEALAAAAADiAHkAAAL+jI+py+0Po5y02ouz3rz7D4bi
+SJbmiabqyrbuC8fyTNf2jef6zve+DwgKIcNA8YdMVopHhvCp7AGiQUmz6nhio7spEhrZHsQKL/dn
+5oGtaQM50T6nmo94HbteZ/Tssn0sp6L1t0BYOOjG9DbBxxi3OIYYKAJZRzF1JVaZRbf0aLjVOakh
+SuRopJlW2tBo8bbpN+qxGjloa4gKpwqri3uqe8krSyTpd1vs1JbqKUwc6+g7fLfnurt70Rr8fGgt
+TRrtxIyQ6gU+TjsNnNztjdFc6Kme6LaHvn4uT/befugejx+J3rd98wKeK8eOn7ts4aAdPGjuDkFk
+iazZUzgiooz+ixhlaewIMqTIkSRLmjyJMqXKlSxbunwJM6bMmTRr2ryJM6fOnTx7+vwJNKjQoUSL
+Gj2KNKnSpUybOn0KtUtUmQSnxqgaJp3VGRx/scJKgyK3iiUZLuQEdiMeWLaSfISYdhu3riWaZZJI
+dyMpsrNA8YVhFqBgeHLeAvq7YZOZvH33vfIb9p1hIw/HDh6XpfI9VJMrfnyc+aoWRmdrfcplUJ7c
+VmtHY2Nc8HKvwCGwGv70KLaoSrgJc/7NrDPor7UE2X5t7NqRTrxxK1u8ODiH4X1Q2DvW1pLlXqll
+HzbGaWFn2Y7jsnGdHDvbP42WyfXOmRBY2mFOOzyR9jPa1fb+fW/nXo951IFXHH6TaaRYJtD1w+A6
+dmgi3oH9EYgYCfktQUxCi0Diy3IIYRbgW3cJps94XmEIjXp5tPaeaSpWMYSH0zHmXoHkrIBeVim+
+aBFz7PGoCIywfTVRjoiJJVULPgYy5EgmZthdbFsppEiDU/LDYotXDmNklFuaZN6XYo5JZplmnolm
+mmquyWabbr4JZ5xyzklnnXbeiWeeeu7JZ59+/gkolU/WECahg75GH5FddEnhKE0OFF+EOsRIS6JS
+PFpagcFYSk11ms5W6DcRhnpfhTpiqmN9CcFhKo5DInToeZqR1ioI5ijYEHAscFrGp9Y99+CGsxKY
+163A+lf6Ch1x8dqrr8SSqmt8A7IGK6fCTbtkjdIlZlEynqFaoWKNfkdpRBI+OC5lqEV73qC9+VZu
+XwBa6Vk+0V1SD72RBuShueBKWa+933E7r3/Dqkbki/XlWrCm5cWqbroIz5heiQ4Sl6HCWk0c8GAP
+H8phpbFCuK7BDTtLqzYDg4JtNYWyLB+p+gAMX8ceo3hixAneSHOKoibs7cDVqMMblAWRnPLCJBr9
+l4CvMo0a0i5nV7KLCsfbc2iqZgdkv7Vuu6PGWFe9KUXodd0aJrAZSzXaPcrcldum7csSxDNC/C9Q
+douTdaAvVOm3DVkGHlnehB+OeOKKL8544yQUAAA7
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsprime.gif
+
+R0lGODlhFAAcAPAAAAAAAP///yH5BAEAAAEALAAAAAAUABwAAAIujI+py+0P4wFAImpnzXRbnAUg
+531SJ5ZLh0bj+ULtx8aMLauuvodG7QsKh0RHAQA7
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsdx.gif
+
+R0lGODlhMAAZAPAAAAAAAP///yH5BAEAAAEALAAAAAAwABkAAAJrjI+py+0Po5y0RgCsbjjvb3Qe
+qIkYWYYnWo0dm7zKGMiMbM+mjojLalrxODrawXXKHYXDnlII/TFnt2nMWPQ5q9blo3t0KJfYK6dM
+LjPV6BrEBqShu8H67gVv71R2Oz+jBSM4SFhoeIi4UAAAOw==
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/test1.gif
+
+R0lGODlhwgAkAPAAAAAAAP///yH5BAEAAAEALAAAAADCACQAAAL+jI+py+0Po5y02ouz3rz7D4bi
+SJbmiabqyrbuC3MAENc2S0PzXeX87/A9dkCJsIgkDpUpJsbpgq5m1KNBusCWqDIrTmviVhVeBlg0
+lsXS3wT3cEbE3ZnqfOm5B+zlLfN91UdmITgUWGjUpZcDqNIIuIg4+ASn12Dp1hjho3niBInYmXgh
+JHqYiUpoGiR39rZKqqTFR6naKrXzd4TJRqGLRcQnual7OcxKSIYbWLl73NujXMaZi2mcKq3WYwVd
+Te1MbN0qzU0Nl1eexSvMbqg+LZu+dHxp5kpPrP4Obc9Oe71PXyVlOmAV7CdIHMArAwl2wJcQVyl5
+BRVG7GPQ166Hhtg20APTLZ5AIxk7krMnR8Mncw61jQqykqXJcM8qjttTqo4/jjNJTfC3s9mpltvi
+AG2HkwYoncJ6JlW45+fRf834RVUJayrVMVbR4IvWohPUW0g8fvWFYinRsjbG3njlxS3bEGeBBJM4
+125dHnZQ5tX7F2vgwYQLGz6MOLHixYwbO34MmXABADs=
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/update1.gif
+
+R0lGODlhtQBRAPAAAAAAAP///yH5BAEAAAEALAAAAAC1AFEAAAL+jI+py+0Po5y02ouz3rz7D4bi
+SJbmiabqyrbuC8fyTNf2nQL4zmd6Dww+fkIY4Gghlo7KYYVpYBKlxYYU+VxeJ83h9UcNQKsK7MUs
+QnMpunEUrSa7n93PfC1BzuHx4j3/FSgIWJcgOOigxlcYFMh2CMlo+MUQuZXYxEc2qdHX4RkhWam0
+J9oDCjiC6vRI6gq2KWYKMZtUu3D7xnmAlVuzGgNcSberKxbLG3ZzmdeKUCqMLP08XT3ja52tvc3d
+7f0NHi4+Tl5ufo6err7O3u7+Dh8vP09fb3+Pn6+/z9/v/w8woMCBBAsaPIgwoUJiC4Ew44fNxsN9
+EXFEi1dxWUalTNg2EsLDpZcbZScuhpoYSgtJVoTCuDTpw2MxW1rOsJH16pnMk3ZgJlNpM1UpnTtp
+Ff1z0hIio6aUItU58ylOSzw/UQrpFOUorVOpYooqKWtVDj6hqsrYMefPHEc9ljXqg44rolFKtiV7
+Nu4jsHXt9nRY0Zeiucf89pRqZCXLpHSTvW2p2F7RhiYmU76MObPmzZw7e/4MOrTo0aRLmz6NOrXq
+DAUAADs=
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/update2.gif
+
+R0lGODlhGAFPAPAAAAAAAP///yH5BAEAAAEALAAAAAAYAU8AAAL+jI+py+0Po5y02ouz3rz7D4bi
+SJbmiabqyrbuC8fyTNf2jef6zvc9APCNgMIDsYgMAIPJzhL5bP6i0syS6btWd9fjttLFlsTg7hfH
+pJ4lae/YalCvZVj5vFF3D+Fx/X3op4RgN3hE+EAGmChoFFjYtoiHIXYo5/inEJZJSWioSRHpZJbg
+prXgORoR6lBqR9SKqbqa2NkYdMhwyaFL65h3q0t60UvbZxuLeOln2tgcB7q6gbvsmmcEakENS4WL
+3B35HX0aRl7OxpsbHKxUTo6YvsgtjuleCB+6Pt6+f55qrD9L3L5P6e5tsocMzyxWvvKNI4FOIT6H
+mcAw7IUw4cP+ghLjUSoDSOFFcB8nzHNm8Ng/jRtPQZC3khE2EcpewmI3aCYbm5ysseRIaqCmJzBt
+BBL6iagXijJ5Il2K6mfHX08hAWOqIlVVea+65TK5tSczqWTvnPzgtaxaIWcnQV0LN26ZNnLr2hXJ
+ru3dvQn98f0LOLDgwYQLGz6MOLHixYwbO34MObLkyZQrW76MObPmzZw7e/4MOrTo0aRLmz6NOrXq
+1axbu34NO7ZshnaxxrD9AneLtH117/a9gvdt4fSIDweeYmwOgmWZQ7TiF010o330noGEwvq1vD+q
+8/i1FrwJ7c+8c1HpohZ6feZ1jjn6KBl2k5Pis8843j689m7+leO05VF1/r0DUXStNCQgcdodiNFN
+44m1UT1usbJJPMcYhxxtkgQFzoUULVhhRf9xdwIxLnlnHId4PULGW+Wd895EFWK0UlvWacMJiToW
+OGNQKJG3o4ghrghWWMJ9s5+GIwlF4JAqxsQhk00+CZQGEkIJIJFFGtmPcg3xIlBVSkZ5EEozDpRM
+Si1ZuZBESWYDZJobvumkRe7VGVOGU+K5HnRaklnmizDSJGNHVdoIzUj66Tlmj4E2BdJX8jlTSjYh
+SXoRQpXSx2mm6DE6p5v/bDrhmUhxV1QNR4WFoos7dfmUSinOJaZSPkHHlZh5XRVngbnGKuCulsJ6
+KoCzQrMuVbADzlYfC8cyO0evPJkJ7WZRgFotYVFl29l03H4Lbrjijktuueaei2666h5QAAA7
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/update3.gif
+
+R0lGODlh4QBPAPAAAAAAAP///yH5BAEAAAEALAAAAADhAE8AAAL+jI+py+0Po5y02ouz3rz7D4bi
+SJbmiabqyrbuC8fyTNf2jef6zh8A0EP8gsTXsHgsKlPJYHMJFf2AxCnrGaVhd1uTNWvr5sSjKRWs
+PTvVETbFTEar3Dz6w942fOWweBjfAHjn48cHsoch2IFYocigxkjIVmiYAOfogHlxmaEpBBk51ERZ
+SehBaoEauKkQqncWWRqo+ujZSLtgG4Bl9rmbFCvbimt5aXwsEZx5bDyYu7VHjNacyGyNSQ1xDbdc
+ywsq3KY7SyLd2rjsNjouZz5cxp77BtgraRquHf8I/+GpiBhN3zSBcwjqmbCN0ysqyvAVa5gGojNx
+CQEqdIhxg8H+eRszhuvo7Z7HkTq+uCOJUgrDkylbLqrnMqbMmTRr2ryJM6fOnTx7+vwJNKjQoUSL
+Gj2KNKnSpUybOn0KNarUqVSrWr2KVaUSlllrbQXZ1RcSsHfI8hvD1UtaimPNalhbAm5ZuSFg/vmK
+rppdtHtn0NX6ptPCHivdJlqiKx6svxwWG2ZL7PFgWuxA2WHEWMgnekckUvScKS63w6ksqwOyDsU6
+aIX7lj5lmOW40+pe2TtBW95kd6DLijaYmDa4gJK/PQEGS+PJisjY3qo48eGzxbMSagtJDvboTcy3
+z3U93Xr2Yd/Ehr/mO/z4xh3/prXF+bT5cumwvzxk9v28dJZYRZaLT8coytV11iKBzbWZf2XkQ90v
+mg041ikIdefYYL8x9wtqyL3UmxHgJTNhd5t9yCGGGWqYGUqSkRfWDcVt2KJLJq0Yo4uF1SgjiTju
+yGOPPv4IZAUFAAA7
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/pseudo2.gif
+
+R0lGODlhygE6AfAAAAAAAP///yH5BAEAAAEALAAAAADKAToBAAL+jI+py+0Po5y02ouz3rz7D4bi
+SJbmiabqyrbuC8fyTNf2jef6zvf+DwwKh8Si8YhMKpfMpvMAADyn1Kp1Gb1qt9yuLNuKiqXesvkM
+FIfBarT7DX+BV23DPI7P6zv3VD/wtyc4SJgQaPJ3WLjIWNZGFgG5kShJ16cI9VFnV9noeTWWhWno
+QekiKjkKWCp1p/oJm/TKMAthGsYJNVr7QDa3GRvMBDzB29tpzIEKSYyQTNv66ypMbdRsG5qtfQ2I
+3KlSp7g9HnrMfP5drb6jTUH+3nB7mprO+b597OzLvd5f86xLkzcYrurlAlFQn7+FOgAG5DNw3rlI
+BiuEq+SQocb+EBntsKKn0I80CRXdjQy5MWWMjghB6ioJcR9MjmwuzVSJU0S5GdkMsSTZU+IYnzmL
+fropEOkIYD+NOqWi9MJFiQ9RPr2Kp6mDR1FjHiSKNSycrhZqkp0k0+dQsWy9nLW4Vk7ctnTr2r2L
+N6/evXz7+v0LOLDgwYQLGz6MOLHixYwbO34MObLkyZQrW76MObPmYPf4bdbn+TORzlrjlAY3V/Qw
+YqFjnbb0VnWO1F8XvkYdW/YN2t00tmZ3W7fQh8Ed/W5YXDjsiQuC2os2i+vM3GrtScWn9ni3tBrK
+sd6pvMfa78vMttsqk7cC6gfPm3S/Hboq89pBp6dXnn14ndj+X+L3H18vL22HjSYD1gdgdqDZcuAz
+qV1UkH77tWRWdfY9Z108zK2SDytVIQMUJRjxcxKHVaFnEzoKTohDXCmuqF6BFJHmXIfrRUfeihQ1
+B505N6p4IYu7TbVgkDHaiA2NR1qVYJLejFhLIBtC8+SAQQr5D4kppncdUrdxgyMbVjbp440ZUvnj
+mBhimSUmTEnX1TQytuQMWE56dOaac5pYoYZV5hkgmzQcOReEN9VUZyQe9pYJk376QqZniDZqJ5X4
+ofOfoINKKk2n0y1zIgpqEBkqioyeSSiotZWaZqSeavrFOJZuAt+jga5RHo/F0FarpbdWiqKszyEI
+61/J0Vn+bLJmpsGMss4eCxGlzmpaI3JLTottttpuy2233n4Lbrjijktuueaei2666q7Lbrvuvgtv
+vPKiISGD81J7yr0ikaOjeLLUu6O++15JoA/EbkoQwAK36ipcLCBYmjEKF7PwCTmyil4QEXs5MVAV
+l3DxqnuKJyEv0Ar48VIiOmrqDwfzeGjHu6bM35+r1tirfdUOi+mwv+ac3ZahidPnjMCeSvNHFp6Y
+UHypujhiSOPtBOeSpPanoa5Ov4KKoyfPy6+d8hxHa4kfZlrbb6QCmvF6DcK0j5oiJ90d11N+RbZN
+pZpddpEBF8x21mI3WyCEy9LtlYwX5w0l4FZGaBWxhUb+WRFAa2OMeFl2sy3dro0vjjbS2sGXN5Im
+sfy1vK0V/biYZb7dKuRMu+6nmo+MvLTDrKYe7+p3n3r763hHJHrTGVbeKYfBtw1NokbPjXTmGfi+
+N5Allf0738YXjPyC3F0fkZzQA37I9tKH+HffUifpt/ppm087mtYxB351a1/TudaBn/8jeP17KiK4
+5cw599gamR4lnwMKDkC8Ipr/nLc//rmMd0PqzvOOJkEkvEwJGfnG5TCXwdFQsILXgRn0RhhClcnM
+ZRhIB+tYlsIh7Mw4ZUHgAmM4Gd6hEIc87KEPfwjEIApxiEQsohGPiMQkKnGJTqiXAIuwwkEt0Yke
+gyL+F6JYLGHpzHRoqSJqlIFF5vFHYFrcGtE814wwPYwlO4wgGBfGm1GByXO/wtPf9kWdMMJMZnoU
+VBwnpT/TuQ93KOvSBsd3OjQWp43h+eMTL+g4yllkem6kWN1MVslJkDGN84kZ2jA5yRbKrYSGrGEm
+p9dHIT1ohiAE1gftFxWyhC530UvGtZrjNxM6jovvWuUDMUjHE/7SkrrTk0LgxzHLXUprQDuc6jhZ
+vxaar5UkkQrDEpU8GPbPgrS0oxw/pS9HEtKLczukHWfWr94YTpsKLOYBSxSzcEJznLhbGVxIU8hu
+oop48tOkLpunOXlKqZOkPFozgwaPGxJsds7cYxf+HQpQd/ZunrxEUvb0oxSDcNJrAnSIRsvnoFSy
+SJwVVehFDYROX7XPg56M5UcHCsGSsoukYhyZ2RAZymoKj3wsvaeX2NeeVKT0mQON5ozcA1M+KLIz
+Rdqo5uymJAK9MqLwEtZBo4fAVe7xLS3Fp86kdEnkRTVAt4zpDzeGCKoA8z3AISJaQSaqm+IUCyJF
+11s1CEh2ruaIVPxX4BgZV76WrK4fAekWAHuuu0KFsF9komMfC9nISnaylK2sZS+L2cxqdrOc7exl
+EUtNz1YDtHMVLTVIi1VEMNa0ql1tLuPqWtaO0QY6NKdsWxTb0Jp1qbdtYm5Lu1ud2ra3UtyNKa3+
+eUriWitKKkxtPt3x2teiVrSsjAeFXhanZZppmsptbEAFotTjjlJ5QOruGrNLofAmcqGq2qV5LWZL
+JQ0zuV8Nm3X/ubTpdvaq9fXqVsPEVIW2k7vvBdlZtILgnOKXoQX2bkEfqt47bnOlDbaEP99YCuju
+dKoVVhlt2dPVAB9Pv9Qtq4E3GOIC1rfDDBHpcFn8hihyGMZ+4QqND/PCGwdmvjrusY9/DOQgC3nI
+RC6ykY+M5CQreclMbnIKaeSf3zoZryLm8ZSF8ceFXlkdNDXxlhehnld9uR+FOhuJx6yxqfqSPGdG
+Mx7nCzXuYMjLbm5CGa90iYbV2QxQU2kkXSX+5T3DV3x8MhT29CnoKpSZUnEGT0ITfVj89WzF7oW0
+WyTdpMZV2tJXpOit9FbHNnM6JlASM08nvelRc9C/QcGaGVUN61jLeta0rrWtb43rXOt617zuta9/
+DexgC3vYxC42srJkbJ5IWdS8Rm1tmSXBNr8YLX2cdnMRZ+VYkRA3gZ7wTN8j7WX/FJV0Xg6zG4Pe
+tn5Yw6JMNU/o6610N6RFCj6utTMMb6O8yV6J062J1rupaBAzvRKj5Hh3Ca1Zxu7cMhQ4NUHscOD+
+e6gJK/dgy31OgDewePDVclCzjeXhdS+82VTUd7UtzWMbXLycE7nFrum8b26kvVry0DpNLlH+tZ68
+3ysHuDFpnpwAHu4XOeGwfLOtZijLFLaGPHrtwK3irfSTwrOyLy2mHsiiu6TqSr8hSP0r4PN6+ehg
+qm5/Xd1QBRLYjGiHYaqesnaJkxOUOV9j3cAbYZ1ineNwffqCVTJjfwPVufetu4XvHq280/NnclW5
+tyvV7VX/7upKk/vEyanXxHMTw8qoN34Df2G/M4rQvskx092Ny51Hd7bI7vxSo54/FSpd5paHBX9l
+X59kPvDeWw24R6Eu4leTwOlz5v0gjB/MgaN0HS5muFNAXzPBZxzfzD894XVjY7WS1vljyetI5Wx3
+1NMBx+D/PvKdtGzEgDzZ7G+/+98P//j+y3/+9K+//e+P//xfpuvUBmADz19s/BdWmOI/bad/5tBT
+SZFO8wOAAehpYFRqusR9kBZmGLUlf3eA4BZzFhiBMJeBGlhOQwFnIniBlPaBwAdNJFiCu/cm63eC
+Z2creeJLCyh+L+htDpRLM+hxDdh+i3ZOhzZKLchSkXdrPvhvQMg5JYhoNhiDzoSE7iWEGMiETQh5
+spOEHbiEU/h4tmOFjKeEq6eFEBVlOfgi7/SAYfhfWgR2BWRVZoeGbwiHcSiHc0iHdWiHd4iHeaiH
+e8iHfeiHfwiIgSiIgiaA5BYhUVeHhShN2IOIdphlCriAPMh+NAWBW1h7L1iBkLiDRGiuaz6IYEIX
+VHrYZ703TN4BiqlVLSrIiU12Z1GWKwnyS1MTgY7WivNXi5lmaleIM0+oivk3ilNnKN0ki9IVjDU4
+ibQSU0gYMrhIjLmof0aoaftkM8woN412gplIhuUVhGWHhRiXbNjIhdqoi6L3aZJIa5QYSbn4f/Uw
+OdqVgWsWjenoju00Ju24ik7Gf6yWUFbniqVmjoMIkAEpkANJkAVpkAeJkAmpkAvJkA3JCAUAADs=
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/lsdlfp.gif
+
+R0lGODlhHgKnAPEAAAAAAP8AAAD/AP///yH5BAEAAAMALAAAAAAeAqcAAAL+nI+py+0Po5y02ouz
+3rz7D4biSJbmiabqyrbuC8fyTNf2jef6zvf+DwwKh8Si8YhMKpfMpvMJjUqn1Kr1is1qt9yu9wsO
+i8WAWXmMbpxl67Qb1n4B4m803TWv61d3/D7d5/c3OJJXE0h4ZXiY2NiB2LLomAUZWTmJmSBpdpm5
+tMnpKWrQ18k3ylSqY4o6NveqcAcLe0FL+sDaivMKKptnWwFcmavrxbuJfHZcO7AIqklczLaMkEzK
+y+w8HC1NGRCAfYAsXib5HNu8Zvh83r0K8C0cp14+H1FPLs7QfiXg/w8woMCBBAsaPIgwocKFA785
+dChPUz6J6Rwoo9fsGjT+HAw7evwIMuTHhxGrTazG71ZFjcBQghFAAeYEmRFo1ow5EyeChzzjWdsX
+6yIEbSt/2rD5AGlSnTdzSlDqAOpOkkbRAb2HUd+ClFWkMvC6AGwCsWOZQiCLQGbPbwZ8tjzXS91Q
+jM423kBrAG9es0udNn3agCe1k3a3SiCqNehLvn3/Oj7rt6lDBWxVFmYptzC7rIRXHo0MGXRUxg30
+DoDK06Ril3VVd9YI2/JlLqZrix59+6vOylPTXr0WzmhL2CVdfwacWzfy5aGZD0hd1jC54Pamb73Y
+RtXi5GG5K7DtvDHv5wGiW7UeziVwX2/pcCuhF3z40qSVL4f+/TfwdL3+UG5+q18X8j2G23z0Gajb
+Q22Nt9d1wcjGjzkQvkdCfPXZ1xyBBwKGX3cOPjjbbL6EMWCGjWm4oYkPrDVZfgHiooxxxCGWHYUj
+WOideSoWuGNgCp5IEQXurQbgal+UCCSPPWKYJAPQtejhh3Oll5Fd2lBp4405+rZlgwi6CEGHSqqH
+lTBE1ljkdl+CuWSUKLrp5I8HlJfieRiwx1WVOeC4po5N1jkmZXK+qeed1w33ooAXwhkooI0yOtVk
+SAYJR5Za9sklpl4S6mcCqU0qoxyWKgEqk49C6qipC0JZqmxy8MAnp52mqmqt+LVaKBxo4Dprrb6i
+yqiYvA4Sa5ts/vn+a6fCLuqOB8MeUCyywLIp5qbGEhLtqcdq26ub1Z7GbLMcPGstt5nKCu2qDJ57
+LbFdlmsuvLS6+K28yYq7AbngamrvtGPVm+67emQ777YFd/sdwP0ajK+zIj0MccQA8SRxQK1UjHHG
+ClGsccMVhstuvAsjrC6d6AY8CsH3hnwwy54OKi3DHucLMsrt2twmxTWP7C6/+/Lbqs4Cmzazz+Tq
+KxV0SF889M6gKr3zz0U7G7XK/io76NKoWC3z1Tgn2aHWU1PdtNFmVSu2KFyTzPbXPKJd9dgfpB1z
+2wHXS3cma7u8Ms93w+x2y4HLbUHegvudl8KGT7L34F4jfpricRP+Pu7kJyOuMOT61tG45u9mLvXN
+kFPet+dmhwl46aHX3fPlq4uMFuim+0z647OL/nqk33Seu+qclw30ig/xvnntdt/O+uBQn077G8Q7
+7WOLzwts/PG92z5p2MC7/jvzl6OW9fa4V8+37ddbjxTc3o/vvPjJh66+68WTfz76wOPtvsgD5384
+Tfiv/z76Oa5rBCxffiQHQP11T37QQyADqSfAxZkPdNNrnhsqeDkK8s93EdSYB//BsQ968GIi1FgI
+S4gxAVZAggWU3QANaL+tbdBfLkQcC1VYQBjqsF+fgt4ME4HBJfXwXTfE4Q6R16hb+TCBjPvhrJRI
+RMsZMYBHExT+lJB4uPodcX9MZNKyoujEKWrxhUe0ybeqGMY/BFE8qUNjF8VIxjjasGRZXKMC2/fG
+A6YOi6qbH/mKCK3MufGBKUsjHfVnxyyqEJDkuWIdDTnGPSTSiusy3yTNt0gpxsmRiIQk0fBIyOhV
+so+ehCMVFyW0PG7Rj7ua4RBDeUoI0m9xy1OlHCOJywXiLmlyumQMLfhHTTZyPIzEJSvHsMYvwrKT
+sgzm9uK3zEc2s5XeO6Mhi4lDrf3Plnzk4AXLBjBfrjJqmRyaA6NJymki05x7lOMgd2lKZkZAg9cU
+JiY6Jztx3vKYtfPgCVEIUIiREGP/DKhBPxJPaYoyAPp0pz3+m7imVH5viehMaKlqCU8wclOSycGo
+6N4Zy4Tm0G3a22gksanLJpU0eBqtaDxLBM2QThSSKVVSTN8HUnmKdJyHHKkxKZrRQt5njznt30O7
+MKoMQMI255TpR48ag6Qq9alNxSlQnQoGqdYCEaahp0t9itIUaHWryBqPV2fKUpNSYazMEJwLGzpH
+mqKArW111I/eelXYQZUSdLVAIMhSw5PulafAJEGeVMBVSvZksPssJRlucA6wvBKtXyUs907QV7J6
+0WQKKmZR05nVzAajD7xkVV4VGtTLluCwiP1rb+ZUGc+eFrRfEK1fTaVMyqYWq3dc7So2tK7YMrab
+Pv1pGNj+w587Scgi+1iDNVu6W52yz7eHSu5Ws4OL5i7oZcKtJ3R5q4WfDEZInklJMl4Rztla0rE0
+iMt6ooGP2GjXP/BgC4voJNvvSpcL48BMqICCmFzJlz+CVG9x4ZrL1Q7JvwNWQ3mFYiTg3NdkjdWv
+UeX6hP56Zj9Dic0vNuOf4R10xCQ2iA36M2AIO/jBVaoKegta4hgb9LiB0A5WCDOiELN2pxOIkJUu
+QZR1zGPI8Ngxj3kAFxvPBcdSeq9txdgO4dyYwbk6L6KOTARrtMZVGz7JckN0ZSwr1T3xrXKNpFSV
+LnNYzElAEy2+vGb1mMlObDYBkd98ZuucKc//rXMTiMz+n+pMB0+C7rOfQUDmergYUeNV85MPbQkQ
+hYhMXDYypEcLoiFbBLuFsvSlf5ALWeyZUg3+9AdYsQ5SF4VGlDb1JzrRaDLLd7yP9vNhj1HoGQ0a
+zq5OxQYIfY9eU1cDwO6wsDMcimMXor21VjZmzeDsZUM72tSutrWvje1sa3vb3O62t78N7nCLe9zk
+Lre5z43udKt73exut7vfDe94y3ve9K63ve+N73zre9/87re//w3wgAt84AQvuMEPjvCEK3zhDG+4
+wx9+aiq9pgoS90+cxdxoNXOg4hMJM7qTHN4y66fZ7gAxokV+GZIf2tNRMAWnV/5o+Mab5VBwuaF5
+THP+SZMX3jl3gs0TY+uY19Xd/9mPxD2+DFu0B9AWf++uAz0YpasmPR6nX1ywE+iglIIaVP9yxscN
+8jULudTlnTVnPpyPsbdmy3wue2LMoXJHmNy6LNb4hDzM6S2bO8pkGnup2dF3ugh+0BEGeqczc3cu
+Q1nJAQ4wpRo/9bgfme9AR/vEjx74wsMdS2lKfKf7vlO4GMfvZK8x4ltcdXBr+OUVuTXVMy+iYkPd
+8HxmfetxXh3Wkz67Ftc7PVLf7dWPHuUjj5GXZd3qwyu/yqCnfTlwTxHdq5j3eK+858sNd+t33Pau
+Mn719SGh7Jsk948/PdNDn2fpM1k61X++VnIN9tr+D3/WaPZ+3W8RfjSlPSuF9n3h4yl+6kd/7Mdi
+7qcSjiduuIZnCqho2JFkXYdrT+d0TheBUNeAv8eACph8i6eBGdiAEggNC+iBIwhxWyB5JYiChpWC
+K4gElseCLygEHAeDM0iDNWiDN4iDOaiDO8iDPeiDPwiEQSiEQxhyJ0iENGiERwiDSaiE9EZXsNaD
+wMdwPbdiMOKDVAhwFbgeavBhvAaBUoiCWBhwmkZ2dMd2nCFgOCiGWZhyzOUaaMh9asiE6tZ2dmdm
+B0iGaTiDs4B1Ikh42BCBMrhudUh5HZdip1eDjYd2pAd5ZjiHOId/eUhnqdZla5eIbSd+bqeJCNh7
+bsaXiXbyZjiWGY/4cZi4advnfXXYiXg4ccf3dnCoeCn4iYlWgLdXeaQoUl8ICRXIdUcHhgs3i5qh
+fxkhgAeHiwIXjJmHdZW4gcjYhKe4fq6oYhpmh2z4jFwYiLo4Z5aRdL9ob193jeEojuNIjuVojueI
+jumojuu4bgUAADs=
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/octants.gif
+
+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
+PdzEXdzGfdzIndwnkwAAOw==
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/bres2.gif
+
+R0lGODlh/gHRAPIAAAAAAP8AAAD/AAAA//8A/////wAAAAAAACH5BAEAAAUALAAAAAD+AdEAAAP+
+WLrc/jDKSau9OOvNu/9gKI5kaZ5oqq5s675wLM90bd94ru987//AoHBILBqPyKRyyWw6n9CodEqt
+Wq/YrHbL7Xq/4LD4KBjLyuYXOt1asynutyouP9HrpTueod+L+n4fgIEdg3iGhBuIiRiLjBaObJGP
+cJR/liGTZpqYD5ydfKAen2GkogWmoKmdq12tmK+UsY+zWbWMt4S5gbtVvX6/h6ccwVLFdcdvyZJW
+AM4MAILDxNMay2nXLdHPCtyF1dbgjeIX2Szb0d3p3+SQ7RXmYvEp6d7e1O8SA/sD+RLzYADSW3eP
+Q0F/CvahUojQgUAvD0/YW2fQGcWG/VAVYNj+cEFELh9LTIQgoKTJkyctOkPJsqXLlzBjypxJs6ZN
+AQNY5oy586bPn0CDCh1K1GTPokiT2izCzaIHlQACBOjIEE1GfeBCJryilQRUECoLSJWKMGOZq/rQ
+iurKcUpXEwc3XBQ79h0/fhXaruWhN8pbsPXihoMwdiq5vhDwTtOqmMrfD03n4pNQWNyixqcYI37y
++GnYSxYqD7vcTy2rHQpNcz6dQTTrvBsX843t+LUG17QuqLaNY/dqWCBw89KddbaVzj1iCUdGvBpb
+rrxDLMfWXDZq6MBRTC9VHVoFyV+eH49uYrur7gvAN1B//vr47C3M20Lf7Tsz977Ir5Cf34L+avbp
+3aeDb04gxwNA/PlFXwEA1kcdfrXBV0OCTTjyn30PDoidJVpRmISFDzTIoIA5EFihfjZ4WASIDsz1
+2YgZlrihLEGoGASL60FzkIjzQegWijvYmNyCFMXFIxbi9cfhEULmgKN36kBw5Iy9UYmLEk3W8GSA
+6rwI4ybGKUkjE1nGsKWDDII35XsasjmmE2W2QWR6apJYpZu5SRFnCmd+eQ9Bdt5gIhMG7lDoBnvm
+MSedTnEJpo/GAPlEopksOsGaYt6Z6ZVbUMoObC1i+GibmyZy6AieZtCniJhGSKqrb36RKjyWStDq
+j5AqKGEYs0awqqhjJAlrnmz02kCfksb+MOgSp+LQbHx1KepfcblC8awN17owK7K7CpojBbdGEO6X
+HiWbBqXcLukjqyI95ZC5b8SZbqyaomlrux3MlS0N+04Y7Th5LWtqmPaKi69B73aLiYqk0ZYZweQa
+DOy9+SasbjUJkibwcOtOLDG47h4LLyXmaewcxOx6LGXIoSgMznJHbnaxjFCu1yiPODPaJToF6Tuy
+KJV5mdbJHet4Uc6i8rxzlI6W63I+Un1FwcYcvxrxjhYgPeKfBBVpMb0dWXRXQmNv1FjZZjN0V0Zr
+k80R2mW3nfZVcCsm991n5632XWfpvfffgFO9gFpFSqYmVIjXCeNIdNbs9Mwd7WysMBP+CO4B4UY3
+GjGjiWv+LdOge+7z0wjdM3mgDshcAuaNh6pyiDrGDnrBGpGO0B2nyzO15RywPnvTFIPcepqxAyqy
+7dUQQMDxhP1LdASYqeA78VxqfanOsz9jfMuQk6O88l9HkPsWg6TWwvRpam598Fwb7bgC/Z7hz/Lg
+hz/B+Fam7rD0nwd//etZs9/A5leA5QmQAvjDFVZcgL6VAbB/Ghhd95JHP5J4IIG/WeD5IOjAEYxL
+gmCbhgEN6AnpOG8PhuBd7zgIO6+w7HEhPAUJ/0ECDCIhhS9oYAs9+EL4/SwQ9atEeU44KujlMH+6
+AMcMhagdIgZkaizEgHpUOIT4mSn+eaqCFll0V7koXmCKSKwaKIJYDhjY0FBQfF8EjYgnTo1xMmZ0
+Yhv1p8YMgHGOSXwjHGVwRn6lEXhrTEwYgdEJMg7mBn2EAQ7rKEU2liqPlFiiIniQSBYsEpB2dOSw
+3MgISU7SB5VEwSXtdTOnCO2OjxQjED35SSCEkgSjJJfS0hcYRu5PgTGUAyv36Eo5VvGPpKRe6Lwm
+SDyqEg+75KUQXvkpTfppmLKj3eAGicJVmqBfzMxiF9/Xvi7ZkopCsKIi/ZDMUcDJl04C5tUKNzxp
+bsWYhGzGBsppTihkk4bbBB7jorQ9OqYynlUYlx2ocM8DMmB66mNnPxsAzhv9sAb+xPzYpQTqDisU
+1If5JCU7sefOW0YKeTnYBiZtydEViBOB6LSkOgWKyk0OkAiR+Z+4KAqwTqVUlCuFjDM/OsEfxNRm
+nXOR0HAqq5vCMqc9PCg1KQfTeoQoqEeTmknHYMNYsnSnuuppD37qvxbRtKZUNWoziznSL2LVWg+d
+AVcl+tRxyuF0seQfPKvJlKG6bqae45MfehXXFDQUCCd1QbZShkZCeKqvKPjrDwIrp6YKs6vOIplY
+LZjRFSjWB4xVKUwfe8NOZKl8l93dUpnT1K/OILPammztoFcaFpjPpZCMHPeGYVTQhjYtt9UBaucg
+W4OCAp22PZ/qCJVW67zDiSn+zC1r58rU3mIUIf/Ka+qUmxjq3mC3enUuDBsSNbtOk4GjlQN2Aatd
+Z9QtcG5D79wG57e5AY64IH3HeHkAlS1Gbr7X1O52w6Y51RaXO/pdrXNxZ9924Fda+j1wDcgICP/G
+lljaVbAMvsc8yhT4YfE18PwoXGGUGmYvGSaHhGFQwQ6H5sIQTnFvR9wC8HnSFA4GsFYbwuIVjJCy
+H4hxe2Z8O+/RcxY67hGP/VHjE9DzuTVEcRFVLNsil+DISB7ih5fMyQGLEMpRbuKUnxhiywwDy/tV
+QZDhO+R8OBkEYA4zC8bc2S5TCxOGLKO/tsxc0ia4kPVEpJKzmksaWyLO2tT+AZsx+18Md7JSoNyz
+Es6szPs+Is2+WqaijcDoVkY4EYBudA8G7Uc3P28PkJ7AtTjt1jLLN8DYnPSBCg3iSzeB1Nk1tYYh
+ykPy2lPVWmK1KmxgWtPmdwqwBo2sRQwXkuIMQMgOTC15a1FcC1bX0PbOQr1Y0g5K6WZb87Vvb03n
+K3rauB5ctrXb+kBodhTRNu12Y4ftZZGIe2eJ86p0oWq47QlG2F0INq2+PRq4OBWonQP4jqC6Qz9p
+28T5dja6+9xjr7y74F41q626FqCDq9kL+t52c63s8N/d9doBnHjrtBfrYin8kAwnsr+lS21aInui
+w2M5vt968oqy+83Flin+WBxq2JrjEwtfrbT8On7vsgZysZJVt5ybUXSwcpyHTeeyJXQ8XqlKA9Xu
+tviJgObzA0fd5q4O+ynE6vWgB1jAKyZHSuchOnfPPO3ajR7G9hwPdLQzBF/f952duw+cDPe3F867
+C/cpAsGL+uxC32DtrGuGungXBeIeOL1F7iulWP7ymM+85jfP+aQcBSedD73obQKVmoT77vAO+Ezf
+3mS+Y5TxbLC6CwhfeLNjvbdmeWfkZL4C2uPd9nvHfU7kXjoaRObghv+52GVLfD8b//EVgT7Yn059
+uPNa6yNIfKmr33oZHP+Xt19+92OwVlsHn/uO9r70dYv48KP/wdZ/v/P+b/7p+Nu/yvdPv/hfuv+O
+aP/Z/GZo8tdw9Adu+ed/0VaAAniAxzR+A6hyZxeBEjiBFFiBFniBGJiBGriBHNiBHviBIBiCIjiC
+JFiCJniCKJiCKriCLNiCIeWCMBiDX5R8MliDGMgq62eDOpiBU0KDO1iDpuSDoNCD2PeDIHh8QigG
+QdggRGiETthB2lOEUoCETChFUviEG0hxQ9g4UdeEWPiFLRcIWvhUk7d6YHiGSfgG7EFvRZeGZ0iC
+UWh0YtiDVviGTog4HkcIcXhufGgzdniHUeiGXYCHnAVxMPeHiEgJS0hYE5WDifiInXCFkDiJekiJ
+lniJmJiJmriJnNgZiZ74iaAYiqI4iqRYiqZ4iqiYiqq4iqGYAAA7
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/yyemlt5.gif
+
+R0lGODlh/AAgAPAAAAAAAP///yH5BAEAAAEALAAAAAD8ACAAAAL+jI+py+0Po5y02ouz3rz7D4bi
+SJYKYKZqgK7uC7bw3Mn0jTeAnffR7gvigMKig+jaKXkLpcFpxDCjVNYLCtUtkdUJN5aEfaXTQ5ZV
+Nm+7lrEnHYKP5JDlkek2szP5WlhMx2D3MNZnZXKGRuKWaHhCFvhUgZU1eBKJYEmIB4d5AcTlyMep
+qEbhiaZJeLrVMpj45Km6eXm39uEqA/uGF6smO4kq6ZWaGTolGpucUNipu1yHUgkdzCyNtKvDKnz4
+c21zjEw3K9HMGoed1rrelzetxd4qKBq/TmtsLL7JbWq9HQNOXT1yvpoEhDfQnTyDCR19OTZvH79S
++LxQi1ZxThmwiKcs8mkT8KBBbxcLZrwUElc6ROKetfEoJZhIZcP6kURlbl5KXi5LMFo5CeanaieJ
+kNqG6QxHk0w5UJrojSHNoEKpVqVY6qjMSEuLMc026pbPlgSPbAVmcacyZBrK5mv0UKxGqFFtvVxB
+l2jbkj7epYjb0+pfQHv+Gs1bbiffwnsZs5yKtyJYxyIWU442WeMvy5f1dv58D/QVxKJLmz6NOrXq
+1axbu34NO7bs2bT3FAAAOw==
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/emgt5.gif
+
+R0lGODlhowAbAPAAAAAAAP///yH5BAEAAAEALAAAAACjABsAAALzjI+py+0Po5y02ouz3rz7D4bi
+SJbmiabqyrauC8QyNAf1i+dGfTPynwLoEDFdr+j4IVHC4W4JaxKlC+rKagS2oM9kp/fAhpFaG5hy
+PnHN3oxS7EO/n+T1RKla2w9vuM/fJiF0BLUnB/ihB7iUVmUYSDNYSNVYgVeiKBdRydfnOZYwiWj5
+GOo512V6GHmpcNoHOiXr0cr6yohVajqq2zDqSjn5xUmb60fI+xu32jnVpOzYy5H5F5zsRqrabHNR
+FiS8nRoeawEtfk5WTjwCTje+3gnPx+web+4dhQ+GquZ07g+wSsCBBAsaPIgwocKFDBs6xFEAADs=
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsnew3.gif
+
+R0lGODlhFAFDAPAAAAAAAP///yH5BAEAAAEALAAAAAAUAUMAAAL+jI+py+0Po5y02ouz3rz7D4bi
+SJbmiabqyrbuCLzyFc/2Ddb43uj8D+z5gj/AkIjcGZPEJfNpO0Jv0qm15AxVYazs9UvyfrYiMheM
+1poz63FLnDYY2yi6BR6YJ/AM+57fR6GXN0gICNhRKOfnMKc4wzgBt+SFuFfhaHkpkenkuFilyRZT
+GdlnioUKMbl48NiIiWpHWurDJ4pRk/VKg5viezdEuevrxxtBN2y7HKr6oOwKfOqc02l9Ldmsc3tt
+PY3c3dkozHwqFH4cvU0N+hmF3p1tHj0Nr+2+YJ9O+IdwuKXPTKlEzVopqORPTqxU8wxyksdmoTp/
+ANk9W0awnkL+enkUbnPIyWI+KYWkzXJmbODEjv1SrfPwzxVHlvxqSqOpZuRLQRBzCSJHcWPLMMTG
+FBSaKWjNIHgG7cv3M2JPkJ5GmnB6c5yindyQMiUpjufPpwezlVMXqk7Yq1zBOhRp9CIjuKu60F2V
+VSIloSw96WpCbqfYX3bZCma7MilafEBqgYxT7QRWyEyVkqUcTLKuvJhhrLvcOapm0KFVcC6NF7Xq
+1axbu34NO7bs2bRr276NO7fu3bx7+/4NPLjw4cSLGz+OPLny5cybO38OPbr06dSrW7+OPTvqu9q1
+c++O/Tt4MOIpzhrbDu34K+XX1g2p2B3p9TJOX6QhyZB5pfRpkdjXih84+s00YH+NBeQegHLZM85Q
+BRpYBIKMaTXhYug0yN9SEB5IlFRTbVXehhr8Z5VPZmXolIiNeeahgCj+peJseaXkYFUxylghLPDt
+p96NyIXo43FABklkkUYeiWSSSi7JZJNO/lAAADs=
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/epsnew4.gif
+
+R0lGODlhRwFCAPAAAAAAAP///yH5BAEAAAEALAAAAABHAUIAAAL+jI+py+0Po5y02ouz3rz7D4bi
+SJbmiaZqBazu175GLEd0jXd3ztvy3lsAg0QHYFhMHl3LpBDpVEKjwSbKWkViqc4pt+eFEY/kRvj7
+2opVZ49a9P6RoXF0rb5p65hXfQrvZ1eCl7cSmHdIQShnlHhQBkYSB/mo50jpMwE5VznpKOG5s4jY
+eDE3evL58LaEhRoQeOpnKTuzyaoKgQt784oBmOibmms2FGOFucpyqcnb62pMXKpwTJMMNyXsXKSt
+CdSK/DrbDQvaggkdbaIGbk3uPe0tzSFbb09b7M5wX78/yl+rWIJ0TxoBrIMwXL6DurLFCojj4D14
+/hCEkujv1EL+hgItPqu4kV/HgpVCTlzlcBnIXY8szlA0j6RMXooo/lLZySNISXQ+DotnLuMxneXK
+WbMFk2fGkjWDZhjn09ZQokqf6OsD1EbPlkhfdm0iLOZALQqbatUwbizRb2Kpkb36c6RNtV6dQeva
+5a1UFklvzqXJlO06vduwypXnKjDZum1JWeVk1tw1ZZI9PmNl2K3GQf2ogSjLElnehrEMGWrslnSW
+z9WK9vo6VYpmppFTnc6cEy+PdzJvoes82rJuQXFxF+YNAzVxv4qVL6f7h+5kRs9Xd0Je/ezt685x
+ZgfT/ftMNuHRlhePPr369ezbu38PP778+fTr27+PP7/+/fzw+/v/D2CAAg5IYIEGHohgggouyGCD
+Dj4IYYQSTkhhhRZeiGGGGm7IYYcefkgdiCK6t9mIJhZVBUzTncjheZl4xyKILupiyowxwtHHLCpK
+5Y42wdh442ecQQYKYr5VU5oF2AUZIjbM0fhbVEUqCSSTjo2wImUNFaZblkLUaOVyEp2kGmkYHUaQ
+UBxlFeYXYwKHUomanblTlw6NuWWbxC05Hl997UVbM1TqKSZqvEFF1XGCwkgoGoaqklaiYNXmVKMA
+vhNpoJMu+qel/8n5YpmA8uinZKB6+mCV+6AapqpfsgprrLLOSmuttt6Ka666VlAAADs=
+
+------=_NextPart_000_0000_01C4A605.E8ED2740
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cs.helsinki.fi/group/goa/mallinnus/lines/pseudo3.gif
+
+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
+
+------=_NextPart_000_0000_01C4A605.E8ED2740--

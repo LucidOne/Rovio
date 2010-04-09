@@ -1,0 +1,1655 @@
+/***** DONT REMOVE OR MODIFY THE FOLLOWING 4 LINES! *****/
+  "$Revision: 3705 $",
+  "$Id: ChangeLog.txt 3705 2010-03-10 01:53:10Z xhchen $",
+  "$Build: "__DATE__" "__TIME__ " $"
+/********************************************************/
+
+/*
+2010 03 10
+    1. Add project HelloWorld for libeCos and open libeCos's source.
+
+2010 01 12
+    1. Update new HTML.
+    2. Fixed the problem of RTSP buffer overflow.
+    
+2009 12 24
+    1. Reset IP trigger event after DHCP renewed.
+
+2009 11 24
+    1. Use random delay time before reconnect PPP server.
+
+2009 11 12
+    1. Remove USB debug message.
+    2. PPP can reconnect on error.
+
+2009 10 04
+    1. Fixed VLC/QuickTime can not play RTSP for long time.
+
+2009 10 23
+    1. Fixed that cyg_fd_free may access unknown area.
+    2. LED use its own lock instead of period task's lock.
+
+2009 10 16
+    1. Can output debug message by VCOM.
+    2. SetPPP and GetPPP by VCOM.
+
+2009 10 09
+    1. Use new ActiveX version 1.0.0.9.
+
+2009 09 17
+    1. Can support up to 10 PPP servers.
+    2. Win7 can display MP4 and use VCOM. (VCOM still has problems).
+    3. More stable ActiveX.
+    4. Add timeout for RTSP TCP connection.
+
+2009 08 14
+    1. IPCamConfigure can getback password.
+
+2009 08 12
+    1. PPP: Fixed the bug of block on fd close.
+    2. PPP: Fixed the bug of block on cyg_io_write/splany.
+
+2009 08 04
+    1. Add SetPPP.cgi/GetPPP.cgi.
+    2. Fixed ActiveX version error.
+
+2009 07 02
+    1. Make nupdate workable on XP.
+
+2009 06 05
+    1. MJPEG sometimes slow, fixed.
+
+2009 04 27
+    1. Make console usb tool and verify script compatible with Rovio 
+       v4.02.
+    2. Fixed the bug about add/del user and sprintf.
+
+2009 04 24
+    1. Fixed problem ActiveX blocks. (HttpSendRequestEx still blocks).
+    2. Add the script to change ActiveX version and clsid.
+
+2009 04 21
+    1. Apply CP's update for UART test.
+
+2009 04 20
+    1. Break USB writing on USB error.
+    2. USB console tools:
+       a. Fixed the error in percent value of updating firmware.
+       b. Return value fo initSerialConnect() is not correct.
+    3. USBWrite will always break out after USB cable disconnect.
+    4. Adjust priority of wlan main thread to 10.
+
+
+2009 04 17
+    1. Fiex RTSP server's bug that server will crash when quicktime teardown normally.
+    2. Reduce delay time to audio test.
+    3. Merged from W99803 branch:
+       a. Fixed memory leak in sending mail.
+
+2009 04 15
+    1. Disable auth check for USB console tool.
+    2. Update verify tool:
+       a. stdout/stderr was changed since that wowwee flash tool can
+          not catch pipe data from stderr.
+       b. disable test for suspend.
+       c. support new usb interface.
+
+2009 04 08
+    1. Use new parameter "Description" for SetVNet.cgi/GetVNet.cgi
+    2. Fix a pointer error in bpserver.c
+
+2009 04 03
+    1. Fixed sscanf problemm in USB console tool.
+    2. Add delay time in SetVNet.cgi
+
+2009 03 24
+    1. Add channel number settings for SetVNet.cgi.
+
+2009 03 20
+    1. Changed the ActiveX version to 1.0.0.8 and clsid to
+       {115B1886-2AE0-4259-9FE4-E32A5DEE5454}
+
+2009 03 19
+    1. Modify "user privilege" fields in USB tools, so that it's
+       compitable with old USB tools. 
+    2. Merge RTSP drop_conn patch from W99803's branch.
+    3. Do few things when rebooting.
+
+2009 03 18
+    1. Fixed Activex close crash bug.
+    2. fixed activex wrong url bug.
+    3. updated wbstreamplayer to support mp4 width > 640 height>48.
+
+2009 03 16
+    1. Do not disable/enable GPIO13 while accessing SPI flash,
+       which may fix the problem of flash corrupted.
+    2. Add -f output_file for USB command line tool.
+
+2009 03 13
+    1.updated activex for MSI filter.
+
+2009 03 06
+    1. Synchronzie with W99803's branch.
+
+2009 03 05
+    1. Add username/password for usb console tool.
+
+2009 03 04
+    1. Add new command "usb netstate", which reports:
+       WIFI state:
+           NO_INIT
+           TRYING
+           OK
+       IP state:
+           NO_INIT
+           DHCP_TRYING
+           DHCP_FAILED
+           DHCP_OK
+           STATIC_IP_TRYING
+           STATIC_IP_FAILED
+           STATIC_IP_OK
+    2. "usb user" reports:
+           privilege:username
+    3. If a key is used, "usb wlan" reports the key with "*",
+       otherwise report the blank string.
+    4. Remove password for user delete.
+
+2009 02 27
+    1. Set mp4 max width to 1600 ,max height to 1200
+
+2009 02 25
+    1. update Activex for MSI facial recognition function.
+2009 02 24
+    1. Optimize getting mp4/jpeg and audio. 
+
+2009 02 23
+    1. Synchronzie with W99803's branch.
+
+2009 02 20
+    1. Adjust stdout/stderr in console usb tool.
+
+2009 02 19
+    1. Update console usb tool, added scan_wlan, auth enable/disable,
+       updated command wlan.
+
+2009 02 18
+    1. Use large packet size for H.263.
+       ( Bug not fixed for H.263 packetize. )
+    2. Add current IP information to GetIP.cgi.
+
+2009 02 13
+    1. Clear error state after MCU is restored.
+    2. Use timestamp on capture point for audio and video.
+
+2009 02 11
+    1. updated input-oss to check frame heap before getting audio.
+
+2009 02 09
+    1. Import source of updatepmp and vcom.
+    2. Fixed the problem about setting WLAN static IP may
+       cause long time waiting.
+
+2009 02 03
+    1. update wbstreamplayer for rtsp authentication.
+    2. Add save user/pass for ActiveX.
+
+2009 01 22
+    1. Add authorization dialog for ActiveX.
+       Have not applied JF's update for WBStreamPlayer.
+
+2009 01 21
+    1. Add basic auth for RTSP.
+
+2009 01 20
+    1. Integrate RTSP authorization with HTTP.
+       Enable authorization for RTSP over UDP & TCP.
+
+2009 01 15
+    1. Test RTSP over HTTP, OK.
+    2. Disable LED low battery on charge. 
+
+2009 01 12
+    1. Enlarge VCOM buffer size to 4K.
+
+2009 01 08
+    1. Fixed LED error.
+    2. Update to libNS 5.13.
+
+2008 12 29
+    1. Merge part of build script in W99803 branch.
+
+2008 12 25
+    1. Fixed strength problem in wireless scan.
+    2. Add documents for some library.
+    3. Release some HW dependent libraries.
+    4. Update build script.
+    5. RTSP over HTTP tunnel is OK.
+
+2008 12 22
+    1. Update new VCOM driver for Vista.
+
+2008 12 16
+    1. Enlarge list buffer in http
+    2. Enable UPnP by default.
+
+2008 12 12
+    1. Release libeCos.
+    2. Fixed a bug in audio playback.
+    3. Update new WEB gui.
+
+2008 12 05
+    1. Use 6 connections for HTTP tunnel.
+
+2008 12 03
+    1. Add parameter "Transparent" to SendHttp.cgi.
+    2. Add a real bypass server.
+
+2008 12 02
+    1. Add SendHttp.cgi.
+    2. Add event callback for request over for HTTP.
+
+2008 11 28
+    1. Fixed the problem that AD-HOC key can not be used.
+    2. Fixed the problem that AD-HOC can not be re-configured with same SSID. 
+    3. Set thread priority when rebooting.
+
+2008 11 27
+    1. Add channel settings for Ad-Hoc mode.
+       Update CGI and USB tools. (Channel 1 - 14)
+    2. Reset to factory default by 3 times power off.
+
+2008 11 26
+    1. Append version on firmware name.
+
+2008 11 25
+    1. Add restart event for UPnP.
+    2. Add ReadFM.cgi to get back firmware.  
+
+2008 11 24
+    1. Disable UPnP by default.
+
+2008 11 19
+    1. Add version string for USB tools.
+       Fixed a bug in integer conversion.
+
+2008 11 18
+    1. Add CGI ScanWlan.cgi
+    2. Return * in Key in GetWlan.cgi
+    3. rovio.js load GetUPnP.cgi on initialization.
+    4. Limit VGA framerate to 15.
+
+2008 11 18
+    1. Fixed bug about SIOCGIWENCODE, GHGuo has modified the event type.
+    2. Make a new USB tool.
+
+2008 11 14
+    1. Add CGI for UPnP.
+    2. Update new UI html.
+
+2008 11 12
+    1. Integrate UPnP.
+    2. Fixed http tunnel.
+
+2008 11 11
+    1. Set initial LED color to orange.
+    2. Test bypass client. It will break sometimes.
+    3. Fixed that default configuration can not set.
+    4. Add major number in version.
+    5. Fixed dead lock in wireless driver.
+
+2008 11 10
+    1. Add CGI SetVNet.cgi / GetVNet.cgi to configure network tunnel.
+    2. Use new LED control flow.
+       Display correct network state.
+
+2008 11 09
+    1. Add the new CGI /DropData.cgi to disconnect MJPEG streaming.
+
+2008 11 08
+    1. Fixed problem about sending wireless command.
+       a. Do not use lower priority of wireless main thread.
+       b. Set priority of wpa_supplicant to what used in wireless
+          main thread.
+    2. Reduce mbuf size to 128.
+    3. Add the connection limitation from CLYu.
+    4. Fixed the problem about green screen in QuickTime on MAC.
+
+2008 11 06
+    1. Add WPA CGI interface.
+    2. Use pipe device instead of lo interface.
+    3. Update WEB and libNS.
+    4. Fixed the bug PC to rovio audio transfering will not work
+       after modify http port. Change the version to 1.0.0.6.
+    5. Fixed the bug about change Wlan and IP.
+
+2008 10 29
+    1. Add pipe library.
+    2. Test WPA, OK.
+
+2008 10 20
+    1. Fix the error in time string.
+
+2008 10 16
+    1. Update to libNS 5.10.
+    2. Fix the error in SetWlan.cgi / GetWlan.cgi
+    3. Add restore function for libNS.
+
+2008 10 08
+    1. Use the real flash size.
+    2. Capture and use single buffer.
+    3. Add wpa_supplicant.
+    4. Disable LED before shutdown.
+    5. Change WIRELESS_EXT from 14 to 20.
+    6. Fixed the bug about ioctl num (IOC_DIRMASK).
+
+
+2008 09 25
+    1. Fixed ActiveX problem: WebSee.cab is combined with DLLs.
+
+2008 09 24
+    1. Fixed IP issue when dhcp can not get.
+
+2008 09 23
+    1. Ported library openssl and crypto, OK.
+
+2008 09 22
+    1. Add the target for W99803 (16M)
+
+2008 09 16
+    1. Add the function of bypass client.
+    2. Fixed the bug about definition of BOOL.
+
+2008 08 05
+    1. JPEG: use a lower quality to reduce the JPEG size.
+
+2008 08 04
+    1. Update USB installer to fix problem on Vista.
+
+2008 07 30
+    1. Update new libNS.
+    2. Update CGI document.
+    3. Add de-bounce in USB.
+    4. Fixed lock bugs in audio dsr: use thread lock in dsr.
+    5. Suspend: kill thread in dsr will kill dsr itself.
+    6. HTTP: do not check fdset if select returns 0
+    7. RTSP: fixed the bug that still check "struct conn *" after it's freed.
+    8. JPEG: disable interrupt when swapping g_vpJPEG.pJPEGEncodeBuffer
+    9. JFPG: fixed the dead lock in JPEG waiting.
+
+2008 07 24
+    1. Modify ActiveX Retry function for INFINITE when server lost.
+
+2008 07 18
+    1. Remark ActiveX ServerLost Notify
+    2. Add function restart client when detect server lost
+    
+2008 07 14
+    1. Merge EMI test and modify IPCamBuilder.hta.
+    2. Fixed the USB bugs that can not apply DHCP correctly.
+
+2008 07 11
+    1. no-ip.com and dnsomatic.com supported.
+
+2008 07 10
+    1. Test DDNS with out going IP, OK.
+    2. DDNS can detect IP change.
+
+2008 07 09
+    1. Remove DDNS & suspend for release.
+
+2008 07 08
+    1. Test DDNS, OK.
+
+2008 07 07
+    1. Fixed the problem that USB configuration tool shows connection lost
+       after changing some configuration.
+    2. Fixed the problem that WiFi strength can not work.
+    3. Update CP & HC's modification for WiFi stability.
+
+2008 07 06
+    1. SMTP supports to change port.
+    2. Add CGI and I2C settings for 50Hz/60Hz, but the settings seems not correct.
+
+2008 07 05
+    1. Fixed the bug of dns. htons is a macro in eCos, so that the serial 
+       number has been added twice, and then gethostbyname ignore the dns
+       result. tftp serivce in eCos may have the similar problem, I've not
+       verify it.
+    2. Fixed the problem that gateway & dns in USB configuration tool can 
+       not been shown correctly.
+
+2008 07 04
+    1. The USB problem reappears that data with length 64*N can not been sent,
+       althrough a blank packet has been sent according to driver's request.
+       Fixed the problem by splitting the length into some small packets.
+    2. Fixed the problem that re-configure WiFi with WEP key failed.
+    3. USB configuration will send the wrong DNS address, fixed.
+    4. USB configuration may configure IP for several times even though user
+       only click the button "Apply" once, which will cause the configuration
+       extremely slow.
+    
+
+2008 06 30
+    1. fixed the bug that kill the ActiveX process more times,
+    the server will not work.
+
+2008 06 26
+    1. Change SD clock back to 24M.
+    2. Fixed LED starting status.
+    3. Do not suspend when MCU is on dock .
+
+2008 06 25
+    1. Fixed the bug that LED error can not be shown.
+    2. Add function mcuSendCommand_NoResponse so that the response
+       will be get in other thread.
+    3. Fixed the deal lock in MCU command.
+    4. Change battery indicator value.
+    5. Change FMI to 10M.
+
+2008 06 24
+    1. ActiveX use AfxBeginThread replace CreateThread.
+    2. RTSP modify drop_conn
+
+2008 06 20
+    1. Update new LED status.
+    2. Add lock in flash driver
+       Remove flash lock from libNS.
+    3. Add MCU suspend
+    4. Add module "Period task" and put LED works into "Period task".
+    5. Update Server / Client Application for test.
+    6. Small fix in libSPI.mcp.
+    7. Disable suspend when USB connected.
+    8. Power off NS before suspend.
+
+2008 06 17
+    1. Test WiFi suspend OK.
+
+2008 06 15
+    1. Test sensor suspend and audio suspend, OK
+
+2008 06 13
+    1. websee retry 10 times
+    2. RTSP Server genrate IFrame after send the first frame.
+
+2008 06 12
+    1. Test WiFi suspend with ping, OK.
+       Still have a problem if the network is connecting.
+
+2008 06 11
+    1. Update HC's 8051 bootloader.
+
+2008 06 10
+    1. Fixed the dead lock in capture thread.
+    2. Update to libNS 4.01
+
+2008 06 06
+    1. Update to libNS ver4.
+
+2008 06 04
+    1. Change the project file for client application.
+
+2008 06 03
+    1. Remove eCos from SDK.
+    2. Fixed UART bugs.
+    3. Do not gzip image files.
+    4. Update WOWWEE's new UI.
+    5. Apply LT's modification.
+
+2008 05 30
+    1. Update LT's modification for ActiveX.
+
+2008 05 29
+    1. Add configuration to set default to Ad-Hoc mode.
+    2. Add DDNS support (not finished, checking gethostbyname)
+    3. WiFi can return WEP key type.
+    4. Update CGI document.
+
+2008 05 28
+    1. Add prompt text "Rovio" in configuration of build script.
+    2. Fixed the bug that WiFi/DHCP can not work if AP boots after IPCam.
+
+2008 05 13
+    1. Can not delete / change user "administrator".
+    2. Temp modification for testing WiFi suspend.
+
+2008 05 03
+    1. Revert web pages.
+    2. Add UseOverlapImage property.
+    3. Update vitual com dll for test application.
+    4. Add UseMic for rovio.js
+
+2008 04 29
+    1. Update virtual COM driver and application, rename to "Rovio USB".
+    2. USB scan tools can support detect AP uses encoding or not.
+    3. Update new WEB pages.
+    4. Fixed a bug in uart_wrapper
+    5. Make UART interrupt running at a high priority.
+    6. Shotern the data sent by one calling of UART dsr.
+    7. Use manually dual buffer setting in capture procedure.
+    8. add wifi encode option for usb configure tools.
+    9. add usb pressing test.
+
+2008 04 24
+    1. Add a test application for COM.
+    2. Use new method to disable UART message.
+
+2008 04 23
+    1. Remove all winbond text from USB driver.
+    2. Add debug cgi for powermanagement.
+    3. Fix building macros.
+
+2008 04 18
+    1. fix bug usbconfig restore not work.
+
+2008 04 14
+    1. Fixed the bugs in LED thread that does not get battery status.
+
+2008 04 09
+    1. Tmp fix when the size of usbwrite mod 64 == 0, will failed
+    2. Fixed the enable state of "Apply" button on usb tool.
+    3. Fixed the bug that usb configuration use wrong WEP arguments.
+    4. Update new Wowwee image.
+    5. Use "sec" instead of "usec" in select, which may waste CPU source.
+    6. Add SMTP support. 
+    7. Add a warning and more information in build script.
+
+2008 04 03
+    1. Chanage battery bit in CGI.
+    2. Fixed vcom command line bugs.
+    3. Add LED status document.
+    4. Use default MAC.
+
+2008 03 31
+    1. Use the hardware MAC as the default MAC address.
+
+2008 03 27
+    1. Remove winbond string.
+    2. Add a new building configration without KoiTech's module.
+
+2008 03 19
+    1. Output MCU message on error.
+    2. Change MCU timetout to 1 second.
+    3. Update MCU SIM tool.
+
+2008 03 18
+    1. Fixed the bug when read MCU uart. fd_set is not cleared.
+
+2008 03 17
+    1. Modify user privilege for some CGI.
+    2. Update web pages and libNS.
+
+2008 03 05
+    1. Integrated libNS from KoiTech.
+    2. Update document(PPT) for testing system.
+    3. Fixed DHCP / cyg_thread_delay bugs.
+    4. Remove code about initializing power status in 8051 bootloader.
+    5. Update tool updatepmp_spi to support erasing large flash.
+
+2008 02 27
+    1. Add exiting for WiFi checking in LED thread.
+    2. Modify ov7670 flip & mirror.
+    3. Modify SPI id checking.
+
+2008 02 03
+    1. Boardcast on WiFi so that the WiFi would not be lost to AP.
+
+2008 01 30
+    1. Fixed the bug that RTSP does not free connection in UDP mode.
+    2. OV7725 tested OK.
+
+2008 01 24
+    1. Fixed a bug in initial state of overlay image.
+    2. Can auto-detect PO6030K and OV7670 now.
+
+2008 01 23
+    1. Fixed mistakes in MCU command.
+
+2008 01 22
+    1 add restore factory after test all item
+    2 delete test_item_logo
+    3 add SYSTEM_DEFAULT_MAC, merged by usb test tool
+
+2008 01 17
+    1. Add WiFi speed testing applicaton.
+    2. Can set brightness for OV7725.
+    3. Fixed the bug about FIOBIO(ioctl)
+
+2008 01 05
+    1. Add overlay image OK.
+    2. Use two Logo strings.
+
+2008 01 03
+    1. Fix bug for usb configure tool that after set wlan, the ip information
+       perhaps changed, should ask server to obtain this infomation.
+
+2008 01 02
+    1. Support display JPEG now.
+    2. Use dul-copy of flash, and one as the factory default.
+    3. Accelerate the procedure of firmware update.
+    4. Set default MAC.
+
+2007 12 29
+    1. Add -g+ in all mcp project.
+    2. Finish the architecture of GUI front for testing application.
+
+2007 12 27
+    1. Add the On-Board verifying code, supporting test sensor, audio codec,
+       MCU and WiFi.
+    2. Add internal regulator settings for OV7725 & OV7670.
+    3. Fixed the bug in battery indicator.
+    4. Fixed the bug that the return code of WiFi initialization was truncated.
+
+2007 12 24
+    1. Merged new DSP library.
+    2. Fixed the bug that "Data abort" on network initialization failed.
+	3. Add the build configuration for new sensor PO6030K.
+
+2007 12 23
+    1. Update Koitech new WEB files and libNS.
+    2. Template test sensor PO6030, it's OK. Not integrated yet.
+
+2007 12 21
+    1. Modify VideoPhone to support display 3 messages on Video.
+    2. Modify LibCamera to adapt the new wb702SetDrawContent() 
+       and wb702ClearDrawContent().
+    3. Update new Koitech HTML.
+    4. Fix the problem about MJPEG stop by remove the A/V syn code.
+
+2007 12 19
+    1. Add a demo GUI front application.
+    2. Add libNS to sample application.
+
+2007 12 18
+    1. Add MingW shell environmnet and wget(gnu-win32).
+
+2007 12 17
+    1. Add enable/disable dumping debug message to client for usb configure tool.
+    2. Fix bug that when server dump msg too frequently, win32 message queue
+       will overflow
+    3. Fix bug that USB Configure tool should clear all the hardware buffer
+       before CreateThread to read data from server(otherwise it will read data
+       belong to last instance). 
+    4. Add usb configure tool of cmd mode source tree
+
+2007 12 14
+    1. Add Enable/Disable MIC function on WEB UI.
+    2. Sensor can be up to 30fps in VGA mode.
+    3. (1)Add a callback function when user unplug usb it provide a interface
+       to user to do exception handler.(2)Clear usb interrupt status which
+       occurs by chance
+
+2007 12 09
+    1. Fixed the bug that memory pool may be released again.
+       JPEG also has this bug.
+    2. Use two functions to detect whether recursive mutex can be lock in DSR
+       or thread, while the previous way have no difference in two conditions.
+    3. Rotate the sensor.
+
+2007 12 07
+    1. Update new DSP library.
+
+2007 12 06
+    1. Fixed the bug of MCU reading error.
+
+2007 12 05
+    1. Can disable the message from printf/fprintf
+    2. Disable the message from bootloader
+    3. 8051 bootloader support shutdown now.
+
+2007 12 4
+    1. Add set mac address function in usb configure tool.
+
+2007 11 30
+    1. Add set and get mac address function in web page and server.
+    2. Add set and get mac address configuration interface.
+
+2007 11 28
+    1. Retry to write when eCos TCP/IP buffer is full.
+    2. Remove the "can" functions such as "can lock", "can send" because that
+       they can not acturally determine whether is semphoare/mutex can be
+       locked or not.
+    3. Increase the clock of MP4 and JPEG to 48M so that the framerate can be 
+       up to 30fps in QVGA. The original framerate is 36M or 24M.
+    4. Add imediacontrol status check when calling stop.
+
+2007 11 27
+    1. Auto build script can close MCP immediately after no MCP project
+       should be compiled later.
+
+2007 11 26
+    1. Auto build script can do gzip now.
+    2. Add some guide in "Readme".
+
+2007 11 22
+    1. Fix a bug in libRtspServer. It should close the connection when
+	get rtsp_data failed.
+    2. add client select timeout.
+    3. In libRtspServer, return directly after close connection.
+    4. add stopgraph and deletegraph in destruct of dsadmin
+    5. Call Stop on destruction of WebSee.
+    6. Modify IFChange function of wbStreamPlayer.
+
+2007 11 21
+    1. Add drmclien.dll to support installer for MS Vista.
+    2. Modify libWbDsRtp's GetIFrame function.
+    3. Modify WbStreamPlayer's stop function.
+
+2007 11 20
+    1. Update sensor init table for OV7670 to remove horizontal light line.
+    2. Add Lock for libWbDsRtp's http receiving thread .
+    3. Modify libWbDsRtp's http receiving thread stop function.
+
+2007 11 19
+    1. disable usb inturrupt when calling usbread in order to prevent some
+	   citical varibles from inconsistent in usb lib.
+    2. make some changes for updating firmware, before very flash write, we 
+	   should read 16 packages from client. to prevent usb buff overflow, every
+	   package can not exceed 1024*2 bytes.
+    3. for IPcam configure client, should pop up a dialog to indicate current 
+	   request has been handle succefully.  
+
+2007 11 15
+    1. Adjust the minimum of mp4 outputing frame rate to 1.
+    2. Fix a bug that when adjust brightness and volume to 0, the slider can not
+	   show the value.
+    3. add new version for usb lib, reduce the probability of USBRead() and 
+	   usbDSR access some global variable multaneity.
+    4. reset vcom thread when user unplug usb wires.
+    5. temporary fix when user not change IP seting, this tool will sent IP 
+	   change request to server, this maybe caused by CIPAddressCtrl class.
+    6. use GPIO interrupt to wakeup USBRead, since usbDSR will not turn on usb 
+	   interrupt when its buff is full, in this case, usb should wait user to
+	   consume data
+
+2007 11 14
+    1. Modify VideoPhone to support display formated content on video.
+    2. Fix a bug in VideoPhone's vinfoReplaceKeyWord.
+    3. Add SetLogo.cgi and GetLogo.cgi,and the keywords are {time},{date},{ver}.
+    4. Modify SetTime.cgi to set server date and time only.
+    5. Adjust the display coordinates at each content draw in VideoPhone, 
+       because the time's width may change(the width of 1 is different from 3's
+	   width).
+
+2007 11 13
+    1. Modify cgi document of SetTime.cgi.
+    2. Add new interfaces in mp4 library to set mp4 encoding frame rate 
+	   dynamically.
+    3. Add new interfaces in VideoPhone to set mp4 rate of outputing frame,
+       not the mp4 encoding rate.
+    4. Modify VideoPhone. Set mp4 encoding frame rate always to 30.
+       And the frame rate change interfaces just change the rate of outputing
+       frame, not the mp4 encoding frame rate.
+    5. Add function to adjust mp4 outputing frame rate dynamically
+       according the net speed.
+    6. fix bug in DlgScanAP.cpp that using static buff will display a wrong 
+	   essid(now using a dynamic memory).
+    7. In OutputDlg.cpp, when user left-click will cause stopping dump message,
+	   and another left-click continue dump message, So need to diff the shape 
+	   of caret.
+    8. mask some debug information, because diag_printf will dump the msg to 
+	   vcom, thus cause Nested interrupt handler.
+    9. Add document about USB
+    10. Adjust RTSP thread priority
+    11. Add UART wrapper.
+    12. Update some document about firmware creat.
+    13. promote the priority of vcom when update firmware, and lower it when
+	    finishing update. by this method it will lower the probability of
+		failure. 
+    14. Add new interfaces in VideoPhone to let user get current time.
+
+2007 11 12
+    1. uncomment the custom defined command.
+       change the prototype of custom defined handler.
+    2. fix bug when click 'OK' or 'Apply' button, only one page take effect. 
+    3. delete a duplicated hi_uart_write() when send command to control robot.
+
+2007 11 08
+    1. Change the clock of SDIO WiFi to 24M
+    2. Fixed the problem that COM port number greater than 10 can not work.
+    3. Add new interfaces to display information on video.
+    4. Add ShowString and ShowPos variables in config parameters.
+    5. Add use-defined display function in server at position of top-left,
+       top-right, bottom-left, bottom-right and middle.
+    6. Add user-defined display function in Time.htm.
+    7. Small modification in the icon for FirmwareLoader.
+    8. Support new report format from MCU.
+
+2007 11 06
+    1. Modify Getstatus.cgi according to the server and and camera status table.
+
+2007 11 05
+    1. Modify timestamp for fixing asf file recorded broken.
+
+2007 11 02
+    1. Replace the rtsp's method of memory malloc. And this can fix the bug 
+       that system would rises data abort when changing resolution 
+       under many connections of clients.
+
+2007 10 31
+    1. Fix a bug in write spi flash.
+    2. Modify set factory default funtion to init parameters by customer setting.
+
+2007 10 30
+    1. Remove all header files in libhttp/Src. 
+    2. Small fix in building script so that the application can be used on
+       MP4-EVB+NAND board.
+    3. Add magic flag in FirmwareMaker.
+    4. Add stop mic function in websee.dll.
+    5. Change configuration parameter position from 896*1024 to 1014*1024. 
+    6. Modify Read_FlashFile() function to check the magic flags.
+    7. Modify the FirmwareMaker so as to fix the problem about relative dir.
+
+2007 10 29
+    1. Fix some bugs in libhttp with html files from SPI buffer.
+    2. Modify libhttp to support transfer gzip html to browers.
+    3. Modify the code for linear2alaw to resolve the noise in ALAW format.
+    4. Update updatepmp_spi.exe to fix the problem that binary was removed.
+    5. Fix a bug in libhttp that may case memory leak.
+    6. Fix problem in libhttp about mimetype, 404 error and memory leak.
+
+2007 10 26
+    1. Modify VideoPhone to make notification palyback can be played without
+       iothread_Write drive.
+    2. Fix a bug in VideoPhone's notification playback.
+    3. Add pcm music for different status in LED library.
+    4. Modify the USB update tool and bootloader so as to support new firmware
+       format.
+
+2007 10 25
+    1. Fix the bug that rtsp would be blocked in a while when buffer not enough.
+    2. Fix a bug that rtsp would not close the connection when a client is
+       broken for some special reason such as cable broken.
+    3. Add read flash file function in SPI library.
+    4. Modify libhttp to get html file from SPI buffer.
+
+2007 10 24
+    1. fix bug "when disconnect usb wire, IPCamConfigure.exe can not exit
+       completely"
+    2. add custom-command-handler sample codes
+       fix bug "change format should reboot IPcam config client"
+    3. Add the firmware maker tools.
+
+2007 10 23
+    1. Integrate usb driver of VCOM_Driver to IPCamInstall.exe.
+
+2007 10 22
+    1. Use cached buffer in RTSP server.
+    2. Reduce record volume by volume * 20/32
+    3. Move the ActiveX on WEB page to the right.
+
+2007 10 19
+    1. add scan ap feature.
+       add sleep when reboot, and reboot after restore
+       promote the perfermonce of update firmware
+       forgot to commit IPCamConfigure.dsp for above commiting
+    2. fix bug "when change audio or video format should reboot system for ipcam
+       configure"
+    3. Change send reboot command in CheckReboot.htm not in Upload.cgi.
+    4. Change the endian for PCM and ALAW.
+    5. Add interface for disabling/enabling audio send back in library WbDsRtp, 
+       and test it, it is ok.
+    6. Add control button for audio sending back(Start/Stop) on WbStreamPlayer.
+    7. fixed video data broken bug.
+    8. fixed the bug that dbclick tree more times ,play will be error.
+    9. Do not use non-cache in internal audio buffer.
+
+2007 10 18
+    1. Add check reboot slider after upload firmware.
+
+2007 10 17
+    1. Add Scan Ap interface in configinterface.c.
+    2. Modify if-else operation to switch-case in Cameractl.c 
+
+2007 10 16
+    1. Add WiFi Strength display in CameraMJPG.htm and CameraMP4.htm.
+    2. Use the experience value for audio payload.
+    3. Use new reboot method. (check busy by IPCam application)
+
+2007 10 15
+    1. Add new interfaces iothread_WriteNotification and
+       wb702SetAudioNotificationVolume
+       to play notification music and control the music volume.
+    2. Add WiFi strength level function in server.And add it to status string.
+    3. Display battery level from 1 to 10.And add it to status string. 
+
+2007 10 12
+    1. Add new interface wb702EnableDrawImageTime to control time draw on
+       captured images.
+    2. Fix a bug in wb702EnableDrawImageTime.
+    3. Add remove server time function in server and Time.htm.
+    4. Use burst write function in 8051 bootloader.
+
+2007 10 11
+    1. Add reboot function in SetMediaFormat.cgi, SetFactoryDefault.cgi and
+       Upload.cgi.
+    2. Add auto adjust brightness function in web pages.
+    3. Combine change ip address funcion and change WiFi function to one page
+       that Network.Htm.
+
+2007 10 10
+    1. Fix bug "Client should detect the disconnection of usb line"
+       Fix bug "frame rate extends from 1 - 31 fps"
+    2. Test reboot for WiFi and it's OK for IP_CAM board.
+    3. Modify 8051 code so as to check W99802 interrupt in power key long press
+       mode.
+
+2007 10 09
+    1. Add MP4_TEST_CHECKSUM before add MP4ADDATIONEND
+
+2007 10 08
+    1. Fix bug IPCam configure tool will block when dump two many message.
+    2. Delete the redefine of nPrivilege which cause a bug that the request can
+       not be sent to server really.
+    3. Delete firmware update function in system.htm.
+
+2007 09 30
+    1. Add code to adjust brightness in dsplib for OV7670.
+    2. Modify for WEB page for correctly displaying scroll bar in Firefox.
+    3. Modify the description for flash update tools.
+    4. Add document for USB tools from YJYan.
+    5. Add document for new cgi change brightness and change volume. 
+
+2007 09 29
+    1. Add new interface mp4_check_index() in encode core to check 
+       whether mp4 index is continuous.
+    2. Add some header files in vp_interfaces.h to make can be included solely.
+    3. Fix a bug in libRtspServer when avail_send_buf() failed, it should wait
+       for the buffer avaiable, but not discard mp4 data.
+    4. fix bug "http://dept1/sites/NS00/QA/IPCam/Lists/List/DispForm.aspx?ID=83"
+       set auto_get_ip not disable Ip setting 
+    5. fix bug "http://dept1/sites/NS00/QA/IPCam/Lists/List/DispForm.aspx?ID=85"
+       click OK button, IPcam pause 
+    6. fix bug Update firmware, progress bar do not step
+    7. Modify 8051 code to support reboot for new IP_CAM board.
+    8. Fixed the bug in libRtpClient that may cause player crashed.
+    9. Fix bug "http://dept1/sites/NS00/QA/IPCam/Lists/List/DispForm.aspx?ID=76"
+       common users can change sysytem configure
+
+2007 09 28
+    1. Add recorder volume parameter in camera config parameter, web camera
+       status and log.
+    2. Add change recorder volume cgi and config interface.
+       (ChangeSpeakerVolume.cgi)
+    3. Add change recorder funtion in CameraMP4.htm.
+    4. Fix a bug that change brightness may be not in effect.
+    5. Increase BUF_LIST_NUM in http from 50 to 100 in order to avoid not enough
+       memory in C_List.c
+
+2007 09 27
+    1. Modify Log.htm to display change volume operation.
+    2. Delete finish operation in setvalue of slider in slider_extra.js 
+
+2007 09 26
+    1. Add volume parameter in camera config parameter and web camera status.
+    2. Add change brightness and volume cgi.
+    3. Add change brightness and volume interface.
+    4. Add change brightness and volume function in CameraMJPG.htm and 
+       CameraMP4.htm.
+    5. Adjust build script to support 3 types of configurations, and it can also
+       build eCos.
+    6. fix a bug for usb configure tool that DSR cann't call blocked function
+       such as cyg_mutex_lock()
+       tune the performance of update firmware, send all the packages not wait
+       the reply
+
+2007 09 25
+    1. Add DEBUG MESSAGES output functions to libRtspClient,libWbDsRtp.
+    2. Modify update tools by LGu.
+    3. Small fix in HTML pages.
+    4. Add new interfaces to control audio play/record volume 
+       and video brightness.
+
+2007 09 21
+    1. Modify LED display by customer's demand.
+    2. Add new test samples in VideoPhone.
+    3. Add callback function for rtsp in order to keep its independence.
+    4. Fix a bug in vp_bitrate_control.
+
+2007 09 20
+    1. Adjust sensor brightness.
+    2. Adjust http buffer size for up to 20 connections.
+    3. Fixed the audio playback problem. (2 channel to 1 channel)
+    4. Use two uart, common uart for debug message, hi-speed uart for WOWWEE
+       MCU.
+    5. Fixed WiFi by setting WiFi bitrate.
+    6. Forgot to commit updatedlg.h/cpp when adding feature update firmware
+    7. The speed test interval can be set by application through 
+       vp_bitrate_control_init().
+
+2007 09 19
+    1. Test ipcam net speed and adjust the speed boundary of vp_bitrate_control
+       for different resolutions.
+    2. Fix a bug that set factory default not response on http. 
+
+2007 09 18
+    1. Add vp_bitrate_control to test net speed and control bitrate dynamically.
+    2. Modify libhttp to invoke vp_bitrate_control_write() of
+       vp_bitrate_control.
+    3. Add feature reboot, restore, update firmwareb in server and IPCam
+       configure tool.
+    4. Fix bug
+          "http://dept1/sites/NS00/QA/IPCam/Lists/List/DispForm.aspx?ID=16"
+       && "http://dept1/sites/NS00/QA/IPCam/Lists/List/DispForm.aspx?ID=12"
+    5. Add a new interface to control whether adjust bitrate dynamically by
+       vp_bitrate_control ().
+    6. Add vp_bitrate_control_write() in libhttp's My_Common_read and
+       My_Common_write.
+    7. Modify libRtsp to invoke vp_bitrate_control_write() of 
+       vp_bitrate_control.
+    8. Modify LED red to change by network speed.
+    9. Make set ip and wlan taking effect
+    10. Fix bug video and audio format not set correctly
+
+2007 09 17
+    1. add config interface for reboot and set factory default
+    2. Adjust audio
+    3. Change configuration in build script.
+    4. Change audio decoder in client application, fixed the problem that can 
+       not get video.
+    5. Merged audio library and dsp library.
+    6. Use UART0(57600) in eCos. (MCU can not work now)
+    7. Add LED library.
+    8. Add LED show for WiFi. If wifi ok,the green LED will light.
+    9. Add mutex for write config parameter to spi.
+
+2007 09 13
+    1. Fix bug of use ipedit to change ip address.
+    2. Delete operations of pppoe and email in ipedit.
+
+2007 09 11
+    1. Modify MPEG4 process frame function to support VLC
+    2. VLC can play RTSP stream now.
+    3. Fix a bug in libhttp's httpdStartEx3(). 
+       When status.connections >= max_connections, 
+       the action is just to not set server's fd, 
+       but should not include select() and get_request().
+
+2007 09 10
+    1. Add new interfaces mp4SetEncoderBitrate() and
+       wb702SetVideoDynamicBitrate() to change video bitrate dynamically.
+    2. Add new trylock vauTryLockInIRQ() without thread id. So it's safe in DSR, 
+       but can't be used in nesting.
+    3. Add new interfaces in libTinythread--tt_rmutex_can_lock_inirq() and 
+      tt_rmutex_try_lock_inirq().
+
+2007 09 06
+    1. SDIO 1-bit and 4-bit also OK.
+
+2007 09 05
+    1. Add change WiFi setting without reboot. 
+    2. Add reset button function with GPIO13.
+    3. Modify the problem that spi flash conflict with reset button.
+    4. Add customer configuration.
+    5. Enable SDIO 1-bit
+    6. Modify HTTP to support large WEB files for wowwee.
+    7. Update WEB pages files for wowwee.
+
+2007 09 04
+    1. Define JPEG_DEC_WITH_MP4_BUFFER to disable alone buffer for jpeg decode.
+
+2007 09 03
+    1. Remove vauDecWaitPrevMsg() and vauEncWaitPrevMsg() in vauStopPlay() and
+       vauStopRecord().
+    2. Remove vcptWaitPrevMsg() in vcptUninitThread().
+    3. Add a error message in vmp4encAddRef() when mp4 header encode error.
+    4. Modify reboot function.
+
+2007 08 29
+    1. Modify the build script so that it can work in SDK mode.
+    2. Fix a bug in display h263 to change resolution to 320*240 and 640*480. 
+    3. Fix a bug start with resolution of 176*144 that display resolution is
+       not correct.
+
+2007 08 28
+    1. Modify a error in system.htm that mix audio and video format.
+    2. Fix the bug thant lithttp don't send response for invalid url request.
+    3. Auto build script also create update image for NAND flash.
+    4. Fix bug, ComboxList can be edited by user
+    5. Delete logon dialog if auth disable 
+    6. Update virutal com driver and dll.
+    7. Fix a bug in VideoPhone that still send MEDIA_TYPE_VIDEO when mp4 encode
+       error.
+    8. Don't allow frame rate smaller than 5 in VideoPhone, 
+       because when frame rate is 1, the mp4 encode result is always error.	
+    9. modify layout of IPcam configure tool, make it integrity in Chiness wxp
+
+2007 08 27
+    1. Add a argument in dspInitialization() to describe the sensor type buffer
+       length.
+    2. Add buffer length check in dspInitialization() before strcpy() to avoid
+       beyond boundary access.
+    3. Modify httpMyStrncpy() to avoid beyond boundary access iLength larger
+       than pcSrc's length.
+    4. Add tt_rmutex_can_lock() in libTinyThread.
+    5. Fix a bug in tt_rmutex_try_lock() that the fail condition should be
+       "rt!=true", not "rt!=0".
+    6. Add vvpeUninit() in VideoPhone to uninstall vpe module.
+    7. Fix some places about code review.
+
+2007 08 27
+    1. Integrate ALAW/ULAW in Ipcam.
+    2. add setaudioformat and setvideoformate in system.htm.
+    3. modify the ipcam according to code review.
+    4. Not define lcmdisplay in order to save memory.
+    5. modify video buffer to 128k in order to support resolution 640*480, very
+       high quality,and framerate 1.
+
+2007 08 23
+    1. Modify bootloader HowTo.
+    2. Make some errors check for function return value in ipcam configure tool
+    3. add reboot funtion in system.c. Bootloader can reload the firmware,
+       but wireless can not work.
+    4. add user manual in Instruction of IPcam.doc.
+    5. ipcam configure tool can not get method with DHCP or mamually correctly 
+
+2007 08 21
+    1. IPCam_Builder.hta can select default target or custom target.
+
+2007 08 20
+    1. Add some documents.
+    2. Modify setwlan.htm to display the configuration in web page.
+    3. Modify build script to fix the error exception in VC & ADS building.
+    4. Add release information for ipcam configure tool in About Menu
+    5. RTSP Server add function for supporting audio type ALAW	
+    6. Delete duplicate define exited.
+
+2007 08 17
+    1. add consumer.h in order to maintenance same version for different
+       cunsumers.
+    2. delete usiIsRead() function because it is not stable.
+    3. fix a bug in change ip address.
+    4. add usiIsRead() function in spi library in order to check if has spi
+       flash.
+    5. modify libcamera to support spi and no spi.
+    6. fix a bug in usiInitDevice(), now the code can check if has a spi flash
+       itself.
+    7. Add script to build SDK.
+
+2007 08 16
+    1. fix bug when click cancel button should exit application
+    2. show example of input string when config wireless
+    3. output dialog will repeat showing msg due to ::PostMeassage many times 
+    4. Merged CLYu's network code for eCos. Fixed the problem that IP can
+       not work behind a router.
+    5. Add cookie to build script.
+    6. Fixed IP can work behind a router.
+    7. Merged WbDsRtp so that MJPEG is OK.
+    8. Create SPI flash update image by auto build script successfully.
+
+2007 08 14
+    1. Modify flash operation with SPI's interfaces. Now just
+       httpReadConfigValue is support. All write is not supported and read
+       through file name is not supported.
+
+2007 08 13
+    1. Add a HTA application for building.
+    2. delete virtual usb because it has be a library.
+    3. add library of usb, spi, and a/u law in build_modules.js
+
+2007 08 10
+    1. Fix all bugs that the cyg_interrupt_disable() and cyg_interrupt_enable()
+       not be used in pairs.
+    2. create a lib for virtul com usb
+    3. log debug info to usb client
+    4. create a lib for virtual usb
+    5. log debug info to usb client
+    6. add comstom defined CEdit class
+    7. because each string sent by server contains a terminative NULL, the
+       buffered msg showed incompletely.
+
+2007 08 09
+    1. Add A/U Law library and associated with Encode Core.
+    2. Fix bug in Encode Core's audio. Use tt_rmutex_lock in vauLock, otherwise
+       it maybe
+       release lock too early in nesting use.
+    3. Modify iothread_write. Now receive size of audio don't have limit. The
+       iothread_write
+       can divide data into blocks according to bufEncAudio's size.
+    4. Modify LibCamera/Src/TransBack.c to write entire audio. Now don't need
+       to divide audio data by user. This is done by iothread_write according
+       to bufEncAudio's size.
+    5. Add libAULaw into auto_build.js.
+    6. Add CMD_AUDIO_ULAW and CMD_AUDIO_ALAW definition in
+       Commands_VideoPhone.h.
+    7. add spi flash library and get configuration parameter from flash.
+    8. fix a bug in convert web pages.
+    9. fix a bug in change ipaddress from manually to dhcp.
+    10. add spi address path in mcp.
+
+2007 08 06
+    1. fix a bug that set ip manually cannot connect.
+    2. Modified web pages by customer.
+
+2007 08 03
+    1. Add update tools and "HowTo".
+    2. Change WEB Control page.
+    3. add change ip address without reboot.
+    4. modify part code criterion 
+    5. User Build/Res2CGI.js to create CGI for web files.
+
+2007 08 01
+    1. fix a bug that will report error in building.
+    2. delete superabundance codes.
+
+2007 07 31
+    1. delete flash thread from stream server.
+    2. Add mctest thread for stream server
+
+2007 07 30
+    1. Fix the bug that jpeg can't be deocde. Add vjpegDecInit() in
+       wb702EnableJPEGEncoder().
+    2. Add mine type for javascript and cab.
+    3. Modify the html pages that extract ipcam.js.
+
+2007 07 28
+    1. Use 9600, N, 8, 1 for UART.
+    2. Add robot control on WEB page.
+
+2007 07 27
+    1. endless usb interrupt due to random value in RG_USB_IS  
+    2. a temporary fix for GPIO_INT interrupt endless loop
+    3. DisplayInfoOnLCD_Init() of libLCDDisplay don't enable jpeg. This is
+       controlled by user.
+    4. Add another check condition--check whether background jpeg is
+       successfully displayed in libLCDDisplay except CheckIPChanged()
+    5. Decode jpeg with VP_BUFFER_JPEG_DECODER_T buffer. Add a pointer in 
+       VP_BUFFER_JPEG_DECODER_T to point to source image buffer.
+    6. Because libLCDDisplay don't control jpeg enable, so modify LibCamera to
+       start libLCDDisplay after W99702_InitParam(). 
+    7. Fixed udelay problem in WiFi
+    8. Don't display jpeg background.
+    9. LCM (without JPG) is OK.
+    10. Booting from NAND is OK.
+    11. USB problem seems fixed.
+    12. modify tap order
+
+2007 07 26
+    1. Add new WbDsRtp.
+    2. Mask LCD display.
+    3. Add Virtual COM driver.
+    4. Modify auto build script.
+
+2007 07 25
+    1. Add OPT_USE_MOTION to control motion detect's buffer use.
+    2. Modify wb702SetAudioType, then can set audio's encode and decode format
+       to different types.
+    3. Open the define of OPT_USE_AUDIO_DECODER to support audio decode.
+    4. add a temporary function for Auth user
+    5. modify thread stack size 
+
+2007 07 24
+    1. Update vpost for TOPPOLY's LCM TDA025
+    2. Add libLCDDisplay's project into auto_build.js.
+    3. Modify videophone with LCM TDA025.
+    4. Modify and some files for new FMILIB_MASS.a
+    5. Modify GetGernalIP and GetIPAddress to fontGetGernalIP and
+       fontGetIPAddress.
+    6. Add a new macro OPT_VIDEO_ON_LCM to control buffer use for video display
+       on LCM.
+    7. Add a script to show large used large buffers.
+    8. Add lCDDisplay.
+    9. Add trancback function
+    10. Add init_all_network_interfaces() to init wireless in fontbypass.c of
+        libLCDDisplay's sample.
+    11. modify wireless configuration according to the AP setting
+    12. Fix a bug in LCDDisplay module.
+    13. Fix a bug that SetWlan.htm display error in firefox.
+    14. Fix a bug in LCDDisplay that before display the ipaddress the lcd will
+        black for a moment.
+
+2007 07 23
+    1. modify for usb deadlock
+    2. modify for usb with adding a macro -D_NO_USBDetect 
+    3. Add a new sample in libFont to test LCM whether ok.
+    4. Add libLCDDisplay to display information on LCM(include product info and
+       ip etc).
+
+2007 07 19
+    1. change malloc event to static buffer
+    2. disuse mpeg4-encoder
+
+2007 7 18
+    1. Fix a bug about memory leak in libTinyThread/Src/tt_msg.c when
+       tt_msg_try_send failed.
+    2. Fix a bug about message lost in VideoPhone/Src/vp_interfaces.c
+       iothread_ReadAudio/Video when cyg_mutex_trylock failed.
+
+
+IPCam
+---------------------
+VideoPhone
+
+
+
+2006 12 21:
+    1. Add command "SetVideoFramerate/GetVideoFramerate".
+
+2006 12 20:
+    1. Adjust command "suspend" so that the firmware can run 
+       after reboot.
+
+2006 11 16:
+    1. Fix a bug when setting priority for sending data.
+
+2006 11 09:
+    1. Fix a bug for motion detect. It is necessary to detect
+       motion before apply time stamp on the video.
+
+2006 11 07:
+    1. Rotate the video from MT9M111 by changing DSP library.
+    2. Reduce MP4 intra size.
+
+2006 11 06:
+    1. Adjust encoded image buffer for "encode only mode" to
+       256*1024.
+
+2006 11 05:
+    1. Add timestamp to video.
+
+2006 11 04:
+    1. Add JPEG encoder and decoder.
+
+2006 11 02:
+    1. Fix a bug about rotation in VCE library.
+    2. Replace VPE rotation with VCE rotation. Left/Right
+       rotation still have problems.
+    3. Do MP4 encoder, refresh lcd, motion detect at the same
+       time.
+    4. Add tt_yield_thread.
+    5. Fix a bug in LCM clock for RatioTel.
+
+2006 10 12:
+    1. Add command "Set Audio Format"
+    2. Add command "Force MP4 I Frame"
+    3. Add command "Stretch Video"
+
+2006 09 04:
+    1. Add command to force I frame.
+
+2006 08 31:
+    1. Use vpe to do downscaling for motion detect.
+    2. IMA adpcm encoding is OK.
+
+2006 08 28:
+    1. Event (audio/video/motion-detect) priority added.
+
+2006 08 18:
+    1. Fix a bug when changing mp4 bitrate.
+
+2006 08 16:
+    1. MP4 decoder does not need to received data frame by 
+       frame.
+
+2006 08 09:
+    1. Fix a bug in "decode only."
+
+2006 07 31:
+    1. Add a parameter to command "EnableMotionDetect" to set
+       the sensibility.
+    2. Fix a bug in command "GetMotionsNum".
+
+2006 07 30:
+    1. Disable motion detect for about 5 frames after
+       immediately restart catpture or re-enable motion detect.
+
+2006 07 27:
+    1. Add motion detect interface.
+    2. Use GDMA in W90N740.
+    3. Adjust buffer and split the firmware to several target
+       according to the resource configuration.
+
+2006 06 22:
+    1. Adjust buffer usage.
+    2. Change RatioTel LCM configuration.
+
+2006 06 21:
+    1. Add command: suspend module.
+    2. Add MP4 blur function.
+    3. Change the prefix of videophone command set functions,
+       from "wbc" to "wbv".
+    4. Add some CameraModule commands for compatibility.
+    5. Import the old cameramodule commands to ease the
+       development of old cameramodule customers.
+    6. Optimize OSD function when the image fits the width of 
+       LCD screen.
+    7. Use different ADS targets for demoboard, radiotec, ect.
+    8. Remove HIC checksum verify for compatibility.
+
+
+2006 06 07:
+    1. Fixed the problem about Video framerate limitation.
+    2. Use the wait object functions for portability.
+
+2006 05 31:
+    1. Change the way for refreshing LCM.
+    2. Re-init vpe before any vpe conversion.
+
+2006 05 30:
+    1. Add function
+       tt_ticks_to_msec
+       tt_msec_to_ticks
+    2. Support sensor MT9M111 and MT9D011 now.
+    3. Adjust some clock.
+    4. Move the interrupt service out of interrupt function.
+    5. Fix bug in wbcClearInterrupt.
+
+2006 05 29:
+    1. Bug fixed: wrong media length reported by interrupt.
+    2. Bug fixed: not wait BUSY bit after interrupt is cleared.
+    3. It seems that MP4 encoder can not work when the state of MP4
+       engine is "WAIT". Do not support "WAIT" currently.
+
+2006 05 17:
+    1. Add a "Visual Object header" to MP4 bitstream.
+    2. Dump version on system bootup.
+    3. Update command set document to V0.2
+
+2006 05 16:
+    1. Make a auto building script.
+
+2006 05 15:
+    1. Delay the audio sending command if internal audio buffer is full,
+       which is helpful to avoid dropping frames.
+
+2006 05 12:
+    1. Change command "Enable MP4 Encoder" to "Enable Video Encoder".
+    2. Add command "Set Video Format" to specify MP4 or H.263.
+    3. Add command "Get Decoded Media".
+    4. Add a new sample: MP4Decoder
+
+2006 05 11:
+    1. Merge some AMR packets for more effective transfer. But other AMR
+       decoder may be confused by the packed data.
+    2. Revert to the old audio code. Enlarge AMR & PCM packets list.
+    3. Set/Get video bitrate OK.
+
+
+2006 05 09:
+    1. Check decoded MP4 size to prevent W99702 from halting by wrong
+       size.
+    2. Update some documents.
+
+2006 04 29:
+    1. Adjust clock for video, 2D and vpe to fix the problem that video is
+       jumping on the screen.
+    2. Fix a bug that a more interrupt may be triggered on boot up.
+    3. Add command "wbcSetAudioQuality" and "wbcGetAudioQuality".
+    4. Add command "wbcSetVideoBitrate" and "wbcGetVideoBitrate".
+       
+2006 04 25:
+    1. Add IRQ wait functions.
+    2. Change the folder structure.
+
+2006 04 21:
+    1. Add code to measure bitrate and framerate.
+    2. Reduce the clock of APB and HCLK2.
+
+2006 04 19:
+    1. Fixed MP4 bugs:
+       a. It seems that MP4 can not stably run at 108MHz.
+       b. MP4 need non-cache buffer because MP4 library read the buffer by both
+          CPU and MP4 engine. It cached buffer address is given, CPU may get the
+          wrong result.
+
+2006 04 12:
+    1. Add lock to protect protocol commands.
+    2. Complete command set documents Ver 1.0.
+
+2006 04 11:
+    1. Send/Recv media bitstream in interrupt way.
+    2. Add multi-priority support in "tt_thread".
+
+2006 04 10:
+    1. Integrate AECEEC, OK. But there are still some loud noise.
+
+2006 04 07:
+    1. Update new audio library. The new library is OK for demo board v1.7.
+    2. Add command EnableAudioDecoder.
+
+2006 04 04:
+    1. Change all DMA buffer to alianment 32, it seems that the bug about MP4
+       was fixed.
+    2. Add LCM l66777 driver to standalone MP4 testing application.
+
+2006 03 31:
+    1. Add a standalone program to test MP4.
+
+2006 03 18:
+    1. Add the function to change video size and z-index
+       for the demo.
+    2. Two bugs still in checking:
+       a) why MP4 encode/decode sometimes fails.
+       b) wby HIC sometimes transfers wrong data.
+
+2006 03 17:
+    1. Test MP4 loopback by BB, OK.
+    2. Add checksum for FIFO in protocol command.
+
+2006 03 16:
+    1. Test MP4 loopback by BB, almost OK.
+
+2006 03 15:
+    1. Restore version on "2006 03 13".
+
+2006 03 14:
+    1. Add reference count for lcm and mp4.
+
+2006 03 13:
+    1. Re-write capStart and capStop for power saving.
+
+2006 03 11:
+    1. Debug bugs about capture: It seems that capInit can not be called
+       before stop the previous capturing.
+
+2006 03 10:
+    1. Debug bugs about 2D: After 2D clock is turned off and turned on again,
+       2D seems not workable sometimes. The problem disappears after
+       inserting a gfxOpenEnv after turning on 2D clocks.
+
+2006 03 06:
+    1. Add sleep before turn on clock.
+
+2006 03 03:
+    1. Add command "SetLocalVideoWindow", "SetRemoteVideoWindow",
+       "EnableDisplay" (replace "EnableOSD").
+
+2006 03 02:
+    1. Test MP4 loopback, OK.
+    2. Rewrite funtion for setting video windows.
+    3. Add lock to protect GFX engine.
+    4. Add command "EnableOSD".
+
+2006 03 01:
+    1. Update SWChou's new VPE library to fix the rotation problem.
+    2. Add MP4 library.
+    3. Add condition testing function so that semaphore-down function
+       can be called in interrupt service.
+
+2006 02 28:
+    1. Fix some rotate funtions in vpelib.
+
+2006 02 27:
+    1. Add sensor rotation and LCM rotation.
+    2. Add video synthesize for image from sensors and remote phone.
+    3. Add function to evaluate scaling factor since there is some
+       size is not accessable by scaling machanism.
+
+2006 02 24:
+    1. Command ClearOSD is OK.
+    2. Use 2D library to copy captured images.
+
+2006 02 23:
+    1. Update libraries caplib.a & i2clib.a (from PTMu).
+    2. Remove packet buffer to reduce the memory used.
+
+2006 02 22:
+    1. Serious bug fixed: old thread code (tt_reg_load_in_svc) may
+       use too large stack, which may cause a fatal error.
+    2. Move the allocate function (for large buffer) to a single file.
+    3. Add capture thread. "capture thread" captures video, converts
+       video by VPE and draws video by LCM.
+
+2006 02 21:
+    1. Test encode/decode amr, OK.
+    2. Add recursive mutex (a lock that can not be locked by the
+       thread that owns the lock itself.)
+    3. Test video capture, OK. (dsplib, i2clib)
+
+2006 02 15:
+    1. Add audio library.
+    2. Add tt_usleep.
+    3. Add a simple script to find duplicated source file in dir Libs.	
+
+2006 02 14:
+    1. Protocol commands support OSD is OK.
+    2. Bug fixed: memory may be lost if system clock is from crystal.
+       (why?)
+    3. Bug fixed: if vpost clock is enabled after HIC interrupt is
+       received, vpost can not refresh LCM. (why?)
+
+2006 02 13:
+    1. Modify vpost code to remove LCD type relative code.
+    2. Halt CPU when no thread and isr is running. (thanks QFU)
+    3. TinyThread call irq handler directly.
+
+2006 02 11:
+    1. Add functions to get the CPU circles used by the scheduler
+       (CPU circles used by timer isr).
+    2. Move hic code from old message-task mode to multi-thread
+       mode.
+    3. Cache enabled. CPU circles used by scheduler isr:
+          Cache disabled: 5756
+          Cache write back: 336
+          Cache write through: 338
+
+2006 02 10:
+    1. Modify sysEnableIRQ / sysDisableIRQ to be used in multi-thread.
+    2. Fix a bug in MiniThread: some bits in cpsr and spsr not
+       restored correctly. (cpsr_c => cpsr_cxsf, spsr_c => spsr_cxsf)
+    3. Add message support between threads and interrupt handlers.
+    4. Add sleep functions for thread. (tt_sleep)
+
+2006 02 09:
+    1. Add thread scheduler based on timer in SysLib.
+       It's a real multi-thread system (name: MiniThread).
+    2. Add semaphore and mutex(lock) forr MiniThread.
+    3. sysSafePrintf does not enable irq if irq is disable
+       before calling.
+
+2006 02 08:
+    1. Modify message structure for more detailed message parameters.
+    2. Add reference count to memory pool functions.
+
+2006 01 23:
+    1. Add functions to evaluate UPLL/APLL automatically according
+       to the value of FIN and FOUT.
+    2. Add vpost task.
+    3. Fix a bug in vpost library, which caused one useless interrupt
+       after vpost was triggered.
+    4. Change firmware to scattered format, so that some global data
+       that is not required to be set to zero will not be initialized.
+       In this way, it will save many time before main() is called.
+	   
+
+*/
+

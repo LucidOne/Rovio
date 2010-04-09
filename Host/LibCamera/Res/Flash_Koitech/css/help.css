@@ -1,0 +1,107 @@
+/* Copyright (C) 2008 WowWee Group Ltd. */
+/* Author: Josh Savage */
+
+body {
+	/*background-color: #3C3C3C;*/
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	background-color: white;
+	color: #ffffff;
+	margin: 0;
+	padding: 5px;
+}
+h1 {
+	font-size: 12pt;
+	/*background-color: #218AD5;*/
+	background-color: rgb(43,43,43);
+	margin: 0;
+	padding: 10px 0 10px 5px;
+	border-bottom: 1px solid #ffffff;
+}
+h2 {
+	font-size: 11pt;
+	/*background-color: rgb(150,150,150);*/
+	background-color: #218AD5;
+	margin: 0;
+	padding: 10px 0 10px 5px;
+}
+h3 {
+	font-size: 11pt;
+	margin: 0;
+	padding: 5px 0 5px 0;
+	color: rgb(50,50,50);
+}
+p, li, a, th, td {
+	font-size: 10pt;
+	color: rgb(50,50,50);
+}
+#rot_left, #rot_right, #move_forward, #move_back, #move_right, #move_left, #joystick, #savehome, #home
+{
+	position: relative;
+	top: 0; left: 0;
+	padding: 0;
+}
+.online_error, .online_ok, .online_unknown {
+	background: url('../img/main_images.gif') no-repeat top left;
+	width: 13px; height: 13px;
+}
+.online_ok {
+	background-position: -206px -1773px;
+}
+.online_error {
+	background-position: -206px -483px;
+}
+.online_unknown {
+	background-position: -824px -1872px;
+}
+table {
+	border-collapse: collapse; border-spacing: 0;
+	padding: 0;
+	margin: 0 0 0 5px;
+	border: 1px solid rgb(220,220,220);
+}
+
+td {
+	vertical-align: top;
+}
+th {
+	font-weight: bold; 
+	padding: 5px 0 5px 0;
+	text-align: left;
+	background-color: rgb(220,220,220);
+}
+.tableheader {
+	font-weight: bold; 
+}
+
+a, a:visited {
+	color: #218AD5;
+	text-decoration: none;
+}
+
+a:hover {
+	font-weight: bold;
+	color: #218AD5;
+	text-decoration: none;
+}
+.indexlinks div
+{
+	margin: 5px 0 5px 5px;
+	
+}
+.selectedNav 
+{
+	font-weight: bold;
+	text-decoration: underline;
+}
+.selectedNav a 
+{
+	text-decoration: underline;
+}
+
+
+.page_nav 
+{
+	float: right;
+	margin-right: 5px;
+}
+

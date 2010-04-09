@@ -1,0 +1,164 @@
+﻿<html>
+<head>
+<script>
+
+function DownLoadEx(oXHR, sUrl, sPostData, sFun)
+{
+	var xhr = oXHR;
+
+	if (xhr == null)
+	{
+		try {xhr = new XMLHttpRequest();}
+		catch (e) {xhr = null;}
+	}
+	if (xhr == null)
+	{
+		try {xhr = new ActiveXObject("Msxml2.XMLHTTP");}
+		catch (e) {xhr = null;}
+	}
+	if (xhr == null)
+	{
+		try {xhr = new ActiveXObject("Microsoft.XMLHTTP");}
+		catch (e) {xhr = null;}
+	}
+	
+	xhr.open ("POST", sUrl, true);
+	xhr.onreadystatechange = function ()
+	{
+		if (xhr.readyState == 4 && xhr.status == 200)
+		{
+			sFun (xhr.responseText);
+		}
+	}
+	xhr.send (sPostData);
+
+	return xhr;
+}
+
+
+function DownLoad(sUrl, sPostData, sFun)
+{
+	return DownLoadEx(null, sUrl, sPostData, sFun);
+}
+
+function onRobotCommandOK(s)
+{
+}
+
+function onRobotCommand(iAction)
+{
+	function hex(v)
+	{
+		var s = "00" + v.toString(16);
+		s = s.substr(s.length - 2);
+		return s;
+	}
+
+	var iSpeed = (iAction == 0x00 ? 0 : 1);
+
+	DownLoad("/rev.cgi",
+		"JsObj=sResponse&Cmd=LED&which=6&color=yellow&Cmd=mcu&parameters="
+			+ "11 4D 4D 00 01 00 53 48 52 54 00 01 00 01".replace(/\s/g, "")
+			+ hex(iAction) + hex(iSpeed)
+			+ "00 00".replace(/\s/g, ""),
+		onRobotCommandOK);
+	return false;
+}
+
+function onRobotStop()
+{
+	return onRobotCommand(0x00);
+}
+function onRobotForward()
+{
+	return onRobotCommand(0x01);
+}
+function onRobotBackward()
+{
+	return onRobotCommand(0x02);
+}
+function onRobotStrafeLeft()
+{
+	return onRobotCommand(0x03);
+}
+function onRobotStrafeRight()
+{
+	return onRobotCommand(0x04);
+}
+function onRobotLeft()
+{
+	return onRobotCommand(0x05);
+}
+function onRobotRight()
+{
+	return onRobotCommand(0x06);
+}
+function onRobotForwardLeft()
+{
+	return onRobotCommand(0x07);
+}
+function onRobotForwardRight()
+{
+	return onRobotCommand(0x08);
+}
+function onRobotBackwardLeft()
+{
+	return onRobotCommand(0x09);
+}
+function onRobotBackwardRight()
+{
+	return onRobotCommand(0x0A);
+}
+
+var index = 0;		
+function ld_img()
+{
+	document.getElementById('cam').src = "/Jpeg/CamImg" + (index++) + ".jpg"
+}
+
+function rc()
+{
+	if(this.readyState == "complete")
+		setTimeout("ld_img()", 80);
+}
+
+function start()
+{
+	if (navigator.appName == "Netscape")
+	{
+		document.getElementById('cam').src = "/GetData.cgi";
+	}
+	else
+	{
+		document.getElementById('cam').onreadystatechange=rc;
+		ld_img();
+	}
+}
+</script>
+</head>
+<body onload="start();">
+	<table>
+		<tr>
+			<td align="center">
+				<a onclick="javascript:return onRobotLeft();">↙</a>
+				<a onclick="javascript:return onRobotForward();">↑</a>
+				<a onclick="javascript:return onRobotRight();">↘</a>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<a onclick="javascript:return onRobotStrafeLeft();">←</a>
+				<a onclick="javascript:return onRobotStop();">⊙</a>
+				<a onclick="javascript:return onRobotStrafeRight();">→</a>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<a onclick="javascript:return onRobotBackward();">↓</a>
+			</td>
+		</tr>
+	</table>
+	<img id="cam" src="" />
+</body>
+</html>
+

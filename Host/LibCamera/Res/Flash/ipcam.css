@@ -1,0 +1,127 @@
+.dir_body {
+	background: white;
+	font-family: arial;
+}
+
+.dir_name {
+	font-family: arial;
+	font-size: 16pt;
+}
+
+.dir_links a {
+	display: block;
+	font-family: arial;
+	font-size: 12pt;	
+}
+
+.dir_links a:hover {
+	display: block;
+	font-family: arial;
+	font-weight: bold;
+	font-size: 12pt;
+}
+
+#dir_debug {
+	display: none;
+}
+
+.tab_name {
+	font-family: arial;
+	font-size: 16pt;
+}
+
+
+.tab_body {
+	background: white url("body_right_bottom.jpg") no-repeat fixed right bottom;
+	font-family: arial;
+}
+
+.tab_info, .tab_logs {
+	border-width: 1px;
+	border-style: solid;
+	border-color: darkcyan;
+	border-collapse: collapse;
+}
+
+.tab_content, .tab_title {
+	background-color: lightcyan;
+	border-width: 1px;
+	border-style: solid;
+	empty-cells: show;
+	border-color: lightblue;
+}
+
+.tab_input{
+	border-width: 1px;
+	border-style: solid;
+	border-color: lightblue;
+	width: 240px;
+}
+.tab_input:hover {
+	border-color: green;
+}
+
+.tab_submit {
+	float:right;
+}
+
+.tab_button {
+}
+
+.tab_control {
+	font-size: 16px;
+}
+
+
+.progress_no {
+	background-color: lightcyan;
+	border-width: 1px;
+	border-style: solid;
+	empty-cells: show;
+	border-color: lightblue;
+}
+
+.progress_yes {
+	background-color: #00BFFF; 
+	border-width: 1px;
+	border-style: solid;
+	empty-cells: show;
+	border-color: lightblue;
+}
+
+
+.debug_info {
+	display: none;
+	background-color: lightcyan;
+}
+
+#control select {
+	display: block;
+	width: 130pt;
+}
+
+#control #Brightness {
+	display: none;
+}
+
+#control #Contrast {
+	display: none;
+}
+
+#control #Saturation {
+	display: none;
+}
+
+#control #Hue {
+	display: none;
+}
+
+#control #Sharp {
+	display: none;
+}
+
+#control {
+	float: left;
+}
+
+

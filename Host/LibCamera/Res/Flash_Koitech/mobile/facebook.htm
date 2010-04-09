@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Rovio Facebook</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Josh Savage">
+    <meta name="copyright" content="WowWee Group Ltd.">
+
+    <script type="text/javascript" src="../lib/rovio_mobile.js"></script>
+
+    <link rel="stylesheet" href="../css/mobile.css" type="text/css" media="screen" />
+</head>
+<body>
+        <img id="cmd_frame" src="" style="display: none;" />
+        <table class="movement_btns" style="width: 475px;">
+            <tr>
+                <td style="width: 200px;">
+                    <div id="camera_container" style="width: 320px; height: 240px;">
+                        <script>
+                            if(navigator.appName != "Microsoft Internet Explorer"){
+                                document.write ('<img id="oCamCtl" src="../GetData.cgi?' + Math.floor (10000 * Math.random ()) + '" width="320px" height="240px" />');   
+                            } else {
+                                document.write ('<img id="oCamCtl" src="../Jpeg/CamImg' + Math.floor (10000 * Math.random ()) + '.jpg" width="320px" height="240px" />');
+                                setInterval("$('oCamCtl').src='../Jpeg/CamImg' + Math.floor (10000 * Math.random ()) + '.jpg';", 500);
+                            }
+                        </script>
+                    </div>
+                </td>
+                <td valign="top" style="padding-left: 2px; width: 150px;">
+                    <a id="rot_left" onclick="javascript: selectBtn(this); move(this.id);" style="padding-left: 9px;"><img src="../img/btns/rotate_left_sml.gif" /></a>
+                    <a id="move_forward" onclick="javascript: selectBtn(this); move(this.id);"><img src="../img/btns/arrow_up.gif" /></a>
+                    <a id="rot_right" onclick="javascript: selectBtn(this); move(this.id);"><img src="../img/btns/rotate_right_sml.gif" /></a>
+                    <br />
+                    <a id="move_left" onclick="javascript: selectBtn(this); move(this.id);" style="padding-left: 9px;"><img src="../img/btns/arrow_left.gif" /></a>
+                    <a id="move_back" onclick="javascript: selectBtn(this); move(this.id);"><img src="../img/btns/arrow_down.gif" /></a>
+                    <a id="move_right" onclick="javascript: selectBtn(this); move(this.id);"><img src="../img/btns/arrow_right.gif" /></a>
+                    <br />
+                    <a id="godock" onclick="javascript: selectBtn(this); goDock();"><img src="../img/btns/mobile_home.gif" width="30px;" /></a>
+                    <a id="stop" onclick="javascript: selectBtn(this); stop();" style="padding-left: 2px;"><img src="../img/btns/mobile_stop.gif" width="30px;" /></a>
+                    <a id="cam" onclick="javascript: selectBtn(this); move(this.id);"  style="padding-left: 2px;"><img src="../img/btns/rovio_mobile_cam.gif" width="30px;" /></a>
+                    <a id="snapshot" onclick="javascript: selectBtn(this); sendPhoto()" ><img src="../img/btns/mobile_photo.gif" width="30px;" /></a>
+                    <br />
+                    <div style="padding-top: 3px;">
+                    <select id="selectpath" name="selectpath"></select>
+                    <input type="button" value="GO" onclick="javascript: playPath($('selectpath').value);" />
+                    </div>
+                    <div style="padding-top: 3px;">
+                    <select id="video_quality" style="width: 65px"><option value="0">Low</option><option value="1">Med</option><option value="3">High</option></select>
+                    <input type="button" value="UPDATE" onclick="javascript: updateVideo($('video_quality').value)" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <script>
+            function sendCmd(url, postData, rtn_function){
+                request(url, postData, rtn_function);
+            }
+            refreshPathList();
+            /*params = 'Cmd=ChangeResolution.cgi&ResType=0';
+            params += '&Cmd=ChangeCompressRatio.cgi&Ratio=0';
+            params += '&Cmd=ChangeFramerate.cgi&Framerate=0';
+            request('../Cmd.cgi', params, doNothing);*/
+        </script>
+</body>
+</html>

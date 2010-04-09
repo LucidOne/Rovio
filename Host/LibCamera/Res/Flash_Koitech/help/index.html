@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Navigation and neck controls</title>
+<link rel="stylesheet" type="text/css" href="../css/help.css" />
+</head>
+<body style="padding: 0;">
+<script>
+    var lastItem = -1;
+    function selectNavItem(item){
+        if(lastItem != -1){
+            document.getElementById('nav_' + lastItem).className = 'unselectedNav';
+        }
+        document.getElementById('nav_' + item).className = 'selectedNav';
+        lastItem = item;
+    }
+</script>
+<h1>Rovio Help</h1><table style="height: 660px; margin: 0; width: 100%; border: none;" cellpadding="0" cellspacing="0">
+    <tr>
+        <td style="width: 210px; background-color: rgb(230,230,230); " class="indexlinks">
+            <h2>Contents</h2>
+              <div id="nav_1"><a href="Rovio-Welcome.html" target="mainhelpframe">Welcome</a></div>
+              <div id="nav_2"><a href="Rovio-NavigationControls.html" target="mainhelpframe">Navigation controls</a></div>
+              <div id="nav_3"><a href="Rovio-CameraControls.html" target="mainhelpframe">Camera controls </a></div>
+              <div id="nav_4"><a href="Rovio-CameraCaptureControl.html" target="mainhelpframe">Camera capture control</a></div>
+              <div id="nav_5"><a href="Rovio-HeadlightControl.html" target="mainhelpframe">Headlight control </a></div>
+              <div id="nav_6"><a href="Rovio-AuxiliaryControls.html" target="mainhelpframe">Auxiliary controls</a> </div>
+              <div id="nav_7"><a href="Rovio-Indicators.html" target="mainhelpframe">Indicators</a></div>
+              <div id="nav_8"><a href="Rovio-SettingsMain.html" target="mainhelpframe">Settings</a></div>
+              <!---
+              <div id="nav_9"><a href="Rovio-SettingsVideo.html" target="mainhelpframe">Video</a></div>
+              <div id="nav_10"><a href="Rovio-SettingsMovement.html" target="mainhelpframe">Movement</a></div>
+              <div id="nav_11"><a href="Rovio-SettingsPhoto.html" target="mainhelpframe">Photo</a></div>
+              <div id="nav_12"><a href="Rovio-SettingsSecurity.html" target="mainhelpframe">Security</a></div>
+              <div id="nav_13"><a href="Rovio-SettingsNetwork.html" target="mainhelpframe">Network</a></div>
+              <div id="nav_14"><a href="Rovio-SettingsDomain.html" target="mainhelpframe">Domain</a></div>
+              <div id="nav_15"><a href="Rovio-SettingsSystem.html" target="mainhelpframe">System</a></div>
+              --->
+        </td>
+        <td>
+            <iframe name="mainhelpframe" src="Rovio-Welcome.html" border="0" frameborder="0" style="width: 100%; border: none; margin: 0; height: 660px;"></iframe>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

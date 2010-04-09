@@ -1,0 +1,71 @@
+
+.SUFFIXES : .x .o .c .s
+
+MY_TARGET = TestBoa
+MY_LDFLAG = -L../../../../libhttp/Lib/arm -lhttpssl
+MY_CFLAG = -I../../../../libhttp/Inc -DEMBED
+MY_SOURCE = TestBoa.c
+
+BUILD_ROOT = $(shell file="$$HOME/.arm_elf_gcc_root"; if test -f "$$file"; then cat "$$file"; fi)
+ROMDISK_ROOT = $(shell file="$$HOME/.romdisk_root"; if test -f "$$file"; then cat "$$file"; fi)
+
+PATH:=$(BUILD_ROOT)/bin:$(PATH)
+gcc_lib=${BUILD_ROOT}/arm-elf/lib
+gcc_lib1=${BUILD_ROOT}/lib/gcc-lib/arm-elf/3.0/
+gcc_include=${BUILD_ROOT}/arm-elf/inc
+
+CC=arm-elf-gcc -I${gcc_include} ${MY_CFLAG} -O1 -c \
+	-fsigned-char -march=armv4 -mtune=arm7tdmi -mapcs-32
+AS=arm-elf-as
+LD=arm-elf-ld
+
+WEC_LDFLAGS = -L${gcc_lib} -L${gcc_lib1} -T${gcc_lib}/elf2flt.ld
+
+
+
+OBJS = $(patsubst %.c,%.o,\
+	$(patsubst %.cpp,%.o,\
+	$(patsubst %.c++,%.o,\
+	$(patsubst %.cc,%.o,\
+	$(MY_SOURCE)))))
+
+
+LIBS= --start-group 
+
+
+LIBS += ${MY_LDFLAG}
+
+LIBS+= -lc -lgcc --end-group
+
+all: $(MY_TARGET).x
+	elf2flt -s 229376 -o $(MY_TARGET).flat $(MY_TARGET).x >/dev/null 2>&1
+	#flthdr -z $(MY_TARGET).flat
+	cp $(MY_TARGET).flat ${ROMDISK_ROOT}/bin/$(MY_TARGET)
+	chmod 777 ${ROMDISK_ROOT}/bin/$(MY_TARGET)
+	genromfs -f romfs.img  -d  ${ROMDISK_ROOT}
+	rm -f romfs.zip
+	zip -9 romfs.zip romfs.img
+
+$(MY_TARGET).x: $(OBJS) 
+	$(LD) -o $(MY_TARGET).x $(WEC_LDFLAGS) $(OBJS) $(LIBS)
+	rm -f $(MY_TARGET).x
+	$(LD) -o $(MY_TARGET).x $(WEC_LDFLAGS) -r -d $(OBJS) $(LIBS) -Map $(MY_TARGET).map
+
+.c.o:
+	$(CC) -o $*.o $*.c
+
+.s.o:
+	$(AS) -ahld -o $*.o $*.s > NULL
+	del NULL
+
+
+clean:
+	rm -f *.o
+	rm -f *.x  *.~c
+	rm -f *.flat
+	rm -f *.map
+	rm -f romfs.img romfs.zip
+	rm -f $(OBJS)
+	rm -f $(MY_TARGET)
+
+.PHONY : $(MY_TARGET).x

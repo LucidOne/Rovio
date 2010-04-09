@@ -1,0 +1,32 @@
+.SUFFIXES : .x .o .c .s
+	
+MY_TARGET = jpegcmp
+MY_LDFLAG = -ljpeg -L../../../../libCmpImg/Lib/linux_i386 -lcmpimg
+MY_CFLAG = 
+MY_SOURCE = cmp_jpg.c extract.c JpegCmp.c wrbmp.c
+
+# link include
+
+LDFLAGS = $(MY_LDFLAG)
+
+CFLAGS = $(MY_CFLAG)
+
+CC = gcc
+
+OBJS = $(patsubst %.c,%.o,\
+       $(patsubst %.cpp,%.o,\
+       $(patsubst %.c++,%.o,\
+       $(patsubst %.cc,%.o,\
+       $(MY_SOURCE)))))
+
+all:$(OBJS)
+	$(CC) -o $(MY_TARGET) $(OBJS) $(LDFLAGS)
+
+.o: .c
+		$(CC) $*.c -c -o $*.
+
+clean:
+	rm -f $(OBJS)
+   	
+	
+

@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="author" content="ChenXiaohui" />
+<title>IPCam</title>
+<link rel="stylesheet" href="ipcam.css" type="text/css" media="all"  />
+<script type="text/javascript" src="ipcam.js"></script>
+<script type="text/javascript">
+function onSetTime(s){	ConfigEnd();}
+function onGetVer(s){	eval(s);
+	$('version').innerHTML = sVer.Version;}
+var iDateLoad_Server_InMSec = 0;
+var iDateLoad_Server_Zone_InMSec = 0;
+var oDateLoad = null;
+function onGetTime(s)
+{	
+    eval(s);
+	var fm = document.forms['time'];	
+	iDateLoad_Server_InMSec = parseInt(sTime.Sec1970, 10) * 1000;
+	iDateLoad_Server_Zone_InMSec = parseInt(sTime.TimeZone, 10) * 60 * 1000;
+	oDateLoad = new Date();
+	setTimeout("ShowServerDate();", 0);
+}
+function Add_0(s){	s = "00" + s;
+	return s.substr(s.length - 2);}
+function ShowServerDate(){
+	var oDateCur = new Date();
+	var oDateCur_Server = new Date(oDateCur - oDateLoad + iDateLoad_Server_InMSec - iDateLoad_Server_Zone_InMSec);	
+	var iDateLoad_Server_Zone_InMinute = Math.abs (Math.floor(iDateLoad_Server_Zone_InMSec / 60000));
+	var iDateLoad_Server_Zone_InHour = Math.floor (iDateLoad_Server_Zone_InMinute / 60);
+	iDateLoad_Server_Zone_InMinute -= iDateLoad_Server_Zone_InHour * 60;
+	var sTZ_Str = "GMT" + (iDateLoad_Server_Zone_InMSec > 0 ? '-' : '+')
+		+ Add_0 ("" + iDateLoad_Server_Zone_InHour) + ":"
+		+ Add_0 ("" + iDateLoad_Server_Zone_InMinute);	
+	$('time_show').innerHTML =
+		Add_0(oDateCur_Server.getUTCMonth() + 1) + "/"
+		+ Add_0(oDateCur_Server.getUTCDate()) + "/"
+		+ oDateCur_Server.getUTCFullYear() + " "
+		+ Add_0(oDateCur_Server.getUTCHours()) + ":"
+		+ Add_0(oDateCur_Server.getUTCMinutes()) + ":"
+		+ Add_0(oDateCur_Server.getUTCSeconds()) + "  "
+		+ sTZ_Str;
+	delete oDateCur;	delete oDateCur_Server;
+	setTimeout("ShowServerDate();", 1000);}
+function GetTimeInSec1970(){	fm = document.forms['time'];
+	var asDate = $('set_date').value.split('/');
+	var asTime = $('set_time').value.split(':');
+	var iTimeZone = parseInt ($('set_timezone').value, 10);
+	if (asDate.length != 3 || asTime.length != 3)		return null;
+	for (var i=0; i<3; i++)	{
+		asDate[i] = parseInt(asDate[i], 10);
+		if (isNaN(asDate[i])) return null;
+		asTime[i] = parseInt(asTime[i], 10);
+		if (isNaN(asTime[i])) return null;	}
+	asDate[0]--;
+	if (asDate[0] < 0 || asDate[0] > 11) return null;
+	if (asDate[1] < 0 || asDate[1] > 31) return null;
+	if (asTime[0] < 0 || asTime[0] >= 24) return null;
+	if (asTime[1] < 0 || asTime[1] >= 60) return null;
+	if (asTime[2] < 0 || asTime[2] >= 60) return null;
+	if (iTimeZone < -720 || iTimeZone > 780) return null;
+	var oAdjustDate = { local: new Date(asDate[2], asDate[0], asDate[1], asTime[0], asTime[1], asTime[2]),
+						utc: Date.UTC(asDate[2], asDate[0], asDate[1], asTime[0], asTime[1], asTime[2]) };
+	return oAdjustDate;}
+function SetTime(o){
+	var oAdjustDate = GetTimeInSec1970();
+	if (oAdjustDate == null)	{
+		alert("Error date and time format.\n\nExample:\n	Date: 11/20/2002\n	Time: 14:23:32TimeZone: GMT+08:00");
+		return false;	}
+	o.TimeZone.value = parseInt ($('set_timezone').value, 10);
+	o.Sec1970.value = Math.floor(oAdjustDate.utc.valueOf() / 1000) + 60 * o.TimeZone.value;
+	delete oAdjustDate;	return true;}
+function FillRealDate(){
+	if ($('autotime').checked)	{
+		var oDateCur = new Date();
+		$('set_date').value = Add_0(oDateCur.getMonth() + 1) + "/" + Add_0(oDateCur.getDate()) + "/" + oDateCur.getFullYear();
+		$('set_time').value = Add_0(oDateCur.getHours()) + ":" + Add_0(oDateCur.getMinutes()) + ":" + Add_0(oDateCur.getSeconds());
+		$('set_timezone').value = oDateCur.getTimezoneOffset();
+		delete oDateCur;	}
+	setTimeout("FillRealDate();", 1000);}
+function ClickAuto(o){	var bEnable = ! o.checked;
+	InputEnable($('set_date'),bEnable);
+	InputEnable($('set_time'),bEnable);
+	InputEnable($('set_timezone'),bEnable);}
+function onPageLoad()
+{	
+    ClickAuto($('autotime'));
+	DownLoad("/GetTime.cgi", "JsObj=sTime", onGetTime);
+	DownLoad("/GetVer.cgi", "JsObj=sVer", onGetVer);
+	setTimeout("FillRealDate();", 0);
+}
+</script>
+</head>
+<body class="tab_body" onload="javascript:onPageLoad();">
+<h1 class="tab_name">Date & Time</h1>
+<form name="time" action="/SetTime.cgi" onsubmit="javascript:if (SetTime(this)) return FormSubmit(this, onSetTime); else return false;">
+	<table class="tab_info">
+		<tr>			<td class="tab_title" colspan='2'>Server Version:</td>
+			<td class="tab_content" id='version'>&nbsp;</td>		</tr>
+		<tr>			<td class="tab_title" colspan='2'>Server:</td>
+			<td class="tab_content" id='time_show'>&nbsp;</td>		</tr>
+
+		<tr>			<td class="tab_title" colspan='3'>
+				Input new time:
+				<span>
+					<input type='checkbox' id='autotime' checked="checked" onclick="javascript:ClickAuto(this);" />
+					Auto				</span>			</td>		</tr>
+		<tr>			<td class="tab_title">&nbsp;</td>
+			<td class="tab_title">Date</td>
+			<td class="tab_content"><input class="tab_input" id="set_date" /></td>		</tr>
+		<tr>			<td class="tab_title">&nbsp;</td>
+			<td class="tab_title">Time</td>
+			<td class="tab_content"><input class="tab_input" id="set_time" /></td>		</tr>
+		<tr>			<td class="tab_title">&nbsp;</td>
+			<td class="tab_title">Time Zone</td>
+			<td class="tab_content">
+				<select class="tab_input" id="set_timezone">
+					<script type="text/javascript">
+					var aTZInfo = ['-12:00', '-11:00', '-10:00', '-09:00', '-08:00', '-07:00', '-06:00', '-05:00', '-04:00', '-03:30', '-03:00', '-02:00', '-01:00', '+00:00', '+01:00', '+02:00', '+03:00', '+03:30', '+04:00', '+04:30', '+05:00', '+05:30', '+05:45', '+06:00', '+06:30', '+07:00', '+08:00', '+09:00', '+09:30', '+10:00', '+11:00', '+12:00', '+13:00'];
+					for (var i = 0; i < aTZInfo.length; i++)					{
+						var aTZ = aTZInfo[i].split(':');
+						var iTZValue = -(parseInt(aTZ[0], 10) * 60 + parseInt(aTZ[1], 10));
+						document.write ('<option value="' + iTZValue + '">GMT' + aTZInfo[i] + '<\/option>');	}
+					</script>	</select>	</td>	</tr>
+		<tr>	<td class="tab_title"  colspan='3'>
+				<input type='hidden' name="TimeZone" />
+				<input type='hidden' name="Sec1970" />
+				<input type='hidden' name="ShowTime" />   
+				<input class="tab_submit" type='submit' value="Adjust" />	</td>	</tr>	
+        </table></form>
+</body></html>

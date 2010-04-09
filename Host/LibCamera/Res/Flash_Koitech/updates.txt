@@ -1,0 +1,210 @@
+v5.02b5 to v5.03b Updates:
+---------------------------------------------------------------
+ 1.  Updated vlc/java help text
+ 2.  Online 'status' displays if portal connection is accessible or not
+ 3.  Java Applet updated for Mac support
+
+v5.02b4 to v5.02b5 Updates:
+---------------------------------------------------------------
+ 1.  Tries to get the RTSP stream on http port + 1 even if port is not set under network settings
+ 2.  Issue where wifi thread hangs after a long time fixed [BASE v5.3335]
+ 3.  Fixed crashing of Active-x of settings close [Active-x v1.0.0.9]
+
+v5.02b3 to v5.02b4 Updates:
+---------------------------------------------------------------
+ 1.  Sprited images for faster page loading
+ 2.  Fixed issue with settings panel not opening with VLC
+
+v5.02b2 to v5.02b3 Updates:
+---------------------------------------------------------------
+ 1.  Added Java Applet for audio from PC mic
+ 2.  Stops VLC player on open settings instead of clearing the container
+
+v5.02b1 to v5.02b2 Updates:
+---------------------------------------------------------------
+ 1.  Added VLC Player support (requires VLC player to be installed first with the Mozilla plugin option checked, then select VLC as the player in Rovio's video settings)
+ 2.  Added camera frequency to video options
+ 3.  Added lock to resize function while active-x is initializing
+
+v5.01 to v5.02b1 Updates:
+---------------------------------------------------------------
+ 1.  All CGI pages secured
+ 2.  RTSP stream secured
+ 3.  Upgraded ActiveX to 1.0.0.8 with authentication and better handling of DirectX object
+ 4.  Disabled firmware notification update button when updated
+ 5.  Fixed issue with audio stopping after a long time
+ 6.  Fixed audio/video sync issues
+ 7.  Network panel reports IP information even in DHCP mode
+ 8.  Trimmed SMTP field to prevent extra space causing errors
+
+v5.00 to v5.01 Updates:
+---------------------------------------------------------------
+ 1.  Fixed testpage.htm video stream
+
+v5.00b10 to v5.00 Updates:
+---------------------------------------------------------------
+ 1.  Updates to help script and terms
+
+v5.00b9 to v5.00b10 Updates:
+---------------------------------------------------------------
+ 1.  Increased USB buffer size to 16k. Fix to WiFi APs occasionally not showing in setup.
+
+v5.00b8 to v5.00b9 Updates:
+---------------------------------------------------------------
+ 1.  Fixed issue with ActiveX when using different local web ports
+ 2.  Fixed issue with verify internet access checkbox not updating
+ 3.  Updated WiFi ranges
+ 4.  Added note after firmware update instructing the user they may need to re-setup their Rovio
+ 5.  Added note after network changes instructing the user to make sure they are on the same network and recheck the network settings using the wizard
+ 6.  Adjusted position of quicktime note
+ 7.  Corrected battery status on the dock
+ 8.  Changed timing of MCU locks to try and prevent deadlocking
+ 9.  Upgraded to TrueTrack v5.13 with docking recovery routine
+
+
+v5.00b7 to v5.00b8 Updates:
+---------------------------------------------------------------
+ 1.  Help updated
+ 2.  Fixed bug when logging in as guest user
+
+v5.00b6 to v5.00b7 Updates:
+---------------------------------------------------------------
+ 1.  Help updated
+ 2.  Increased sound buffer and added NACK when buffer is full
+ 3.  Sets network mode automatically from the network selected
+ 4.  Replaced special characters with ASCII for network password
+ 5.  UPnP by enabled default
+ 6.  Memory pool enlarged for network scan
+ 7.  Removed strange values for 'Group' in GetWlan.cgi
+ 
+v5.00b5 to v5.00b6 Updates:
+---------------------------------------------------------------
+ 1.  Fixed popup bug
+ 2.  Updated help and reskinned it
+
+v5.00b4 to v5.00b5 Updates:
+---------------------------------------------------------------
+ 1.  Added Online status
+ 2.  Added verification of internet access
+ 3.  Added a check for new firmware
+ 4.  Added a box to select the network
+ 5.  Added Quicktime support (Safari only). Still defaults to M-JPEG as Quicktime won't work on some routers over the internet.
+ 6.  Fills password fields with fake password
+ 7.  Added network confirm key field
+ 8.  Added video player selection box for MJPEG & Quicktime (Safari only)
+ 9.  Adjusted video box size to fit better
+ 10. Added HTTP server side request
+ 11. Added a hardware restore to factory settings function:
+		To manually restore Rovio to its factory default settings using the hardware reset function:
+		- Make sure Rovio is off and disconnected from your computer.
+		- Turn Rovio on, and then wait for the LED power indicator on Rovio's neck to light up, and then turn it off. Repeat this step two more times.
+		- Turn Rovio on and leave it on. Rovio's LED power indicator cycles red, orange and then green a few times. Once the LED power indicator stops changing colors, Rovio will be restored to its default factory settings with the latest firmware you installed; any previously saved settings will be lost.
+
+v5.00b3 to v5.00b4 Updates:
+---------------------------------------------------------------
+ 1. Added UPnP support
+ 2. Added help icon to UPnP failed status
+
+v5.00b2 to v5.00b3 Updates:
+---------------------------------------------------------------
+ 1. Restoring over default settings issue resolved.
+ 2. Corrected LED colours. Nothing - Booting, Orange - Connecting/Can't connect, Green - Connected to network and ready, Red - user is connected
+ 3. Removed key length limit.
+
+v5.00b1 to v5.00b2 Updates:
+---------------------------------------------------------------
+ 1. Added DropData.cgi which stops mjpeg video streams by ID
+ 2. Added call to DropData.cgi on page unload which stops browser continuously streaming even though the tab has been closed.
+ 3. Added a call to re-establish connection after the video settings are changed. Fixes FF3.0 issues.
+ 4. Fixed bug with network password field not saving
+ 
+v5.00b to v5.00b1 Updates:
+---------------------------------------------------------------
+ 1. Bug fixed in WiFi driver that caused the main thread to be blocked.
+ 2. Quicktime support in firmware fixed but has not been implemented in the UI.
+ 
+v4.09b.1 to v5.00b Updates:
+---------------------------------------------------------------
+ 1. Added WPA beta support
+
+v4.09b to v4.09b1 Updates:
+---------------------------------------------------------------
+ 1. Fixed Safari layout issues with side panels
+ 2. Fixed forced MJPEG for ActiveX on all ports (accessible using index.htm?force_mpeg=1) 
+ 3. Fixed bug with update button not enabling when the port field is changed
+ 4. Changed input boxes to enable update button on keypress not onchange event
+ 5. Uses new ActiveX v1.0.0.6 which fixes the PC Mic not sending audio on ports other than 80
+ 6. Hovering over nav bar now shows nav strength not wifi strength 
+ 7. Added update log (updates.txt)
+
+v4.08 to v4.09b Updates:
+---------------------------------------------------------------
+ 1. Help Rovio-SettingsVideo.html frame rates updated to 1-30
+ 2.	Fixed maintain ratio sync bug
+ 3.	Battery warning doesn't appear if charging
+
+v4.07 to v4.08 Updates:
+---------------------------------------------------------------------
+ 1.  All update buttons are disabled until something related to it changes. They are disabled again once the update is successful.
+
+v4.06 to v4.07 Updates:
+---------------------------------------------------------------------
+ 1.  SMTP date issue fixed. Photo's are now sent with the correct date not 1970.
+
+v4.05 to v4.06 Updates:
+---------------------------------------------------------------------
+ 1.  Fixed bug with WEP128 key type always displaying as ASCII
+
+v4.04 to v4.05 Updates:
+---------------------------------------------------------------------
+ 1.  Fixed save network with no key. [WEP key has been removed from CGI response for security]
+
+v4.03 to v4.04 Updates:
+---------------------------------------------------------------------
+ 1.  Changed 'reset' to 'reset to default'
+ 2.  Added message to tell the user they have to have at least one user.
+ 3.  Moved layer to disable controls while settings is open down to enable help dialog
+ 4.  Disables authentication update button if no update is required
+
+v4.02 to v4.03 Updates:
+---------------------------------------------------------------------
+ 1.  Disable controls if settings panel is open
+ 2.  Added tooltips
+ 3.  Added winbond version
+ 4.  Fixed selection UI error
+ 5.  Fixed UI issue in Firefox 3.0
+ 6.  Added cancel prompt if user clicks stop while recording path
+ 7.  Uses new take picture command which is recorded in paths
+ 8.  Automatically puts head down if user tries to move while recording and displays
+ 9.  Fixed bug with network settings requiring an IP address in DHCP mode
+ 10. Fixed bug with page reload if in DHCP mode
+ 11. Fixed bug with guest mode
+ 12. Stops additional requests if authentication is required
+ 13. Added restore feedback when button is pressed not when function returns because it doesn't
+ 14. Changed frame-rate ranges to 1-30fps from 2fps-32fps
+ 15. Added return home confirmation when battery level is low
+ 16. Test Page: Added turn by angles, rotation keys, charging/charged battery states
+ 17. Fixed Mac display issue
+ 18. Rewrote request return function.
+ 19. Faster loading
+
+v4.01 to v4.02 Updates:
+------------------------------------------------
+ 1.	 Updates server time and time zone to users' PC so that photos have current time and date
+ 2.  IR checkbox bug fixed
+ 3.  Uses evolution's fixed rotation cgi command
+ 4.  Added link to latest firmware updates
+
+v4.0 to v4.01 Updates:
+------------------------------------------------
+ 1.  Removed battery and wifi warnings
+
+v3.97 to v4.0 Updates:
+---------------------------------------------------------------
+ 1.  Forces IE to update ActiveX
+ 2.  Added Facebook page
+ 3.	 Added NDS pages
+ 4.	 Updated design of mobile pages
+ 5.  Added battery status to IPhone page
+ 6.  Added paths to Mobile IE page
+ 7.	 Text changes (ad hoc etc)

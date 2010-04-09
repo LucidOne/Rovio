@@ -1,0 +1,686 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Rovio</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Josh Savage">
+    <meta name="copyright" content="WowWee Group Ltd.">
+    
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    
+    <script>if(navigator.platform == 'iPod' || navigator.platform == 'iPhone'){ window.location.href = 'mobile/iph.htm'; }
+    if(navigator.platform == 'WinCE' || navigator.platform == 'Series60'){ window.location.href = 'mobile/index.htm'; }
+    if(navigator.platform == 'Nitro'){ window.location.href = 'mobile/ds.htm';  }
+    </script>
+     
+    <script type="text/javascript" src="lib/proto_150rc1_sc_165_compressed.js" charset="ISO-8859-1"></script>
+    <script type="text/javascript" src="lib/tooltips.js" charset="ISO-8859-1"></script>
+    <script type="text/javascript" src="lib/help.js" charset="ISO-8859-1"></script>
+    <script type="text/javascript" src="lib/rovio.js" charset="ISO-8859-1"></script>
+    
+    <link rel="stylesheet" href="css/main.css" type="text/css" media="screen" />
+</head>
+<body onload="init();" onunload="closeStream();" onmousedown="hideToolTip()" onmouseup="bodyMouseUp()" onkeydown="keyboardDown(event);" onkeyup="keyboardUp(event);" onkeypress="keyboardPressed(event);" onResize="resizeCamera()"> 
+   <table>
+        <tr class="top_heading">
+            <td style="padding-left: 20px;"><img src="img/headingbar/logo.gif" /></td>
+            <td class="heading_bg"></td>
+            <td class="heading_btn">&nbsp;<div id="settings" onclick="openSettingsDialog();"></div></td>
+            <td class="heading_btn">&nbsp;<div id="help" onclick="openHelpDialog();"></div></td>
+            <td style="width: 126px; padding-right: 20px;"><a href="http://www.wowwee.com" target="_blank"><img src="img/headingbar/wowwee.gif" style="border: none;" /></a></td>
+        </tr>
+   </table>
+   <table>
+   <tr>
+   <td style="padding-left: 10px; vertical-align: top;">
+       <div style="padding-right: 8px;">
+       <table class="titlebar_bg" style="width: 100%">
+            <tr>
+                <td class="titlebar_end"><img src="img/titlebar/titlebar_left.gif" /></td>
+                <td><img class="status" src="img/text/status.gif" /></td>
+                <td class="status_box"><div id="status">Roaming</div></td>
+                <td style="width: 99%;">&nbsp;</td>
+                <td class="pad"><img class="nav" src="img/text/nav.gif" /></td>
+                <td><div id="nav_signal" class="signal0" /><div id="room_id" style="font-size: 10pt; color: rgb(230,230,230); position: relative; top: -5px;"></div></td>
+                <td class="pad"><img class="wifi" src="img/text/wifi.gif" /></td>
+                <td><div id="wifi_signal" class="signal0" /></td>
+                <td class="pad"><img class="battery" src="img/text/battery.gif" /></td>
+                <td><div id="battery_level" class="battery0"></div><div id="battery_charged"></div><div id="battery_charging"></div></td>
+                <td class="pad" id="td_online_status_txt"><img class="online" src="img/text/online.gif" /></td>
+                <td id="td_online_status"><div id="online_status" class="online_connecting" onclick="showHelp(online_status_help_id);"></div></td>
+                <td class="titlebar_end"><img src="img/titlebar/titlebar_right.gif" /></td>
+            </tr>
+        </table>
+        </div>
+        <div style="padding: 0px 0 0 0;">
+            <table id="camera_box">
+                    <tr>
+                        <td class="cam_tlc"><div style="width: 20px" /></td>
+                        <td class="cam_t">&nbsp;</td>
+                        <td class="cam_trc"><div style="width: 20px" /></td>
+                    </tr>
+                    <tr>
+                        <td class="cam_l"></td>
+                        <td id="cam_m" class="cam_m">&nbsp;</td>
+                        <td class="cam_r"></td>
+                    </tr>
+                    <tr>
+                        <td class="cam_blc"></td>
+                        <td class="cam_b"></td>
+                        <td class="cam_brc"></td>
+                    </tr>
+                </table>
+        </div>
+   </td>
+   
+   <td valign="top" style="padding-left: 5px;">
+                <div class="movement_panel">
+                    
+                    <div id="rot_left" class="ra" onmousedown="changeToClickedImg(this); startMoving(this.id,turn_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                    <div id="rot_right" class="ra" onmousedown="changeToClickedImg(this); startMoving(this.id,turn_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                    
+                    <div id="ir_container">
+                        <div id="ir_on"></div>
+                    </div>
+                    
+                    <div id="obstacle_container">
+                        <div id="obstacle_detected"></div>
+                    </div>
+                    
+                    <div style="top: -87px; height: 100px;">
+                        <div id="joystick_box">
+                            <div id="joystick"></div>
+                        </div>
+                        
+                        <div id="move_forward" class="move_arrow" onmousedown="changeToClickedImg(this); startMoving(this.id,movement_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="move_left" class="move_arrow" onmousedown="changeToClickedImg(this); startMoving(this.id,movement_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="move_right" class="move_arrow" onmousedown="changeToClickedImg(this); startMoving(this.id,movement_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="move_back" class="move_arrow" onmousedown="changeToClickedImg(this); startMoving(this.id,movement_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        
+                        <div id="rotr_03" class="dot" onmousedown="changeToClickedImg(this); move(this.id,rot_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="rotr_07" class="dot" onmousedown="changeToClickedImg(this); move(this.id,rot_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="rotr_11" class="dot" onmousedown="changeToClickedImg(this); move(this.id,rot_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="rotr_15" class="dot" onmousedown="changeToClickedImg(this); move(this.id,rot_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="rotl_11" class="dot" onmousedown="changeToClickedImg(this); move(this.id,rot_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="rotl_07" class="dot" onmousedown="changeToClickedImg(this); move(this.id,rot_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="rotl_03" class="dot" onmousedown="changeToClickedImg(this); move(this.id,rot_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                    </div>
+                    
+                </div>
+                <div id="cam_and_tabbed_panels">
+                <div id="cam_pos">
+                    <table>
+                        <tr>
+                            <td><div id="headlight" class="light" onclick="toggleClickedImg(this); headlight(isClicked(this));"></div></td>
+                            <td style="padding: 0 5px 0 15px;"><div id="cam_down" onclick="setCamPosTo('down');" class="cam"></div></td>
+                            <td><div id="cam_mid" onclick="setCamPosTo('mid');" class="cam"></div></td>
+                            <td style="padding: 0 15px 0 5px;"><div id="cam_up" onclick="setCamPosTo('up');" class="cam"></div></td>
+                            <td>
+                            <a id="fake_link" href="" onclick="return false"></a>
+                            <input type="image" id="snapshot" src="img/btns/snapshot.gif" onmouseout="this.src='img/btns/snapshot.gif'; hideToolTip();" onmouseover="this.src='img/btns/snapshot_over.gif'; showToolTipId(this.id);" onmousedown="this.src='img/btns/snapshot_down.gif';" onmouseup="this.src = 'img/btns/snapshot.gif';" onclick="openPhotoAndSend();" />                       
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="tabbed_panel">
+                    <table class="tabs">
+                        <tr>
+                            <td><div id="sidetab_1" class="sidet" onclick="selectTab(this);"></div></td>
+                            <td><div id="sidetab_2" class="sidet" onclick="selectTab(this);"></div></td>
+                            <td><div id="sidetab_3" class="sidet" onclick="selectTab(this);"></div></td>
+                        </tr>
+                    </table>
+                    <div class="setting_panel" style="color: White;">
+                        <div id="sidetab_1_container">
+                            <div id="path_btns">
+                                <table>
+                                <tr>
+                                <td valign="top">                                
+                                <div id="record" class="rec" onclick="recordClicked();"></div>
+                                <div id="delete_path" class="del" onclick="confirmDeletePath();" onmousedown="changeToClickedImg(this);" onmouseup="changeToUnclickedImg(this);"></div>
+                                <div id="reset" class="reset" onclick="resetAll();"  onmousedown="changeToClickedImg(this);" onmouseup="changeToUnclickedImg(this);"></div>
+                                <div id="stop" class="stop" onclick="stop();" onmousedown="changeToClickedImg(this);" onmouseup="changeToUnclickedImg(this);"></div>
+                                </td>
+                                <td valign="top">
+                                    <div id="paths"></div>
+                                </td>
+                                <td valign="top">
+                                    <div id="savehome" class="savehome" onclick="checkSaveHome();" onmousedown="changeToClickedImg(this);" onmouseup="changeToUnclickedImg(this);"></div>
+                                    <div id="home" class="home" onclick="checkDock();" onmousedown="changeToClickedImg(this);" onmouseup="changeToUnclickedImg(this);"></div>
+                                </td>
+                                </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="sidetab_2_container" style="display: none;">
+                            <table>
+                            <tr>
+                            <td valign="top">
+                            <div id="video_track" class="slider_track">
+                                <div id="video_handle" class="slider_handle"></div>
+                            </div>
+                            <div id="brightness_track" class="slider_track">
+                                <div id="brightness_handle" class="slider_handle"></div>
+                            </div>
+                            </td>
+                            <td valign="top" style="padding-left: 40px;">
+                                <div id="maintain_ratio" class="check_box" onclick="toggleClickedImg(this); maintainAspectRatio(isClicked(this));"><img src="img/text/maintain_ratio.png" style="padding-left: 20px;" /></div>
+                            </td>
+                            </tr>
+                            </table>
+                        </div>
+                        <div id="sidetab_3_container" style="display: none;">
+                            <table>
+                            <tr>
+                            <td valign="top">
+                            <div id="svol_track" class="slider_track">
+                                <div id="svol_handle" class="slider_handle"></div>
+                            </div>
+                            <div id="mvol_track" class="slider_track">
+                                <div id="mvol_handle" class="slider_handle"></div>
+                            </div>
+                            </td>
+                            </tr>
+                        </table>
+                        </div>
+    
+                    </div>
+                    
+                    <div id="sidetooltip" class="tooltip" onmouseover="hideToolTip()"></div>
+                    </div>
+                </div>
+                
+        </td>
+    </tr>
+    </table>
+    
+    <div id="activex_failure"></div>
+    <div id="camera_container"></div>
+    <div id="settings_dialog" style="display: none;">
+        <table class="settingstabs">
+            <tr>
+                <td><div id="settingtab_1" class="st" onclick="selectTab(this);"></div></td>
+                <td><div id="settingtab_2" class="st" onclick="selectTab(this);"></div></td>
+                <td><div id="settingtab_3" class="st" onclick="selectTab(this);"></div></td>
+                <td><div id="settingtab_4" class="st" onclick="selectTab(this);"></div></td>
+                <td><div id="settingtab_5" class="st" onclick="selectTab(this);"></div></td>
+                <td><div id="settingtab_6" class="st" onclick="selectTab(this);"></div></td>
+                <td><div id="settingtab_7" class="st" onclick="selectTab(this);"></div></td>
+                <td valign="bottom"><input type="image" src="img/btns/close.gif" onmouseover="this.src='img/btns/close_over.gif';" onmouseout="this.src='img/btns/close.gif';" onclick="closeSettingsDialog();" class="close_btn" /></td>
+            </tr>
+        </table>
+        <div id="settingtab_1_container" class="settingcontainer">
+            <table class="video_settings">
+                <tr>
+                <td colspan="2" class="tabheading">Video Settings <script>document.write(returnHelpBtn('video_settings_help'))</script></td>
+             </tr>  
+                <script>
+                if(isFF() || isSafari()){
+                    document.write('<tr>'+
+                            '<td>Player:</td>' +
+                            '<td><select id="video_player" onchange="$(\'video_save\').disabled = false; onVideoPlayerChanged()" style="width: 210px;">' +
+                            '<option value="2">MJPEG (Video only)</option>' +
+                            '<option value="3">VLC+Java (Video and audio)</option>' +
+                            '</select>' +
+                            '<div id="vlc_msg">Note: Audio for Rovio using Firefox, Chrome and Safari uses 3rd party VLC and Java plugins. For installation instructions and known issues <a href="http://www.wowweesupport.com/download/rovio/rovio_audio.htm" target="_blank" class="url">click here</a>.' +
+                            '</td></tr>');
+                }
+                </script>
+                <tr>
+                    <td>Resolution:</td>
+                    <td><select id="video_res" onchange="$('video_save').disabled = false;"><option value="0">176x144</option><option value="1">320x240</option><option value="2">352x288</option><option value="3">640x480</option></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Quality:</td>
+                    <td><select id="video_quality" onchange="$('video_save').disabled = false;"><option value="0">Low</option><option value="1">Med</option><option value="2">High</option></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Frame Rate:&nbsp;&nbsp;</td>
+                    <td><select id="video_fps" onchange="$('video_save').disabled = false;"><script>outputFrameRateOpts();</script></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Brightness:</td>
+                    <td><div id="video_btrack" class="slider_track"><div id="video_bhandle" class="slider_handle"></div></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Frequency:</td>
+                    <td><select id="video_freq" onchange="$('video_save').disabled = false;"><option value="0">Auto</option><option value="50">50 Hz</option><option value="60">60 Hz</option></select></td>
+                </tr>
+                <tr id="force_mjpeg_row" style="display: none;">
+                    <td>Force MJPEG:&nbsp;</td>
+                    <td><input id="video_force_mjpeg" type="checkbox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center" class="save_btns"><input type="button" id="video_save" onclick="saveVideoSettings();" value="Update" disabled="disabled" />
+                    <input type="button" id="video_cancel" onclick="$('video_save').disabled = false; resetVideoSettings();" value="Reset to default" />
+                    </td>
+                </tr>
+            </table>
+            
+        </div>
+        <div id="settingtab_2_container" class="settingcontainer">
+            <table>
+             <tr>
+                <td colspan="2" class="tabheading">Movement Settings <script>document.write(returnHelpBtn('movement_settings_help'))</script></td>
+             </tr>
+             <tr>
+                <td>Movement Speed:</td>
+                <td><div id="move_movetrack" class="slider_track"><div id="move_movehandle" class="slider_handle"></div></div>
+                </td>
+            </tr>
+            <tr>
+                <td>Turn Speed:</td>
+                <td><div id="move_turntrack" class="slider_track"><div id="move_turnhandle" class="slider_handle"></div></div>
+                </td>
+            </tr>
+            <tr>
+                <td>Angle Turn Speed:&nbsp;&nbsp;</td>
+                <td><div id="move_angletrack" class="slider_track"><div id="move_anglehandle" class="slider_handle"></div></div>
+                </td>
+            </tr>
+            <tr style="display: none;">
+                <td>Latency</td>
+                <td><div id="move_lattrack" class="slider_track"><div id="move_lathandle" class="slider_handle"></div></div>
+                </td>
+            </tr>
+            <tr>
+                <td>IR Radar:</td>
+                <td><input type="checkbox" id="move_ir" onchange="$('move_update').disabled = false;" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center" class="save_btns"><input type="button" id="move_update" onclick="updateMovementSettings();" value="Update" disabled="disabled" />
+                <input type="button" id="move_reset" onclick="$('move_update').disabled = false; resetMovementSettings();" value="Reset to default" />
+                </td>
+            </tr>
+            </table>
+        </div>
+        <div id="settingtab_3_container" class="settingcontainer">
+        <table>
+            <tr>
+                <td colspan="2" class="tabheading">Photo Settings <script>document.write(returnHelpBtn('photo_settings_help'))</script></td>
+             </tr>
+            <tr>
+                <td>Enable Email Photo:</td>
+                <td><input id="photo_enable" type="checkbox" onchange="$('photo_update').disabled = false;" /></td>
+            </tr>
+             <tr>
+                <td colspan="3" class="tabheading">SMTP Settings</td>
+             </tr>
+             <tbody id="photoFields">
+             <tr>
+                <td>SMTP Server:</td>
+                <td><input id="photo_server" type="text" onkeypress="$('photo_update').disabled = false;" /></td>
+                <td>&nbsp;e.g. mail.server.com</td>
+             </tr>
+             <tr>
+                <td>Port:</td>
+                <td><input id="photo_port" type="text" onkeypress="$('photo_update').disabled = false;" /></td>
+                <td>&nbsp;Default: 25</td>
+             </tr>
+             <tr>
+                <td>Username:</td>
+                <td><input id="photo_user" type="text" onkeypress="$('photo_update').disabled = false;" /></td>
+                <td>&nbsp;e.g. johndoe</td>
+             </tr>
+             <tr>
+                <td>Password:</td>
+                <td><input id="photo_pass" type="password" onkeypress="$('photo_update').disabled = false;" /></td>
+             </tr>
+             <tr>
+                <td>Confirm Password:</td>
+                <td><input id="photo_confirm" type="password" onkeypress="$('photo_update').disabled = false;" /></td>
+             </tr>
+             <tr>
+                <td colspan="2" class="tabheading">Email Settings</td>
+             </tr>
+             <tr>
+                 <td>Sender Email Address:</td>
+                 <td><input id="photo_sender" type="text" onkeypress="$('photo_update').disabled = false;" /></td>
+                 <td>&nbsp;e.g. john@domain.com</td>
+             </tr>
+             <tr>
+                <td>Receiver Email Address:&nbsp;&nbsp;</td>
+                 <td><input id="photo_receiver" type="text" onkeypress="$('photo_update').disabled = false;" /></td>
+                 <td>&nbsp;e.g. jane@domain.com</td>
+             </tr>
+             <tr>
+                <td>Email Subject:</td>
+                <td><input id="photo_sub" type="text" maxlength="50" onkeypress="$('photo_update').disabled = false;" /></td>
+                <td>&nbsp;e.g. Photo from Rovio</td>
+             </tr>
+             <tr>
+                <td valign="top">Email Body:</td>
+                <td><textarea rows="3" id="photo_body" onkeypress="$('photo_update').disabled = false;"></textarea></td>
+             </tr>
+             </tbody>
+             <tr>
+                <td class="save_btns" colspan="2"><input type="button" id="photo_update" onclick="saveSMTPSettings();" value="Update" />
+                <input type="button" id="photo_reset" onclick="$('photo_update').disabled = false; resetSMTPSettings();" value="Reset to default" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="width: 500px;"><br /><b>Note:</b> Rovio needs to have access to the internet through your wireless router to email a photo. Photos cannot be emailed in Ad hoc mode.</td>
+            </tr>
+            </table>
+        </div>
+        <div id="settingtab_4_container" class="settingcontainer">
+            <div class="tabheading">Security Settings <script>document.write(returnHelpBtn('security_settings_help'))</script></div>
+            <div>Enable User Authentication: <input type="checkbox" id="user_check" onclick="$('user_update_auth').disabled = (this.checked == user_check);" /> <input id="user_update_auth" type="button" value="Update" onclick="saveAuthenticationStatus();" disabled="disabled" /></div>
+            <div id="userAuthentication">
+            <div class="tabheading">User Accounts <script>document.write(returnHelpBtn('user_accounts_help'))</script></div>
+            <table id="user_list">
+                <tbody id="added_users">
+                </tbody>
+            </table>
+            <input id="add_new_user" value="Add New User" type="button" onclick="showNewUserForm();" />
+            <div id="user_form" style="display: none;">
+            <div id="user_form_hd" class="tabheading" style="font-weight: bold;">New User</div>
+            <table>
+                <tr><td colspan="2" id="user_error" class="error"></td></tr>
+                <tr><td>Username:</td><td><input id="user_name" type="text" /></td></tr>
+                <tr><td>Password:</td><td><input id="user_password" type="password" /></td></tr>
+                <tr><td>Confirm Password:</td><td><input id="user_confirm" type="password" /></td></tr>
+                <tr><td>Admin Access:</td><td><input id="user_admin" type="checkbox" /></td></tr>
+                <tr><td colspan="2" class="save_btns"><input id="add_user" value="Add User" type="button" onclick="addUser();" /> <input id="user_reset" value="Cancel" type="button" onclick="cancelUserForm();" /></td></tr>
+            </table>
+            </div>
+            </div>
+        </div>
+        
+        <div id="settingtab_5_container" class="settingcontainer">
+            <table>
+                <tr>
+                    <td colspan="2" class="tabheading">WiFi Settings <script>document.write(returnHelpBtn('wifi_settings_help'))</script></td>
+                </tr>
+                <tr>
+                    <td>SSID:</td>
+                    <td><input id="net_essid" name="ESSID" onkeypress="$('net_save').disabled = false; $('net_wifi_changed').checked = true;" />
+                    <input id="net_select" value="Select Network" onclick="openSelectNetworkBox()" type="button" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>MAC Address:</td>
+			        <td><input id="net_mac" maxlength="127" onkeypress="$('net_save').disabled = false; $('net_wifi_changed').checked = true;"/></td>
+                </tr>
+                <tr>
+                    <td>Mode:</td>
+                    <td>
+                        <select id="net_mode" name="Mode" onchange="$('net_save').disabled = false; $('net_wifi_changed').checked = true; if($('net_mode').value=='Ad-Hoc'){ $('net_key').disabled = true; $('net_confirm').disabled = true; } else { $('net_key').disabled = false; $('net_confirm').disabled = false; }">
+                            <option value="Managed">Infrastructure</option>
+                            <option value="Ad-Hoc">Ad hoc</option>
+                        </select>
+                    </td>
+                </tr>
+                <!--
+                <tr>
+                    <td>Channel:</td>
+                    <td><select id="net_channel" onchange="$('net_save').disabled = false;"><script type="text/javascript">outputChannelOpts();</script></select></td>
+                </tr>
+                -->
+                <tr>
+                    <td>Key:</td>
+                    <td>
+                    <input id="net_key" name="key" type="password" onkeypress="$('net_save').disabled = false; $('net_wifi_changed').checked = true;" onchange="$('net_key_changed').checked = true;" />
+                    <input id="net_key_changed" type="checkbox" style="display: none;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Confirm Key:</td>
+                    <td>
+                    <input id="net_confirm" name="key" type="password" onkeypress="$('net_save').disabled = false; $('net_wifi_changed').checked = true;" onchange="$('net_key_changed').checked = true;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Web Port:</td>
+                    <td><input id="net_port" name="Port" maxlength="10" onkeypress="$('net_save').disabled = false; $('net_wifi_changed').checked = true;" /> (default: 80)</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="tabheading">IP Setup <script>document.write(returnHelpBtn('ip_setup_help'))</script></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding-bottom: 3px;">
+                        <input id="net_ip_auto" type="radio" name="ip_setting" value="dhcp" onclick="$('net_save').disabled = false; $('net_wifi_changed').checked = true; updateIPFields()" />Automatically from DHCP
+                        <input id="net_ip_man" type="radio" name="ip_setting" value="manually" onclick="$('net_save').disabled = false; $('net_wifi_changed').checked = true; updateIPFields()" />Manually
+                    </td>
+                </tr>
+                <tbody id="IPFields">
+                <tr>
+                    <td>Rovio IP address:</td>
+                    <td><input id="net_ip" onkeypress="$('net_save').disabled = false; $('net_wifi_changed').checked = true;" /><input id="net_ip_hidden" type="hidden" /></td>
+                </tr>
+                <tr>
+                    <td>Subnet mask:</td>
+                    <td><input id="net_netmask" onkeypress="$('net_save').disabled = false; $('net_wifi_changed').checked = true;" /></td>
+                </tr>
+                <tr>
+                    <td>Default gateway:</td>
+                    <td><input id="net_gateway" onkeypress="$('net_save').disabled = false; $('net_wifi_changed').checked = true;" /></td>
+                </tr>
+                <tr>
+                    <td>DNS:</td>
+                    <td><input id="net_dns0" onkeypress="$('net_save').disabled = false; $('net_wifi_changed').checked = true;" /></td>
+                </tr>
+                </tbody>
+                <tr>
+                    <td colspan="2" class="tabheading">Internet Access <script>document.write(returnHelpBtn('internet_access_help'))</script></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding-bottom: 3px;">
+                        <input id="net_upnpenabled" type="radio" name="net_upnp_setting" value="dhcp" onclick="$('net_save').disabled = false; $('net_upnp_changed').checked = true; updateUPnPFields();" />Automatically open ports using UPnP
+                        <input id="net_upnpdisabled" type="radio" name="net_upnp_setting" value="manually" onclick="$('net_save').disabled = false; $('net_upnp_changed').checked = true; updateUPnPFields();" />Manually open ports
+                    </td>
+                </tr>
+                <!---
+                <tr>
+                    <td>UPnP enabled:</td>
+                    <td><input id="net_upnpenabled" type="checkbox" onclick="$('net_save').disabled = false; $('net_upnpport').disabled = !this.checked;" /></td>
+                </tr>
+                --->
+                <tr>
+                    <td>Start port:</td>
+                    <td><input id="net_upnpport" onkeypress="$('net_save').disabled = false; $('net_upnp_changed').checked = true;" /> (default: 8168)</td>
+                </tr>
+                <tr>
+                    <td>External IP:</td>
+                    <td><input id="net_internetip" onkeypress="$('net_save').disabled = false;" /> <input id="net_getip_btn" value="Try to get External IP" type="button" onclick="tryToGetIP();" /> <script>document.write(returnHelpBtn('internet_ip_help'))</script></td>
+                </tr>
+                <tr>
+                    <td>Verify&nbsp;Internet&nbsp;Access:</td>
+                    <td><input id="net_verify_access" type="checkbox" onclick="$('net_save').disabled = false;" /></td>
+                </tr>
+                <tr>
+                    <td>Online status:</td>
+                    <td><div id="net_status"></div></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input id="net_include_status" type="checkbox" onclick="$('net_save').disabled = false;" /> Include in status bar</td>
+                </tr>
+                <tr>
+                    <td>External&nbsp;address:&nbsp;&nbsp;</td>
+                    <td><div id="net_external_address"></div></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center" class="save_btns">
+                    <input type="checkbox" id="net_wifi_changed" style="display: none;" />
+                    <input type="checkbox" id="net_upnp_changed" style="display: none;" />
+                    <input type="button" id="net_save" onclick="confirmSaveNetworkSettings();" value="Update" />
+                    <input type="button" id="net_reset" onclick="$('net_save').disabled = false; resetNetworkFields();" value="Reset to default" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="settingtab_6_container" class="settingcontainer">
+            <table>
+            <tr>
+                    <td colspan="2" class="tabheading">Dynamic Domain Settings <script>document.write(returnHelpBtn('dynamic_domain_settings_help'))</script></td>
+                </tr>
+                <tr>
+                        <td>Enable:</td>
+                        <td style="padding-bottom: 10px;" colspan="2"><input type="checkbox" id="dyn_enable" onclick="updateDynDomainFields();" onchange="$('dyn_update').disabled = false;" /></td>
+                    </tr>
+                <tbody id="DynDNSFields">
+                    <tr>
+                        <td style="width: 100px;">Service&nbsp;Provider:</td>
+                        <td><select id="dyn_service" onchange="$('dyn_update').disabled = false;">
+                            <option value="">-- Select a service --</option>
+                            <option value="dyndns">DynDNS</option>
+                            <option value="no-ip">No-IP</option>
+                            <option value="dnsomatic">DNS-O-Matic</option>
+                            </select></td>
+                        <td style="padding-left: 5px;"></td>
+                    </tr>
+                    <tr>
+                        <td>Domain:</td>
+                        <td><input id="dyn_domain" type="text" onkeypress="$('dyn_update').disabled = false;" /></td>
+                        <td style="padding-left: 5px;">Domain you want to access Rovio with (e.g. johndoe.myrovio.com)</td>
+                    </tr>
+                    <tr>
+                        <td>Username:</td>
+                        <td><input id="dyn_user" type="text" onkeypress="$('dyn_update').disabled = false;"  /></td>
+                    </tr>
+                    <tr>
+                        <td>Password:</td>
+                        <td><input id="dyn_pass" type="password" onkeypress="$('dyn_update').disabled = false;" /></td>
+                    </tr>
+                    <tr>
+                        <td>Confirm&nbsp;Password:</td>
+                        <td><input id="dyn_confirm" type="password" onkeypress="$('dyn_update').disabled = false;" /></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 80px;">Overwrite IP:</td>
+                        <td><input id="dyn_overwrite" type="checkbox" onclick="$('dyn_manualip').disabled = !(this.checked);" onchange="$('dyn_update').disabled = false;" /><br /><input id="dyn_manualip" type="text" onchange="$('dyn_update').disabled = false;" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="tabheading">Proxy Settings (optional) <script>document.write(returnHelpBtn('proxy_settings_help'))</script></td>
+                    </tr>
+                    <tr>
+                        <td>Server:</td>
+                        <td><input id="dyn_proxy" type="text" onkeypress="$('dyn_update').disabled = false;" /></td>
+                    </tr>
+                    <tr>
+                        <td>Port:</td>
+                        <td><input id="dyn_proxyport" type="text" onkeypress="$('dyn_update').disabled = false;" /></td>
+                    </tr>
+                    <tr>
+                        <td>Username:</td>
+                        <td><input id="dyn_proxyuser" type="text" onkeypress="$('dyn_update').disabled = false;" /></td>
+                    </tr>
+                    <tr>
+                        <td>Password:</td>
+                        <td><input id="dyn_proxypass" type="password" onkeypress="$('dyn_update').disabled = false;" /></td>
+                    </tr>
+                    <tr>
+                        <td>Confirm Password:</td>
+                        <td><input id="dyn_proxyconfirm" type="password" onkeypress="$('dyn_update').disabled = false;" /></td>
+                    </tr>
+                </tbody>
+                
+                <tr>
+                    <td></td>
+                    <td colspan="2" class="save_btns" style="text-align: left;">
+                    <input type="button" id="dyn_update" onclick="saveDynDNSSettings()" value="Update" />
+                    <input type="button" id="dyn_reset" onclick="$('dyn_update').disabled = false; resetDynDNSSettings()" value="Reset to default" />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="dyn_check" onclick="checkDynDNSStatus()" value="Check Status" style="width: 120px;" /><script>document.write(returnHelpBtn('dyndomain_status_help'))</script>
+                    </td>
+                </tr>
+            </table>
+        
+        </div>
+        <div id="settingtab_7_container" class="settingcontainer">
+            <div class="tabheading">Version: v<script>document.write(UI_VERSION)</script><script>document.write(returnHelpBtn('firmware_version_help'))</script><br />[ <div id="version" style="display: inline;"></div> ]</div> 
+            <div>Alert me when new firmware is available <input id="firmware_alert_box" type="checkbox" onclick="if(this.checked != firmware_alert){ $('firmware_alert_btn').disabled = false; } else { $('firmware_alert_btn').disabled = true; }" /> <input id="firmware_alert_btn" value="Update" type="button" onclick="saveFirmwareAlert()" disabled="disabled" /></div>
+            <div class="tabheading">Reboot System <script>document.write(returnHelpBtn('reboot_system_help'))</script></div>
+            <input type="button" value="Reboot" onclick="confirmReboot()" />
+            <div class="tabheading">Restore Default Settings <script>document.write(returnHelpBtn('restore_help'))</script></div>
+            <input type="button" value="Restore" onclick="confirmRestore()" />
+            <div>Warning: After you restore the default settings, Rovio will be reset to Ad hoc mode and its IP address will be changed to 192.168.10.18. You will need to reconnect using these network settings.</div>
+            <div class="tabheading">Update Firmware Image <script>document.write(returnHelpBtn('upload_firmware_help'))</script></div>
+            <form name="Upload" method="post" enctype="multipart/form-data" action="/Upload.cgi" onsubmit="return confirmFirmwareUpload(this);">
+            <input name="RedirectUrl" value="index.htm?reboot=1" type="hidden" />
+            <div>Select Firmware Image:&nbsp;&nbsp;<input class="tab_input" name="SourceFile" type="file" onchange="$('uploadNewFirmware').disabled = false;" />&nbsp;&nbsp;<input id="uploadNewFirmware" type="submit" value="Update" disabled="disabled" /></div>
+            <div>Note: The latest firmware image can be downloaded from the <a href="http://www.wowweesupport.com/product_item.php?cat=tech_tab&item=rovio" target="_blank" style="color: White;">Rovio support website</a>.</div>
+            </form>
+        </div>
+    </div>
+    <div id="reboot_dialog" style="position: absolute; top: 40%; left: 30%; width: 400px; border: 1px solid rgb(100,100,100); background-color: rgb(235,235,235); padding: 20px; display: none; z-index: 5000;">
+        <table><tr><td valign="top"><img src="img/misc/loading.gif" /></td><td style="padding-left: 10px;"><div id="reboot_text"><b>Rebooting Rovio, please wait...<br />Page will try to refresh in <label id="reboot_countdown">30</label> seconds.</b><br />If you have just updated the firmware, you might need to use the Rovio Setup wizard to reconfigure it on your wireless network.</div></td></tr></table>
+    </div>
+    <div id="rtspAuthBox" class="rtspAuthBox">
+        <p style="font-weight: bold">
+        Please re-enter your username and password to authenticate Rovio's video and audio stream.</p>
+        <table>
+        <tr><td>Username:</td><td style="padding-bottom: 5px;"><input id="rtsp_user" /></td></tr>
+        <tr><td>Password:&nbsp;&nbsp;</td><td style="padding-bottom: 5px;"><input id="rtsp_pass" type="password" /></td></tr>
+        <tr><td></td><td><input type="checkbox" id="rtsp_save" checked="checked" /> Remember my password</td></tr>
+        </table>   
+        
+        <br />
+        <table>
+            <tr>
+            <td>
+                <input type="button" value="OK" onclick="okRTSPAuth()" style="margin-left: 125px; width: 60px;" />
+            </td>
+            <td>
+                <input type="button" value="Cancel" onclick="cancelRTSPAuth()" style="margin-left: 10px" />
+            </td>
+            </tr>
+        </table>     
+        <br />
+    </div>
+    
+    <div id="disable_controls">
+    </div>
+    
+    <div id="settingshelp" class="tooltip">
+        <div id="settingshelp_heading"></div>
+        <div id="settingshelp_text"></div>
+        <div class="ok_btn" onclick="hideHelp();">OK</div>
+    </div>
+    
+    
+    
+    <div id="selectedNetworkBox" class="selectedNetworkBox">
+        <div id="networks_selectNetwork">
+        <div style="font-weight: bold;">Select Network:</div>
+        <div class="networks">
+            <table id="networks_table" >
+            </table>
+        </div>
+        <input type="button" value="Refresh" onclick="refreshNetworks();" style="margin-left: 280px; margin-top: 2px;" />
+        </div>
+        <div id="networks_password" style="padding-bottom: 10px;">
+            <div style="font-weight: bold; padding-bottom: 10px;">The network '<label id="passwordbox_netid"></label>' requires a network key (also called a WEP key or WPA key).</div>
+            <table>
+            <tr><td>Network key:</td><td style="padding-bottom: 5px;"><input id="netbox_password" type="password" style="width: 200px;" /></td></tr>
+            <tr><td>Confirm network key:&nbsp;&nbsp;</td><td><input id="netbox_confirm" type="password" style="width: 200px;" /></td></tr>
+            </table>
+        </div>
+        <table>
+            <tr>
+            <td>
+                <input type="button" value="OK" onclick="okNetwork()" style="margin-left: 125px; width: 60px;" />
+            </td>
+            <td>
+                <input type="button" value="Cancel" onclick="cancelNetwork()" style="margin-left: 10px" />
+            </td>
+            </tr>
+        </table>
+    </div>
+    <div id="appletPlaceholder"></div>
+    <script>
+    /*if(!isIE()){
+        document.write('<applet id="oJavaApplet" code="a2rApplet" width=1 height=1 archive="a2rApplet.jar">' +
+                       '</applet>');
+    }*/
+    </script>
+</body>
+</html>

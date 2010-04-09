@@ -1,0 +1,237 @@
+# ====================================================================
+#
+#      bluetooth.cdl
+#
+#      bluetooth stack configure
+#
+# ====================================================================
+#####ECOSCOPYRIGHTBEGIN####
+#
+# Copyright (C) 2004 winbond.
+# All Rights Reserved.
+#
+# Permission is granted to use, copy, modify and redistribute this
+# file.
+#
+#####ECOSCOPYRIGHTEND####
+# ====================================================================
+######DESCRIPTIONBEGIN####
+#
+# Author(s):      clyu
+# Original data:  clyu
+# Contributors:
+# Date:           2004-8-31
+#
+#####DESCRIPTIONEND####
+#
+# ====================================================================
+#    implements    CYGPKG_NET_STACK
+#    implements    CYGINT_ISO_BLUEZTYPES
+#    requires      { CYGBLD_ISO_BLUEZTYPES_HEADER == "<sys/blueztypes.h>" }
+#	        sys/kern/uaccess.S \
+
+cdl_package CYGPKG_NET_BLUEZ_STACK {
+    display       "BlueZ Stack"
+    include_dir   .
+    requires      CYGPKG_IO
+    requires      CYGPKG_ISOINFRA
+    requires      CYGINT_ISO_C_TIME_TYPES
+    requires      CYGINT_ISO_STRERROR
+    requires      CYGINT_ISO_ERRNO
+    requires      CYGINT_ISO_ERRNO_CODES
+    requires      CYGINT_ISO_MALLOC
+    requires       CYGPKG_LINUX_COMPAT
+    description   "Bluetooth protocol stack support."
+    
+    compile	sys/kern/sockio.c \
+        sys/kern/sock.c \
+        sys/kern/skbuff.c \
+        sys/kern/iovec.c \
+        sys/net/af_bluetooth.c \
+        sys/net/hci_conn.c \
+        sys/net/hci_core.c \
+        sys/net/hci_event.c \
+        sys/net/hci_sock.c \
+        sys/net/l2cap.c \
+        sys/net/lib.c
+
+	compile -library=libextras.a ecos/init.cxx
+
+	 make {
+        uaccess.o : <PACKAGE>/src/sys/kern/uaccess.S
+        $(CC) -Wp,-MD,vectors.tmp $(INCLUDE_PATH) $(CFLAGS) -D__ASSEMBLY__ -c -o $@ $<
+        @echo $@ ": \\" > $(notdir $@).deps
+        @tail +2 vectors.tmp >> $(notdir $@).deps
+        @echo >> $(notdir $@).deps
+        @rm vectors.tmp
+        $(AR) rcs $(PREFIX)/lib/libtarget.a $@
+
+    }
+     make {
+        csumpartial.o : <PACKAGE>/src/sys/kern/csumpartial.S
+        $(CC) -Wp,-MD,vectors.tmp $(INCLUDE_PATH) $(CFLAGS) -D__ASSEMBLY__ -c -o $@ $<
+        @echo $@ ": \\" > $(notdir $@).deps
+        @tail +2 vectors.tmp >> $(notdir $@).deps
+        @echo >> $(notdir $@).deps
+        @rm vectors.tmp
+        $(AR) rcs $(PREFIX)/lib/libtarget.a $@
+
+    }
+     make {
+        csumpartialcopy.o : <PACKAGE>/src/sys/kern/csumpartialcopy.S
+        $(CC) -Wp,-MD,vectors.tmp $(INCLUDE_PATH) $(CFLAGS) -D__ASSEMBLY__ -c -o $@ $<
+        @echo $@ ": \\" > $(notdir $@).deps
+        @tail +2 vectors.tmp >> $(notdir $@).deps
+        @echo >> $(notdir $@).deps
+        @rm vectors.tmp
+        $(AR) rcs $(PREFIX)/lib/libtarget.a $@
+
+    }
+     make {
+        csumpartialcopyuser.o : <PACKAGE>/src/sys/kern/csumpartialcopyuser.S
+        $(CC) -Wp,-MD,vectors.tmp $(INCLUDE_PATH) $(CFLAGS) -D__ASSEMBLY__ -c -o $@ $<
+        @echo $@ ": \\" > $(notdir $@).deps
+        @tail +2 vectors.tmp >> $(notdir $@).deps
+        @echo >> $(notdir $@).deps
+        @rm vectors.tmp
+        $(AR) rcs $(PREFIX)/lib/libtarget.a $@
+
+    }
+
+    cdl_option CYGPKG_BLUETOOTH_SCO {
+        display "SCO transport support"
+        active_if CYGPKG_IO_FILEIO
+        flavor bool
+        default_value 0
+        
+        compile -library=libextras.a sys/net/sco.c
+
+        description "
+            SCO transport support"
+    }
+
+    cdl_component CYGPKG_BLUETOOTH_RFCOMM {
+        display "RFCOMM"
+        active_if CYGPKG_IO_FILEIO
+        default_value 1
+
+        compile sys/net/rfcomm/core.c sys/net/rfcomm/crc.c sys/net/rfcomm/sock.c
+
+        description "
+            RFCOMM protocol support."
+      
+        cdl_option CYGPKG_BLUETOOTH_RFCOMM_TTY {
+	        display "RFCOMM TTY support"
+    	    active_if CYGPKG_IO_FILEIO
+        	default_value 0
+
+	        compile sys/net/rfcomm/tty.c
+
+    	    description "
+            RFCOMM TTY support."
+    	}
+    }
+    
+    cdl_component CYGPKG_BLUETOOTH_BNEP {
+        display "BNEP"
+        active_if CYGPKG_IO_FILEIO
+        default_value 0
+
+        compile -library=libextras.a sys/net/bnep/core.c sys/net/bnep/crc32.c sys/net/bnep/sock.c sys/net/bnep/netdev.c
+		
+		description "
+            BNEP protocol support."
+		
+		cdl_option CYGPKG_BLUETOOTH_BNEP_MC_FILTER {
+        	display "Multicast filter support"
+        	active_if CYGPKG_IO_FILEIO
+        	default_value 1
+
+        	description "
+            	Multicast filter support."
+    	}
+    	cdl_option CYGPKG_BLUETOOTH_BNEP_PROTO_FILTER {
+        	display "Protocol filter support"
+        	active_if CYGPKG_IO_FILEIO
+        	default_value 1
+
+        	description "
+            	Protocol filter support."
+    	}
+    }
+
+	cdl_option CYGPKG_BLUETOOTH_CMTP {
+        display "CMTP"
+        active_if CYGPKG_IO_FILEIO
+        default_value 0
+
+        compile -library=libextras.a sys/net/cmtp/core.c sys/net/cmtp/capi.c sys/net/cmtp/sock.c
+
+        description "
+            CMTP protocol support."
+    }
+
+    cdl_option CYGPKG_BLUEZ_NUM_WAKEUP_EVENTS {
+        display "Number of supported pending network events"
+        flavor  data
+        default_value 8
+        description   "
+            This option controls the number of pending network events
+        used by the networking code."
+    }
+
+    cdl_option CYGPKG_BLUEZ_THREAD_PRIORITY {
+        display "Priority level for backgound network processing."
+        flavor  data
+        default_value 7
+        description   "
+            This option allows the thread priority level used by the
+        networking stack to be adjusted by the user.  It should be set
+        high enough that sufficient CPU resources are available to
+        process network data, but may be adjusted so that application
+        threads can have precedence over network processing."
+    }
+	cdl_option CYGPKG_BLUEZ_FAST_THREAD_PRIORITY {
+        display "Priority level for fast network processing."
+        flavor  data
+        default_value CYGPKG_BLUEZ_THREAD_PRIORITY - 1
+        description   "
+            This option sets the thread priority level used by the fast
+        network thread.  The fast network thread runs often but briefly, to
+        service network device interrupts and network timeout events.  This
+        thread should have higher priority than the background network
+        thread.  It is reasonable to set this thread's priority higher than
+        application threads for best network throughput, or to set it lower
+        than application threads for best latency for those application
+        threads themselves, potentially at a cost to network throughput."
+    }
+	
+    cdl_component CYGPKG_NET_BLUEZ_STACK_OPTIONS {
+        display "Bluetooth support build options"
+        flavor  none
+        no_define
+
+        cdl_option CYGPKG_NET_BLUEZ_STACK_CFLAGS_ADD {
+            display "Additional compiler flags"
+            flavor  data
+            no_define
+            default_value { "-D_KERNEL -D__ECOS -D__INSIDE_NET" }
+            description   "
+                This option modifies the set of compiler flags for
+                building the networking package.
+                These flags are used in addition
+                to the set of global flags."
+        }
+
+        cdl_option CYGPKG_NET_BLUEZ_STACK_CFLAGS_REMOVE {
+            display "Suppressed compiler flags"
+            flavor  data
+            no_define
+            default_value { "" }
+            description   "
+                This option modifies the set of compiler flags for
+                building the networking package. These flags are removed from
+                the set of global flags if present."
+        }
+    }
+}

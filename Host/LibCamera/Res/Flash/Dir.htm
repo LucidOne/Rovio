@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="author" content="ChenXiaohui" />
+<title>IPCam</title>
+<link rel="stylesheet" href="ipcam.css" type="text/css" media="all"  />
+<script type="text/javascript" src="ipcam.js"></script>
+<script type="text/javascript">
+function onDebugClick(o)
+{if (typeof(top.bDebug) == "undefined")top.bDebug = false;top.bDebug = !top.bDebug;o.innerHTML = (top.bDebug?"Hide":"Show")+" Request";}
+function onGetVer(s){	eval(s);	$('dir_version').innerHTML = "Build:\n" + sVer.Version;}
+function onPageLoad(){	/*DownLoad("/GetVer.cgi", "JsObj=sVer", onGetVer);*/}
+</script><base target="fmain" />
+</head>
+<body class="dir_body" onload="javascript:onPageLoad();">
+<h1 class="dir_name">IPCam</h1>
+<div id="dir_version"></div>
+<div class="dir_links">	
+<a href="CameraMP4.htm">RTSP Video</a>	
+<a href="CameraMJPEG.htm">Motion JPEG</a>	
+<a href="CameraJPEG.htm">Still JPEG</a>	
+<a href="User.htm">Authorization</a>	
+<!--
+<a href="Mail.htm">Mail Setting</a>	
+<a href="Ftp.htm">Ftp Setting</a>	
+<a href="SetWlan.htm">WiFi</a>
+-->
+<a href="Network.htm">Network</a>
+<a href="DDNS.htm">Dynamic DNS</a>
+<a href="Time.htm">Time</a>
+<a href="Logo.htm">Logo</a>	
+<a href="System.htm">System</a>	
+<a href="Mail.htm">Mail</a>
+<a href="Log.htm">View Log</a>	
+<a href="Upload.htm">Firmware update</a>
+</div>
+<div id="dir_debug">
+<button onclick="javascript:onDebugClick(this);">
+<script type="text/javascript">document.write((parent.bDebug?"Hide":"Show")+" Request");</script>
+</button>
+</div>
+</body>
+</html>

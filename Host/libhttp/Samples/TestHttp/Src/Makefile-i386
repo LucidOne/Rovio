@@ -1,0 +1,21 @@
+#makefile for linux i386
+
+TARGET = TestBoa
+
+# link include
+
+LDFLAGS = -L/usr/lib -lssl -lcrypto -L../../../Lib/i386 -lhttpssl
+
+CFLAGS = -g -O  -DDEBUG
+CFLAGS += -I../../../Inc/
+
+CC = gcc
+
+OBJS = TestBoa.o
+
+all:$(OBJS)
+	$(CC) -o $(TARGET) $(TARGET).o $(LDFLAGS)
+	
+clean:
+	rm -f *.o
+	

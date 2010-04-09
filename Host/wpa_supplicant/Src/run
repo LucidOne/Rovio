@@ -1,0 +1,2 @@
+ifconfig eth1 up
+./wpa_supplicant -Dmarvell -i eth1 -c ./wpa_supplicant.conf 

@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="author" content="ChenXiaohui" />
+<title>IPCam</title>
+<link rel="stylesheet" href="ipcam.css" type="text/css" media="all"  />
+<script type="text/javascript" src="ipcam.js"></script>
+<script type="text/javascript">
+function onCmdSendMail(s)
+{
+	alert ("Send Camera Image to your mail box,please check!");
+}
+function onSendMail()
+{
+	DownLoad ("/SendMail.cgi", "",onCmdSendMail);
+}
+
+</script>
+</head>
+<body class="tab_body">
+<h1 class="tab_name">Camera</h1>
+<div>
+<form action="CameraJPEG.htm" method="get">	
+<input class="tab_submit" type="submit" value="Reload" />
+</form>
+</div>
+<div>
+<button class="tab_submit" onclick="javascript:onSendMail();">Mail Image</button>
+</div>
+<div>
+<script type="text/javascript">
+parent.sMainPath = location.pathname;
+document.write ('<img src="/Jpeg/CamImg' + Math.floor (10000 * Math.random ()) + '.jpg" />');
+</script>
+</div>
+</body>
+</html>

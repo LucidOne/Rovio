@@ -1,0 +1,252 @@
+<!-- Copyright (C) 2003 Red Hat, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<HTML
+><HEAD
+><TITLE
+>cyg_ppp_up()</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="eCos PPP User Guide"
+HREF="ppp.html"><LINK
+REL="UP"
+TITLE="PPP Interface"
+HREF="ppp-interface.html"><LINK
+REL="PREVIOUS"
+TITLE="cyg_ppp_options_init()"
+HREF="ppp-options-init.html"><LINK
+REL="NEXT"
+TITLE="cyg_ppp_down()"
+HREF="ppp-down.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+><SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+> PPP User Guide</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ppp-options-init.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ppp-down.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="PPP-UP"
+></A
+>cyg_ppp_up()</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN206"
+></A
+><H2
+>Name</H2
+>cyg_ppp_up&nbsp;--&nbsp;Bring PPP connection up</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN209"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><A
+NAME="AEN210"
+></A
+><P
+></P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/ppp/ppp.h&gt;
+        </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_ppp_handle_t cyg_ppp_up</CODE
+>(char *devnam, const cyg_ppp_options_t *options);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN219"
+></A
+><H2
+>Description</H2
+><P
+>This function starts up a PPP connection. The
+<TT
+CLASS="PARAMETER"
+><I
+>devnam</I
+></TT
+> argument is the name of the device to be
+used for the connection, typically <TT
+CLASS="LITERAL"
+>"/dev/ser0"</TT
+> or
+<TT
+CLASS="LITERAL"
+>"/dev/ser1"</TT
+>. The <TT
+CLASS="STRUCTFIELD"
+><I
+>options</I
+></TT
+>
+argument should point to an initialized
+<SPAN
+CLASS="STRUCTNAME"
+>cyg_ppp_options_t</SPAN
+> object.</P
+><P
+>The return value will either be zero, indicating a failure, or a
+<SPAN
+CLASS="TYPE"
+>cyg_ppp_handle_t</SPAN
+> object that may be used as an argument
+to other PPP functions.</P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>Although the PPP API is designed to permit several simultaneous
+connections to co-exist, at present only one PPP connection is
+actually implemented. Any attempt to create a second connection while
+there is already one open will fail.</P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ppp-options-init.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ppp-down.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>cyg_ppp_options_init()</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp-interface.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>cyg_ppp_down()</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

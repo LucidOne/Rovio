@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="author" content="ChenXiaohui" />
+<title>IPCam</title>
+<link rel="stylesheet" href="ipcam.css" type="text/css" media="all"  />
+<script type="text/javascript" src="ipcam.js"></script>
+<script>
+
+function $(s)
+{
+	return document.getElementById(s);
+}
+function onGetWlan(sConfig)
+{
+    var fm = document.forms['SetWlan'];
+    fm.ESSID.value = sConfig.ESSID;
+    fm.Channel.value = sConfig.Channel;
+    fm.Mode.value = sConfig.Mode;
+    fm.WepSet.value = sConfig.WepSet;
+    for (var i = 0; i < fm.WepSet.length; i++)
+    {
+        if (fm.WepSet[i].value == sConfig.WepSet)
+        {
+            fm.WepSet[i].checked = true;
+            break;
+        }
+    }
+}
+function onGetConfig(s)
+{
+    eval(s);
+    if (typeof(sConfig) == "object")
+    {
+        onGetWlan(sConfig.GetWlan);
+    }
+}
+
+function change_select(obj)
+{
+	var hide = "none";
+	var show = ( navigator.appName == "Microsoft Internet Explorer" ? "inline" : "table-row" );
+	if (obj.selectedIndex == 0)
+	{
+		$('select0').style.display = show;
+		$('select1').style.display = hide;
+		$('select2').style.display = show;	
+		$('select3').style.display = show;
+		$('select4').style.display = show;
+		$('select5').style.display = show;
+	}
+	else
+	{
+		$('select0').style.display = show;
+		$('select1').style.display = show;
+		$('select2').style.display = hide;	
+		$('select3').style.display = hide;
+		$('select4').style.display = hide;
+		$('select5').style.display = hide;
+	}
+}
+function wep64_select(obj)
+{
+	if (obj.selectedIndex == 0)
+	{
+		$('wep64ASC').style.display = 'inline';
+		$('wep64HEX').style.display = 'none';	
+	}
+	else
+	{
+		$('wep64HEX').style.display = 'inline';
+		$('wep64ASC').style.display = 'none';		
+	}
+}
+function wep128_select(obj)
+{
+	if (obj.selectedIndex == 0)
+	{
+		$('wep128ASC').style.display = 'inline';
+		$('wep128HEX').style.display = 'none';	
+	}
+	else
+	{
+		$('wep128HEX').style.display = 'inline';
+		$('wep128ASC').style.display = 'none';		
+	}
+}
+function FirstLoad()
+{
+    DownLoad("/Cmd.cgi", "Cmd=GetWlan.cgi&JsObj=sConfig", onGetConfig);
+    change_select(document.SetWlan.Mode) ;
+    wep64_select(document.SetWlan.Wep64type);
+    wep128_select(document.SetWlan.Wep128type);
+}
+
+function SubmitForm(obj)
+{
+    if (obj.Wep64type.value == "Wep64ASC")
+        obj.Wep64.value = obj.Wep64_5.value;
+    else
+        obj.Wep64.value = obj.Wep64_10.value;
+        
+    if (obj.Wep128type.value == "Wep128ASC")
+        obj.Wep128.value = obj.Wep128_13.value;
+    else
+        obj.Wep128.value = obj.Wep128_26.value;
+        
+    return true;
+}
+
+</script>
+</head>
+<body class="tab_body" onload="FirstLoad()">
+<h1 class="tab_name">Config Wireless</h1>
+<form name= "SetWlan" action="/SetWlan.cgi" onsubmit="return SubmitForm(this);">
+<table class="tab_info">
+<tr>
+<td class="tab_title">ESSID</td>
+<td class="tab_content"><input class="tab_input" name="ESSID" /></td>
+</tr>
+<tr>
+<td class="tab_title">Channel</td>
+<td class="tab_content"><input class="tab_input" name="Channel" /></td>
+</tr>
+<tr>
+<td class="tab_title">Mode</td>
+<td class="tab_content">
+ <select class="tab_input"  name="Mode"
+ onchange="return change_select(this);" 
+		 >
+    <option value="Managed">Infrastructure</option>
+    <option value="Ad-Hoc">Ad-Hoc</option>   
+  </select>
+ </td>
+</tr>
+<tr>
+<td class="tab_title" >WepSet</td>
+<td class="tab_content"></td>
+</tr>
+<tr id="select0">
+<td class="tab_title">&nbsp;</td>
+<td class="tab_content"><input name="WepSet" type="radio" value="Disable">Disable</td>
+</tr>
+<tr id="select1">
+<td class="tab_title">&nbsp;</td>
+<td class="tab_content"><input name="WepSet" type="radio" value="ASC">ASCII
+    <input name="WepAsc"></td>
+</tr>
+<tr id="select2">
+<td class="tab_title">&nbsp;</td>
+<td class="tab_content"><input name="WepSet" type="radio" value="K64">wep64
+<select class="tab_input"  name = "Wep64type"
+onchange = "return wep64_select(this)">
+    <option value="Wep64ASC">ASCII(5 bits)</option>
+    <option value="Wep64HEX">HEX(10 bits)</option>
+</select>
+</tr>
+<tr id="select3">
+<td class="tab_title">&nbsp;</td>
+<td class="tab_content">
+	<input id="wep64ASC" maxlength="5" class="tab_input" name="Wep64_5" />
+	<input id="wep64HEX" maxlength="10" class="tab_input" name="Wep64_10" />
+</td>
+</tr>
+<tr id="select4">
+<td class="tab_title">&nbsp;</td>
+<td class="tab_content"><input name="WepSet" type="radio" value="K128">wep128
+<select class="tab_input"  name = "Wep128type"
+onchange = "return wep128_select(this)">
+    <option value="Wep128ASC">ASCII(13 bits)</option>
+    <option value="Wep128HEX">HEX(26 bits)</option>
+</select>
+</tr>
+<tr id="select5">
+<td class="tab_title">&nbsp;</td>
+<input type="hidden" name="Wep128" />
+<td class="tab_content">
+	<input id="wep128ASC" maxlength="13" class="tab_input" name="Wep128_13" />
+	<input id="wep128HEX" maxlength="26" class="tab_input" name="Wep128_26" />
+</td>
+</tr>
+</table>
+<input type=submit value=OK>
+</form>
+</body>
+</html>

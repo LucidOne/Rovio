@@ -1,0 +1,341 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Rovio Test Page</title>
+    <script type="text/javascript" src="lib/proto_150rc1_sc_165_compressed.js" charset="ISO-8859-1"></script>
+    <script type="text/javascript" src="lib/rovio.js" charset="ISO-8859-1"></script>
+    
+    <link rel="stylesheet" href="css/main.css" type="text/css" media="screen" />
+</head>
+<body style="background-color: White;" onkeydown="keyevent_down(event);" onkeyup="keyevent_up(event);" onload="initTestPage();">
+<script>
+function initTestPage(){
+    createXMLRequestObjs(); 
+    
+    params = 'Cmd=nav&action=19&IR=1';
+    manualRequest('rev.cgi', params, null);
+    
+    getMacAddress();
+    
+    setInterval('updateStatus2()', STATUS_INTERVAL);
+    
+    setTimeout('getVideoFrequency()', 5000);
+}
+
+var processStatus2 = function(t) {
+    t = t.responseText;
+    results = parseVars2(t,"|","=");
+    for(i = 0; i < results.length; i++){
+        switch(results[i][0]){
+            case 'ss':
+                setNavStrength(parseInt(results[i][1],10));
+                if(parseInt(results[i][1]) < 2000){
+                    $('nav_signal2').style.display = 'block';
+                } else {
+                    $('nav_signal2').style.display = 'none';
+                }
+                break;
+            case 'wifi_ss':
+                setWifiStrength(parseInt(results[i][1],10));
+                break;
+            case 'battery':
+                setBatteryStrength(parseInt(parseInt(results[i][1],10)));
+                break;
+            case 'flags':
+                var nav_flags = parseInt(results[i][1]);
+                if(parseInt(nav_flags / 4) != 0){
+                    nav_flags -= 4;
+                }
+                if(parseInt(nav_flags / 2) != 0){
+                    $('obstacle_detected').style.display = 'block';
+                    $('obstacle_detected2').style.display = 'none';
+                } else {
+                    $('obstacle_detected').style.display = 'none';
+                    $('obstacle_detected2').style.display = 'block';
+                }                         
+                break;
+            case 'room':
+                nav_room = parseInt(results[i][1],10);
+                if(nav_strength == 5){
+                    $('room_id').innerHTML = "";
+                } else {
+                    $('room_id').innerHTML = "[ Room ID: " + results[i][1] + " ]";
+                }
+                break;
+            case 'ac_freq':
+                old_ac_freq = ac_freq;
+                if(parseInt(results[i][1],10) == 0){
+                    $('freq').innerHTML = '';
+                    ac_freq = 0;
+                }
+                if(parseInt(results[i][1],10) == 1){
+                    $('freq').innerHTML = '[ 50Hz ]';
+                    ac_freq = 50;
+                }
+                if(parseInt(results[i][1],10) == 2){
+                    $('freq').innerHTML = '[ 60Hz ]';
+                    ac_freq = 60;
+                }
+                if(old_ac_freq != ac_freq && ac_freq != 0){
+                    manualRequest('SetCamera.cgi', 'Frequency=' + ac_freq, null);
+                }
+                break;
+            case 'charging':
+                if(parseInt(results[i][1]) == 0){ // normal
+                    $('battery_level').style.display = 'block';
+                    $('battery_charging').style.display = 'none';
+                    $('battery_charged').style.display = 'none';
+                } 
+                if(parseInt(results[i][1]) == 64){ // complete
+                    $('battery_level').style.display = 'none';
+                    $('battery_charging').style.display = 'none';
+                    $('battery_charged').style.display = 'block';
+                }
+                if(parseInt(results[i][1]) == 80){ // charging
+                    $('battery_level').style.display = 'none';
+                    $('battery_charging').style.display = 'block';
+                    $('battery_charged').style.display = 'none';
+                }
+                break;
+        }
+    }
+}
+
+function updateStatus2(){
+    var params = "Cmd=nav&action=1";
+    manualRequest("rev.cgi", params, processStatus2);
+}
+function keyevent_up(e){
+    stopMoving();
+}
+function keyevent_down(e){
+    var evtobj = window.event ? event : e;
+    var unicode = evtobj.charCode? evtobj.charCode : evtobj.keyCode;
+
+    switch(unicode){
+        case 49:
+            sendCommand('rev.cgi', 'Cmd=nav&action=18&drive=11');
+            break;
+        case 50:
+            sendCommand('rev.cgi', 'Cmd=nav&action=18&drive=13');
+            break;
+        case 51:
+            sendCommand('rev.cgi', 'Cmd=nav&action=18&drive=12');
+            break;
+        case 52:
+            toggleClickedImg($('headlight'));
+            headlight(isClicked($('headlight')));
+            break;
+        case 53:
+            initMP4();
+            break;
+        case 54:
+            initMJPEG();
+            break;
+        case 55:
+            // save home
+            saveHome();
+            break;
+        case 56:
+        case 16:
+            // go home
+            sendCommand('rev.cgi','Cmd=nav&action=13');
+            break;
+        case 81:
+            // rot left 'q'
+            startMoving("rot_left",DEFAULT_TURN_SPEED);
+            break;
+        case 69:
+            // rot right 'e'
+            startMoving("rot_right",DEFAULT_TURN_SPEED);
+            break;
+        case 87:
+            // up
+            startMoving("move_forward",DEFAULT_SPEED);
+            break;
+        case 83:
+            // down 's'
+            startMoving("move_back",DEFAULT_SPEED);
+            break;
+        case 68:
+            // right
+            startMoving("move_right",DEFAULT_SPEED);
+            break;
+        case 65:
+            // left
+            startMoving("move_left",DEFAULT_SPEED);
+            break;
+            
+        case 82: //r
+            move('rotl_03',rot_speed);
+            break;
+        case 89: //y
+            move('rotr_03',rot_speed);
+            break;
+        case 70: //f
+            move('rotl_07',rot_speed);
+            break;
+        case 72: //h
+            move('rotr_07',rot_speed);
+            break;
+        case 86: //v
+            move('rotl_11',rot_speed);
+            break;
+        case 78: //n
+            move('rotr_11',rot_speed);
+            break;
+        case 66: //b
+            move('rotr_15',rot_speed);
+            break;    
+    }       
+    
+}
+function macAddressResponse(t){
+    var txt = t.responseText;
+    results = parseVars(txt);
+    $('macaddress').innerHTML = results[0].value;
+}
+function getMacAddress(){
+    manualRequest('GetMac.cgi', '', macAddressResponse);
+}
+
+function videoFrequencyResponse(t){
+    var txt = t.responseText;
+    results = parseVars(txt);
+    $('video_freq').innerHTML = '[ ' + results[0].value + 'Hz ]';
+}
+function getVideoFrequency(){
+    manualRequest('GetCamera.cgi', '', videoFrequencyResponse);
+}
+</script>
+
+<h1>Rovio Test Page [v<script>document.write(UI_VERSION)</script>]</h1>
+
+<h2>MAC ADDRESS: [<label id="macaddress">please wait...</label>]</h2>
+
+<h2>Test 1: Move Head (移动头) </h2>
+<ul>
+<li>Raise head (高头) <div id="cam_up" onclick="sendCommand('rev.cgi', 'Cmd=nav&action=18&drive=11');"></div> ( Press '1' )<br /><br /></li>
+<li>Head middle (中头) <div id="cam_mid" onclick="sendCommand('rev.cgi', 'Cmd=nav&action=18&drive=13');"></div> ( Press '2' )<br /><br /></li>
+<li>Lower head (低头 )<div id="cam_down" onclick="sendCommand('rev.cgi', 'Cmd=nav&action=18&drive=12');"></div> ( Press '3' )</li>
+</ul>	 
+
+<h2>Test 2: Indicators (指标信号) </h2>
+<ul>
+<div id="status" style="display: none;">Roaming</div>
+<li>Check Wifi indicator (无线网络信号) <div id="wifi_signal" style="background-image: url('img/signal/signal4.png'); border-bottom: none;" /></li>
+<li>Check Nav indicator (定位信号) <div id="nav_signal" style="background-image: url('img/signal/signal4.png'); border-bottom: none;" /><div id="room_id" style="padding-left: 40px; width: 120px;"></div><div id="nav_signal2" style="display: none; color: Red; font-weight: bold;">No&nbsp;Nav&nbsp;Signal</div><div id="freq" style="padding-left: 40px; width: 80px;"></div>
+</li>
+</ul>
+<ul>
+<li>
+    Video Frequency: <div id="video_freq"></div>
+</li>
+<li style="padding-top: 10px;">Check Battery indicator (电池信号)
+<div id="battery_level" style="background-image: url('img/battery/battery4.gif');"></div>
+<div id="battery_charged" style="background-image: url('img/battery/battery_full.gif'); "></div>
+<div id="battery_charging" style="background-image: url('img/battery/battery_charging.gif');"></div>
+</li>
+
+<li>Check IR indicator (红外线信号) <div id="obstacle_detected" style="top: 0px; left: 0px; "></div><div id="obstacle_detected2" style="color: red; font-weight: bold">No Obstacle Detected</div></li>
+</ul>	 
+
+<h2>Test 3: Headlight (照灯) </h2>
+<ul>
+<li>Turn Headlight on/off (开关照灯) <div id="headlight" onclick="toggleClickedImg(this); headlight(isClicked(this));"></div> ( Press '4' )</li>
+</ul>
+
+<h2>Test 4: Drive (驾驶) </h2>
+<ul>
+<li>Drive Rovio away around some obstacles</li>
+<li>Drive (驾驶): w (forward - 向前), s (backward - 向后), a (left - 左移), d (right - 右移), q (rotate left - 左旋转), e (rotate right - 右旋转)</li>
+<li>Rotation (旋转) : r (45&deg; left - 左), y (45&deg; right - 右), f (90&deg; left - 左), h (90&deg; right - 右), v (135&deg; left - 左), n (135&deg; right - 右), b (180&deg;)</li>
+</ul>
+
+<div class="movement_panel">
+                    
+                    <div id="rot_left" class="ra" onmousedown="changeToClickedImg(this); startMoving(this.id,turn_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                    <div id="rot_right" class="ra" onmousedown="changeToClickedImg(this); startMoving(this.id,turn_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                    
+                    <div id="ir_container">
+                        <div id="ir_on"></div>
+                    </div>
+                    
+                    <div id="obstacle_container">
+                        <div id="Div1"></div>
+                    </div>
+                    
+                    <div style="top: 72px; height: 100px;">
+                        
+                        <div id="move_forward" class="move_arrow" onmousedown="changeToClickedImg(this); startMoving(this.id,movement_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="move_left" class="move_arrow" onmousedown="changeToClickedImg(this); startMoving(this.id,movement_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="move_right" class="move_arrow" onmousedown="changeToClickedImg(this); startMoving(this.id,movement_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="move_back" class="move_arrow" onmousedown="changeToClickedImg(this); startMoving(this.id,movement_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        
+                        <div id="rotr_03" class="dot" onmousedown="changeToClickedImg(this); move(this.id,rot_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="rotr_07" class="dot" onmousedown="changeToClickedImg(this); move(this.id,rot_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="rotr_11" class="dot" onmousedown="changeToClickedImg(this); move(this.id,rot_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="rotr_15" class="dot" onmousedown="changeToClickedImg(this); move(this.id,rot_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="rotl_11" class="dot" onmousedown="changeToClickedImg(this); move(this.id,rot_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="rotl_07" class="dot" onmousedown="changeToClickedImg(this); move(this.id,rot_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                        <div id="rotl_03" class="dot" onmousedown="changeToClickedImg(this); move(this.id,rot_speed);" onmouseup="changeToUnclickedImg(this); stopMoving();"></div>
+                    </div>
+                    
+                </div>
+<h2>Test 5: Test MP4 Video (MP4 视频)</h2>
+<ul><li>Test the MP4 video stream, test the audio both directions. (	
+测试视频, 双向音频) <br />
+<script>
+function initMP4(){
+    $('camera_container3').innerHTML = '';
+    force_mjpeg=false;
+     
+    if(navigator.appName != 'Microsoft Internet Explorer') { alert('You must use IE to run MP4.'); return; } 
+    v_player = 0; 
+    $('camera_container2').innerHTML = getPlayerCode(176, 144);
+    cam_initialized = true;
+    setTimeout("changeSpeakerVol(30);", 2000);
+    setTimeout("changeMicVol(30);", 2000);
+}
+
+</script>
+<a href="javascript: initMP4();">Init MP4 Video & Audio (Press '5')</a>
+</li></ul>
+<div id="camera_container2" style="width: 176px; height: 144px; border: 1px solid black;"></div>		
+	
+<h2>Test 6: Test MJPEG Video (MJPEG 视频) </h2>
+<script>
+function initMJPEG(){
+    
+    force_mjpeg=true; $('camera_container2').innerHTML = ''; $('camera_container3').innerHTML = getPlayerCode(176, 144);
+}
+</script>
+<ul><li>Test MJPEG, test only the video stream. (没有音频)<br />
+<a href="javascript: initMJPEG();">Init MJPEG (Press '6')</a>
+</li></ul>
+<div id="camera_container3" style="width: 176px; height: 144px; border: 1px solid black;"></div>	
+
+<h2>Test 7: Save Home (设定充电装置位置) </h2>
+<ul>
+<li>Put Rovio on dock and save home (將三轮车放在充电装置后按 Save 键)
+<div id="savehome" onclick="saveHome();" onmousedown="changeToClickedImg(this);" onmouseup="changeToUnclickedImg(this);"></div>
+(Press '7')
+</li>
+</ul>	
+
+<h2>Test 8: Return Home (返回充电装置) </h2>
+<ul><li>Make sure Rovio goes back to base station correctly. (请务必确定三轮车可返回充电装置) <div id="home" onclick="sendCommand('rev.cgi','Cmd=nav&action=13');" onmousedown="changeToClickedImg(this);" style="margin: 0;" onmouseup="changeToUnclickedImg(this);"></div>
+(Press '8')<Br />
+<br />
+<input type="button" id="stoprovio" onclick="stopMoving(); sendCommand('rev.cgi','Cmd=nav&action=17');" value="Stop 停" />
+</li>
+
+</ul>
+
+
+<h2>Test 9: Restore Settings (原厂设置)</h2>
+<ul><li><input type="button" value="Restore" onclick="manualRequest('SetFactoryDefault.cgi', '', null); alert('Factory settings restored.');" /></li></ul>
+
+</body>   	  
+</html>

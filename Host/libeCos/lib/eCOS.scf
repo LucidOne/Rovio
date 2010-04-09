@@ -1,0 +1,215 @@
+;/******************************************************************************
+; *
+; * Copyright (c) 2004 Windond Electronics Corp.
+; * All rights reserved.
+; *
+; * $Workfile: $
+; *
+; * $Author: ypxin $
+; ******************************************************************************/
+;/*
+; * $History: $
+; */
+
+
+RAM_LOAD 0x00000000
+{
+    RAM_T +0
+    {
+    	vectors.o(Vect,+First)
+	    vectors.o(Init)
+    }
+	; contructor    
+    RAM_CTOR00 +0 {	sched.o(C$$ctor)		}
+    RAM_CTOR01 +0 {	except.o(C$$ctor)		}
+    RAM_CTOR02 +0 {	intr.o(C$$ctor)			}
+    RAM_CTOR03 +0 {	clock.o(C$$ctor)		}
+    RAM_CTOR04 +0 {	thread.o(C$$ctor)		}
+    RAM_CTOR05 +0 {	heaps.o(C$$ctor)		}
+    RAM_CTOR06 +0 {	ioinit.o(C$$ctor)		}
+    RAM_CTOR07 +0 {	fd.o(C$$ctor)			}
+    RAM_CTOR08 +0 {	misc.o(C$$ctor)			}
+    RAM_CTOR09 +0 {	file.o(C$$ctor)			}
+    RAM_CTOR10 +0 {	select.o(C$$ctor)		}
+    RAM_CTOR11 +0 {	siginit.o(C$$ctor)		}
+    RAM_CTOR12 +0 {	mainthrd.o(C$$ctor)		}
+    RAM_CTOR13 +0 {	cstartup.o(C$$ctor)		}
+    RAM_CTOR14 +0 {	w99702_misc.o(C$$ctor)	}
+    RAM_CTOR15 +0 {	stdin.o(C$$ctor)		}
+    RAM_CTOR16 +0 {	stdiofiles.o(C$$ctor)	}
+    RAM_CTOR17 +0 {	mblen.o(C$$ctor)		}
+    RAM_CTOR18 +0 {	mbtowc.o(C$$ctor)		}
+    RAM_CTOR19 +0 {	rand.o(C$$ctor)			}
+    RAM_CTOR20 +0 {	wctomb.o(C$$ctor)		}
+    RAM_CTOR21 +0 {	stdout.o(C$$ctor)		}
+    RAM_CTOR22 +0 {	stderr.o(C$$ctor)		}
+    RAM_CTOR23 +0 {	tty.o(C$$ctor)			}
+    RAM_CTOR24 +0 {	haldiag.o(C$$ctor)		}
+    RAM_CTOR25 +0 {	serial.o(C$$ctor)		}
+    RAM_CTOR26 +0 {	devfs.o(C$$ctor)		}
+    RAM_CTOR27 +0 {	sdramiodev.o(C$$ctor)	}
+    RAM_CTOR28 +0 {	fatinit.o(C$$ctor)		}
+    RAM_CTOR29 +0 {	startup.o(C$$ctor)		}
+    RAM_CTOR30 +0 {	invokemain.o(C$$ctor)	}
+    RAM_CTOR31 +0 {	vectors.o(C$$ctor)		}
+    RAM_CTOR32 +0 {	romfs.o(C$$ctor)		}
+	RAM_CTOR33 +0 {	*(C$$ctor)				}
+	;destructor
+    RAM_DTOR00 +0 {	sched.o(C$$dtor)		}
+    RAM_DTOR01 +0 {	except.o(C$$dtor)		}
+    RAM_DTOR02 +0 {	intr.o(C$$dtor)			}
+    RAM_DTOR03 +0 {	clock.o(C$$dtor)		}
+    RAM_DTOR04 +0 {	thread.o(C$$dtor)		}
+    RAM_DTOR05 +0 {	heaps.o(C$$dtor)		}
+    RAM_DTOR06 +0 {	ioinit.o(C$$dtor)		}
+    RAM_DTOR07 +0 {	fd.o(C$$dtor)			}
+    RAM_DTOR08 +0 {	misc.o(C$$dtor)			}
+    RAM_DTOR09 +0 {	file.o(C$$dtor)			}
+    RAM_DTOR10 +0 {	select.o(C$$dtor)		}
+    RAM_DTOR11 +0 {	siginit.o(C$$dtor)		}
+    RAM_DTOR12 +0 {	mainthrd.o(C$$dtor)		}
+    RAM_DTOR13 +0 {	cstartup.o(C$$dtor)		}
+    RAM_DTOR14 +0 {	w99702_misc.o(C$$dtor)	}
+    RAM_DTOR15 +0 {	stdin.o(C$$dtor)		}
+    RAM_DTOR16 +0 {	stdiofiles.o(C$$dtor)	}
+    RAM_DTOR17 +0 {	mblen.o(C$$dtor)		}
+    RAM_DTOR18 +0 {	mbtowc.o(C$$dtor)		}
+    RAM_DTOR19 +0 {	rand.o(C$$dtor)			}
+    RAM_DTOR20 +0 {	wctomb.o(C$$dtor)		}
+    RAM_DTOR21 +0 {	stdout.o(C$$dtor)		}
+    RAM_DTOR22 +0 {	stderr.o(C$$dtor)		}
+    RAM_DTOR23 +0 {	tty.o(C$$dtor)			}
+    RAM_DTOR24 +0 {	haldiag.o(C$$dtor)		}
+    RAM_DTOR25 +0 {	serial.o(C$$dtor)		}
+    RAM_DTOR26 +0 {	devfs.o(C$$dtor)		}
+    RAM_DTOR27 +0 {	sdramiodev.o(C$$dtor)	}
+    RAM_DTOR28 +0 {	fatinit.o(C$$dtor)		}
+    RAM_DTOR29 +0 {	startup.o(C$$dtor)		}
+    RAM_DTOR30 +0 {	invokemain.o(C$$dtor)	}
+    RAM_DTOR31 +0 {	vectors.o(C$$dtor)		}
+    RAM_DTOR32 +0 {	romfs.o(C$$dtor)		}
+    RAM_DTOR33 +0 {	*(C$$dtor)				}
+	;constructor vector
+    RAM_CTORVEC00 +0 {	sched.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC01 +0 {	except.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC02 +0 {	intr.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC03 +0 {	clock.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC04 +0 {	thread.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC05 +0 {	heaps.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC06 +0 {	ioinit.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC07 +0 {	fd.o(C$$pi_ctorvec)			}
+    RAM_CTORVEC08 +0 {	misc.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC09 +0 {	file.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC10 +0 {	select.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC11 +0 {	siginit.o(C$$pi_ctorvec)	}
+    RAM_CTORVEC12 +0 {	mainthrd.o(C$$pi_ctorvec)	}
+    RAM_CTORVEC13 +0 {	cstartup.o(C$$pi_ctorvec)	}
+    RAM_CTORVEC14 +0 {	w99702_misc.o(C$$pi_ctorvec)	}
+    RAM_CTORVEC15 +0 {	stdin.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC16 +0 {	stdiofiles.o(C$$pi_ctorvec)	}
+    RAM_CTORVEC17 +0 {	mblen.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC18 +0 {	mbtowc.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC19 +0 {	rand.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC20 +0 {	wctomb.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC21 +0 {	stdout.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC22 +0 {	stderr.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC23 +0 {	tty.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC24 +0 {	haldiag.o(C$$pi_ctorvec)	}
+    RAM_CTORVEC25 +0 {	serial.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC26 +0 {	pipelib.o(C$$pi_ctorvec)	}
+    RAM_CTORVEC27 +0 {	devfs.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC28 +0 {	sdramiodev.o(C$$pi_ctorvec)	}
+    RAM_CTORVEC29 +0 {	fatinit.o(C$$pi_ctorvec)	}
+    RAM_CTORVEC30 +0 {	startup.o(C$$pi_ctorvec)	}
+    RAM_CTORVEC31 +0 {	invokemain.o(C$$pi_ctorvec)	}
+    RAM_CTORVEC32 +0 {	vectors.o(C$$pi_ctorvec)	}
+    RAM_CTORVEC33 +0 {	romfs.o(C$$pi_ctorvec)		}
+    RAM_CTORVEC34 +0 {	*(C$$pi_ctorvec)			}
+	;destructor vector
+    RAM_DTORVEC00 +0 {	sched.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC01 +0 {	except.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC02 +0 {	intr.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC03 +0 {	clock.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC04 +0 {	thread.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC05 +0 {	heaps.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC06 +0 {	ioinit.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC07 +0 {	fd.o(C$$pi_dtorvec)			}
+    RAM_DTORVEC08 +0 {	misc.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC09 +0 {	file.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC10 +0 {	select.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC11 +0 {	siginit.o(C$$pi_dtorvec)	}
+    RAM_DTORVEC12 +0 {	mainthrd.o(C$$pi_dtorvec)	}
+    RAM_DTORVEC13 +0 {	cstartup.o(C$$pi_dtorvec)	}
+    RAM_DTORVEC14 +0 {	w99702_misc.o(C$$pi_dtorvec)	}
+    RAM_DTORVEC15 +0 {	stdin.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC16 +0 {	stdiofiles.o(C$$pi_dtorvec)	}
+    RAM_DTORVEC17 +0 {	mblen.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC18 +0 {	mbtowc.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC19 +0 {	rand.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC20 +0 {	wctomb.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC21 +0 {	stdout.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC22 +0 {	stderr.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC23 +0 {	tty.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC24 +0 {	haldiag.o(C$$pi_dtorvec)	}
+    RAM_DTORVEC25 +0 {	serial.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC26 +0 {	pipelib.o(C$$pi_dtorvec)	}
+    RAM_DTORVEC27 +0 {	devfs.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC28 +0 {	sdramiodev.o(C$$pi_dtorvec)	}
+    RAM_DTORVEC29 +0 {	fatinit.o(C$$pi_dtorvec)	}
+    RAM_DTORVEC30 +0 {	startup.o(C$$pi_dtorvec)	}
+    RAM_DTORVEC31 +0 {	invokemain.o(C$$pi_dtorvec)	}
+    RAM_DTORVEC32 +0 {	vectors.o(C$$pi_dtorvec)	}
+    RAM_DTORVEC33 +0 {	romfs.o(C$$pi_dtorvec)		}
+    RAM_DTORVEC34 +0 {	*(C$$pi_dtorvec)			}
+    
+    RAM_C +0
+    {
+		* (+RO-CODE,+RW-CODE)
+    }
+
+    RAM_FIXUP +0
+    {
+    	* (fixup)
+    }
+    
+    RAM_D +0
+    {
+
+    	* (+RW-DATA,+RO-DATA)
+    }
+    
+    ECOS_FILE +0
+    {
+    	* (fstab)
+    }
+	PIPE_ECOS_DEV +0
+	{
+		* (pipedevtab)
+	}
+    ECOS_DEV +0
+    {
+    	* (devtab)
+    }
+    ECOS_NSTAB +0
+    {
+    	* (nstab)
+    }
+    ECOS_NETDEV +0
+    {
+    	* (netdev)
+    }
+	ECOS_MTAB +0
+    {
+    	* (mtab)
+    }
+    ECOS_PMP +0
+    {
+    	* (nozero)
+        * (non_init)	;alias name for nozero
+    }
+    RAM_B +0
+    {
+    	*(+ZI)
+    }
+}
+

@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="author" content="ChenXiaohui" />
+<title>IPCam</title>
+<link rel="stylesheet" href="ipcam.css" type="text/css" media="all"  />
+<script type="text/javascript" src="ipcam.js"></script>
+<script type="text/javascript">
+function onSend_Reboot(s)
+{
+CheckReboot ("IPCam is rebooting! Please wait ...");
+}
+function onPageLoad()
+{
+DownLoad ("/Reboot.cgi", "", onSend_Reboot);
+}
+</script>
+</head>
+<body class="tab_body" onload="javascript:onPageLoad();">
+<div id="main_area">
+</div>
+</body>
+</html>

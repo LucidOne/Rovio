@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="author" content="ChenXiaohui" />
+<title>IPCam</title>
+<link rel="stylesheet" href="ipcam.css" type="text/css" media="all"  />
+<script type="text/javascript" src="ipcam.js"></script>
+<script type="text/javascript">
+function onSetConfig(s)
+{
+CheckReboot ("IPCam is rebooting to finish configuration! Please wait ...");
+}
+function Confirm(oForm, sFun)
+{
+	if (oForm.SourceFile.value == "")
+	{
+		alert("You did not select a file!");
+		return false;
+	}
+   //if (! confirm("About to upload the firmware. IPCam need to be rebooted! Continue?"))
+   //     return false;
+   // return FormSubmit(oForm, sFun);
+	return confirm("About to upload the firmware. IPCam need to be rebooted! Continue?");
+}
+</script>
+</head>
+<body class="tab_body">
+<h1 class="tab_name">Upload</h1>
+<form name="Upload" method="post" enctype="multipart/form-data" action="/Upload.cgi" onsubmit="javascript:return Confirm(this,onSetConfig);">
+<table class="tab_info">
+<tr>
+<td class="tab_title">Select software:</td>
+<td class="tab_content"><input class="tab_input" name="SourceFile" type="file" /></td>
+</tr>
+<!--
+<tr>
+<td class="tab_title">Save to directory:</td>
+<td class="tab_content"><input class="tab_input" name="TargetPath" value="/usr" type="hidden"/></td>
+</tr>
+-->
+<input class="tab_input" name="TargetPath" value="/usr" type="hidden"/>
+<tr>
+<td class="tab_title" colspan="2">
+<input class="tab_submit" type="submit" value="Upload" />
+<input type='hidden' name="RedirectUrl" value="../CheckReboot.htm">
+</td>
+</tr>
+</table>
+</form>
+</body>
+</html>

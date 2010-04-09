@@ -1,0 +1,1 @@
+The sample demonstrates sending messages between threads.

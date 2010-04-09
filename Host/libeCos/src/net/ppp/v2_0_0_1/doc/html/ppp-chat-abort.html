@@ -1,0 +1,196 @@
+<!-- Copyright (C) 2003 Red Hat, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<HTML
+><HEAD
+><TITLE
+>ABORT Strings</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="eCos PPP User Guide"
+HREF="ppp.html"><LINK
+REL="UP"
+TITLE="CHAT Scripts"
+HREF="ppp-chat.html"><LINK
+REL="PREVIOUS"
+TITLE="CHAT Scripts"
+HREF="ppp-chat.html"><LINK
+REL="NEXT"
+TITLE="TIMEOUT"
+HREF="ppp-chat-timeout.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+><SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+> PPP User Guide</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ppp-chat.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. CHAT Scripts</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ppp-chat-timeout.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PPP-CHAT-ABORT"
+></A
+>ABORT Strings</H1
+><P
+>       Many modems will report the status of the call as a
+       string. These strings may be CONNECTED or NO CARRIER or
+       BUSY. It is often desirable to terminate the script should the
+       modem fail to connect to the remote. The difficulty is that a
+       script would not know exactly which modem string it may
+       receive. On one attempt, it may receive BUSY while the next
+       time it may receive NO CARRIER.</P
+><P
+>       These "abort" strings may be specified in the script using
+       the ABORT sequence. It is written in the script as in  the
+       following example:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#13;    "ABORT"    , "BUSY"    ,
+    "ABORT"    , "NO CARRIER"  ,
+    ""         , "ATZ"         ,
+    "OK"       , "ATDT5551212" ,
+    "CONNECT"  , ...&#13;</PRE
+></TD
+></TR
+></TABLE
+><P
+>       This sequence will expect nothing; and then send the string
+       ATZ.  The expected response to this is the string OK. When it
+       receives OK, it sends the string ATDT5551212 to dial the
+       telephone.  The expected string is CONNECT. If the string
+       CONNECT is received the remainder of the script is
+       executed. However, should the modem find a busy telephone, it
+       will send the string BUSY. This will cause the string to match
+       the abort character sequence. The script will then fail because
+       it found a match to the abort string. If it received the string
+       NO CARRIER, it will abort for the same reason. Either string
+       may be received. Either string will terminate the chat script.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ppp-chat.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ppp-chat-timeout.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CHAT Scripts</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp-chat.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>TIMEOUT</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

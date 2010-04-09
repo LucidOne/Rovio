@@ -1,0 +1,66 @@
+1. CGI
+	int httpRegisterEmbedFun(const char *pcAccessName, REQUEST_CALLBACK_PFUN funRequestCallBack, void *pParam);
+	int httpRegisterEmbedFunEx(const char *pcAccessName, REQUEST_CALLBACK_PFUN funRequestCallBack, int iPrivilegeRequired, void *pParam);
+	BOOL httpIsRegisterEmbedFunEx(const char *pcAccessName, REQUEST_CALLBACK_PFUN *pfunRequestCallBack, int *piPrivilegeRequired, void **ppParam);
+	int httpUnregisterEmbedFun(const char *pcAccessName);
+	void httpClearEmbedFun(void);
+
+
+2. REQUEST
+	int httpGetMethod(HTTPCONNECTION hConnection);
+	struct in_addr httpGetClientAddr(HTTPCONNECTION hConnection);
+	char *httpGetClientMac(HTTPCONNECTION hConnection);
+	char *httpGetQueryString(HTTPCONNECTION hConnection);
+	char *httpGetRequestPath(HTTPCONNECTION hConnection);
+	char *httpGetRequestFilePath(HTTPCONNECTION hConnection);
+	char *GetDocumentRoot(HTTPCONNECTION hConnection);
+	char *httpGetReferer(HTTPCONNECTION hConnection);
+	char *httpGetContentType(HTTPCONNECTION hConnection);
+	int httpGetContentLength(HTTPCONNECTION hConnection);
+
+
+
+	typedef int (*SEND_DATA_OVER_PFUN)(HTTPCONNECTION hConnection, time_t *tLastFill, void *pParam);
+	void httpSetSendDataOverFun(HTTPCONNECTION hConnection, SEND_DATA_OVER_PFUN funOnSendDataOver, void *pParam);
+
+	typedef int (*POST_DATA_PFUN)(HTTPCONNECTION hConnection,
+				char **ppcPostBuf,
+				int *piPostBufLen,
+				int *piPostDataLen,
+				char *pcFillData,
+				int iFillDataLen,
+				int iIsMoreData/*bool*/,
+				void *pParam/*other parameter for extend use*/);
+	void httpSetPostDataFun(HTTPCONNECTION hConnection, POST_DATA_PFUN funPostDataGot, void *pParam);
+
+
+3. RESPONSE
+	void httpSetKeepAliveMode(HTTPCONNECTION hConnection, BOOL bIsKeepAlive);
+	void httpSetHeader(HTTPCONNECTION hConnection, int iStatus, const char *pcTitle, const char *pcEncodings, const char *pcExtraheads, const char *pcContentType, BOOL bShowLength);
+
+	void httpAddBody(HTTPCONNECTION hConnection, const char *pcBuf2Add, int iBufLen);
+	void httpAddBodyString(HTTPCONNECTION hConnection, const char *pcString);
+
+
+4. USER AUTHORIZATION
+	char *httpGetCurrentUser(HTTPCONNECTION hConnection, char *pcUser, int iUserLen);
+	int httpGetAuthPrivilege(HTTPCONNECTION hConnection);
+	int httpSendAuthRequired(HTTPCONNECTION hConnection, int iPrivilege);
+	void httpSetAuthPrompt(const char *pcUserPrompt, const char *pcAdminPrompt, const char *pcSystemPrompt);
+	BOOL httpAuthGetUser(const char *pcUserName, char *pcPassword, int iMaxPassLen, int *piPrivilege);
+	int httpAuthSetUser(const char *pcUserName, const char *pcPassword, int iPrivilege);
+	int httpAuthDelUser(const char *pUserName);
+	LIST **httpGetAuthUserList();
+	void httpEnableUserCheck(BOOL bIsEnable);
+	BOOL httpIsEnableUserCheck(void);
+
+
+5. OHTER
+	char *httpGetDocumentBasedPath(char *pcUriPath);
+	HTTPSERVER httpdStart(char *pcServerRoot,
+				int iPort,
+				int iKeepAliveTimeout,
+				int iKeepAliveMax,
+				int iMaxConnections,
+				int (*pOnHttpInit)(HTTPSERVER hServer),
+				REQUEST_CALLBACK_PFUN pOnRequestBegin);

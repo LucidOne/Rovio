@@ -1,0 +1,18 @@
+LOAD_1 0x0
+{
+  EXEC_0 +0
+  {
+  	* (WB_INIT)
+  }
+  EXEC_1 +0
+  {
+    * (+RO)
+    * (+RW)
+    * (+ZI)         ;ZI data will be initialized to zero
+  }
+
+  EXEC_LAST +0 UNINIT
+  {
+    * (non_init)    ;ZI data will not be initialized to zero
+  }
+}

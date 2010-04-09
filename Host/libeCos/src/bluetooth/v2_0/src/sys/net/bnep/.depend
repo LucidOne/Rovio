@@ -1,0 +1,72 @@
+bnep.h: \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/types.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/net/bluetooth/bluetooth.h \
+   crc32.h
+	@touch bnep.h
+core.o: core.c \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/module.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/kernel.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/sched.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/signal.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/init.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/wait.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/errno.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/smp_lock.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/net.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/net/sock.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/socket.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/file.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/netdevice.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/etherdevice.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/skbuff.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/asm/unaligned.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/net/bluetooth/bluetooth.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/net/bluetooth/l2cap.h \
+   bnep.h \
+   $(wildcard /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/config/bluez/bnep/debug.h) \
+   $(wildcard /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/config/bluez/bnep/proto/filter.h) \
+   $(wildcard /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/config/bluez/bnep/mc/filter.h)
+crc32.o: crc32.c \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/kernel.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/module.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/types.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/slab.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/init.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/asm/atomic.h \
+   crc32.h
+netdev.o: netdev.c \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/module.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/socket.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/netdevice.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/etherdevice.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/skbuff.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/wait.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/asm/unaligned.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/net/bluetooth/bluetooth.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/net/bluetooth/hci_core.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/net/bluetooth/l2cap.h \
+   bnep.h \
+   $(wildcard /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/config/bluez/bnep/debug.h) \
+   $(wildcard /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/config/bluez/bnep/mc/filter.h) \
+   $(wildcard /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/config/bluez/bnep/proto/filter.h)
+sock.o: sock.c \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/module.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/types.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/errno.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/kernel.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/major.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/sched.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/slab.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/poll.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/fcntl.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/skbuff.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/socket.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/ioctl.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/linux/file.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/net/sock.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/asm/system.h \
+   /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/asm/uaccess.h \
+   bnep.h \
+   $(wildcard /home/clyu2/clyu/release/bluetooth/uClinux-dist/linux-2.4.x/include/config/bluez/bnep/debug.h)
+.PRECIOUS:	bnep.h \
+

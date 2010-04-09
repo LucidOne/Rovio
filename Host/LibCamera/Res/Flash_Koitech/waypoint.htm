@@ -1,0 +1,309 @@
+<html>
+	<head>
+		<title>Untitled Document</title>
+		<script>
+//////////////////////////////////////////////////////////////////////////////////////////////
+//Please create a page called "point_setting.cgi", and pass the value to "point_setting.cgi".     
+//
+//Simplify flow = 1. Click Rec button -> 2. Fill in the value 3. Click submit button to the page of point_setting.cgi
+//////////////////////////////////////////////////////////////////////////////////////////////
+var action_id = "xx";
+var gl_ret;
+//--------------------------------------
+function $(id) {
+	return document.getElementById(id);
+}
+function showDIV(div,msgDisplay) {
+	if (msgDisplay=="none")
+	{
+		$(div).style.display = "block";
+	} else {
+		$(div).style.display = "none";
+	}
+} 
+//--------------------------------------
+function wayCancel() {
+	$('way_name').value = "";
+	showDIV('pop_up','block');
+}  
+//--------------------------------------
+function waySubmit() {
+	showDIV('pop_up','block');
+	$('showSetting').src="rev.cgi?Cmd=nav&action="+action_id+"&name="+$('way_name').value+"&newname="+$('new_name').value;
+}  
+//--------------------------------------
+function actionREC() {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=2";
+}  
+//--------------------------------------
+function actionABORT() {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=3";
+}
+//--------------------------------------
+function actionSTOPREC() {
+	$('way_name').value = "Default";
+	action_id = "4";
+	showDIV('pop_up','none');
+}
+//--------------------------------------
+function actionPLAYFWD() {
+	action_id = "7";
+	showDIV('pop_up','none');
+}
+//--------------------------------------
+function actionPLAYBCK() {
+	action_id = "8";
+	showDIV('pop_up','none');
+}
+//--------------------------------------
+function actionPAUSE() {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=10";
+}   
+//--------------------------------------
+function actionSTOPPLAY() {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=9";
+}
+//--------------------------------------
+function actionDELETEPATH() {
+	action_id = "5";
+	showDIV('pop_up','none');
+}
+//--------------------------------------
+function actionRENAMEPATH() {
+	action_id = "11";
+	showDIV('pop_up','none');
+}
+//--------------------------------------
+function actionGETLIST() {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=6";
+}
+//--------------------------------------
+function actionGETREPORT() {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=1";
+}
+//--------------------------------------
+function actionGOHOME() {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=12";
+}
+//--------------------------------------
+function actionGODOCK() {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=13";
+}
+//--------------------------------------
+function actionSAVEHOME() {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=14";
+}
+//--------------------------------------
+//--------------------------------------
+function actionSETPARAMS() {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=15"+"&LeftRight="+$('LeftRight').value+"&Forward="+$('Forward').value+"&Reverse="+$('Reverse').value+"&DriveTurn="+$('DriveTurn').value+"&HomingTurn="+$('HomingTurn').value+"&ManTurn="+$('ManTurn').value+"&ManDrive="+$('ManDrive').value+"&DockTimeout="+$('DockTimeout').value;
+}
+//--------------------------------------
+function parseparams( params )
+{
+	var pa = params.split("|");
+	var	par;
+	var i;
+	for ( i=1; i<pa.length; i++ ) {
+		par = pa[i].split("=");
+		if ( par[0].lastIndexOf("LeftRight") != -1 ) {
+			$('LeftRight').value = par[1];
+		} else if ( par[0].lastIndexOf("Forward") != -1 ) {
+			$('Forward').value = par[1];
+		} else if ( par[0].lastIndexOf("Reverse") != -1 ) {
+			$('Reverse').value = par[1];
+		} else if ( par[0].lastIndexOf("ManDrive") != -1 ) {
+			$('ManDrive').value = par[1];
+		} else if ( par[0].lastIndexOf("ManTurn") != -1 ) {
+			$('ManTurn').value = par[1];
+		} else if ( par[0].lastIndexOf("DriveTurn") != -1 ) {
+			$('DriveTurn').value = par[1];
+		} else if ( par[0].lastIndexOf("HomingTurn") != -1 ) {
+			$('HomingTurn').value = par[1];
+		} else if ( par[0].lastIndexOf("DockTimeout") != -1 ) {
+			$('DockTimeout').value = par[1];
+		}
+	}
+}
+function actionGETPARAMS() {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=16";
+//	$('showSetting').value = "Cmd = nav Parameters = | LeftRight = 5 | Forward = 10";
+//	parseparams( $('showSetting').value );
+}
+//--------------------------------------
+function actionRESET() {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=17";
+}
+//--------------------------------------
+function actionDRIVE( cmd ) {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=18&drive="+cmd;
+}
+//--------------------------------------
+function actionTEST() {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=19"+"&Left="+$('LeftSpeed').value+"&Right="+$('RightSpeed').value+"&Rear="+$('RearSpeed').value;
+}
+//--------------------------------------
+function actionIR( param ) {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=19&IR="+param;
+}
+//--------------------------------------
+function actionHEADLIGHT( param ) {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=19&LIGHT="+param;
+}
+//--------------------------------------
+function actionMCUREPORT() {
+	$('showSetting').src="rev.cgi?Cmd=nav&action=20";
+}
+//--------------------------------------
+		</script>
+		<style> .pop_upDIV { DISPLAY: none; BACKGROUND: #ffff00; LEFT: 350px; WIDTH: 200px; POSITION: absolute; TOP: 162px; HEIGHT: 100px }
+	</style>
+	</head>
+	<body bgColor="#cccccc" onload="actionGETPARAMS();">
+		<table>
+			<tr>
+				<td><iframe id="showSetting" src="point_setting.cgi" frameBorder="0" width="250%" scrolling="no"
+						height="140"></iframe></td>
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td><input id="Button6" onclick="actionGOHOME();" type="button" value="Go Home" name="Go home"></td>
+				<td><input id="Button7" onclick="actionGODOCK();" type="button" value="Go Dock" name="Go dock"></td>
+				<td><input id="Button25" onclick="actionRESET();" type="button" value="Cancel" name="Reset nav"></td>
+			</tr>
+			<tr>
+				<td><input id="PlayFwd" onclick="actionPLAYFWD();" type="button" value="Go path" name="PlayFwd"></td>
+				<td><input id="Pause" onclick="actionPAUSE();" type="button" value="Pause" name="Pause"></td>
+				<td><input id="Button1" onclick="actionSTOPPLAY();" type="button" value="Cancel" name="StopPlay"></td>
+			</tr>
+			<tr>
+				<td><input id="Rec" onclick="actionREC();" type="button" value="Record path" name="Record"></td>
+				<td><input id="Stop" onclick="actionSTOPREC();" type="button" value="Save" name="Stop"></td>
+				<td><input id="Abort" onclick="actionABORT();" type="button" value="Cancel" name="Abort"></td>
+			</tr>
+			<tr>
+				<td><input id="Button2" onclick="actionDELETEPATH();" type="button" value="Delete path" name="Delete Path"></td>
+				<td><input id="Button4" onclick="actionRENAMEPATH();" type="button" value="Rename" name="Rename"></td>
+			</tr>
+			<TR>
+				<td><input id="Button5" onclick="actionGETREPORT();" type="button" value="Get Status" name="Get report"></td>
+				<td><input id="Button3" onclick="actionGETLIST();" type="button" value="Get List" name="Get List"></td>
+			<tr>
+			</tr>
+			<tr>
+				<td><input id="Button8" onclick="actionSAVEHOME();" type="button" value="Save Home" name="Save Home"></td>
+			</tr>
+			<tr>
+				<td></td>
+			</tr>
+			<tr>
+				<td><input id="Button11" onclick="actionRESET();" type="button" value="CANCEL" name="Reset nav"></td>
+				<td><input id="Button28" onclick="actionMCUREPORT();" type="button" value="MCU report" name="Reset nav"></td>
+				<td><input id="Button29" onclick="actionIR(1);" type="button" value="IR on" name="Reset nav">
+					<input id="Button30" onclick="actionIR(0);" type="button" value="IR off" name="Reset nav"></td>
+				<td><input id="Button31" onclick="actionHEADLIGHT(1);" type="button" value="HL on" name="Reset nav">
+					<input id="Button32" onclick="actionHEADLIGHT(0);" type="button" value="HL off" name="Reset nav"></td>
+			<tr>
+			</tr>
+			<tr>
+				<td></td>
+			</tr>
+		</table>
+		<table id="Table1">
+			<tr>
+				<td>Left Right Speed:</td>
+				<td><input id="LeftRight" type="text" size="3" name="LeftRight"></td>
+				<td>Forward Speed:</td>
+				<td><input id="Forward" type="text" size="3" name="Forward"></td>
+				<td>Reverse Speed:</td>
+				<td><input id="Reverse" type="text" size="3" name="Reverse"></td>
+				<td>Manual Drive Speed:</td>
+				<td><input id="ManDrive" type="text" size="3" name="ManDrive"></td>
+			</tr>
+			<tr>
+				<td>Drive Turn Speed:</td>
+				<td><input id="DriveTurn" type="text" size="3" name="DriveTurn"></td>
+				<td>Homing Turn Speed:</td>
+				<td><input id="HomingTurn" type="text" size="3" name="HomingTurn"></td>
+				<td></td>
+				<td></td>
+				<td>Manual Turn Speed:</td>
+				<td><input id="ManTurn" type="text" size="3" name="ManTurn"></td>
+			</tr>
+			<TR>
+				<td>Docking timeout:</td>
+				<td><input id="Text2" type="text" size="3" name="DockTimeout"></td>
+			<tr>
+			</tr>
+		</table>
+		<table id="Table2">
+			<tr>
+				<td><input id="Button9" onclick="actionGETPARAMS();" type="button" value="Get tuning" name="Get tuning">
+					<input id="Button10" onclick="actionSETPARAMS();" type="button" value="Apply tuning" name="Apply tuning">
+				</td>
+			</tr>
+		</table>
+		<table id="Table3">
+			<tr>
+				<td></td>
+				<td><input id="Button14" onclick="actionDRIVE(7);" type="button" value="\" name="Forward"></td>
+				<td><input id="Button12" onclick="actionDRIVE(1);" type="button" value="F" name="Forward"></td>
+				<td><input id="Button15" onclick="actionDRIVE(8);" type="button" value="/" name="Forward"></td>
+			</tr>
+			<tr>
+				<td><input id="Button16" onclick="actionDRIVE(5);" type="button" value="|" name="Forward"></td>
+				<td><input id="Button17" onclick="actionDRIVE(3);" type="button" value="-" name="Forward"></td>
+				<td><input id="Button26" onclick="actionDRIVE(33);" type="button" value="S" name="Forward"></td>
+				<td><input id="Button19" onclick="actionDRIVE(4);" type="button" value="-" name="Forward"></td>
+				<td><input id="Button20" onclick="actionDRIVE(6);" type="button" value="|" name="Forward"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input id="Button13" onclick="actionDRIVE(9);" type="button" value="/" name="Forward"></td>
+				<td><input id="Button21" onclick="actionDRIVE(2);" type="button" value="R" name="Forward"></td>
+				<td><input id="Button22" onclick="actionDRIVE(10);" type="button" value="\" name="Forward"></td>
+			</tr>
+			<tr>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input id="Button18" onclick="actionDRIVE(12);" type="button" value="_" name="Forward"></td>
+				<td><input id="Button23" onclick="actionDRIVE(13);" type="button" value="-" name="Forward"></td>
+				<td><input id="Button24" onclick="actionDRIVE(11);" type="button" value="/" name="Forward"></td>
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td>Left:</td>
+				<td><input id="Text1" type="text" size="3" name="LeftSpeed"></td>
+				<td>Right:</td>
+				<td><input id="Text3" type="text" size="3" name="RightSpeed"></td>
+				<td>Rear:</td>
+				<td><input id="Text4" type="text" size="3" name="RearSpeed"></td>
+				<td><input id="Button27" onclick="actionTEST();" type="button" value="Execute" name="Execute"></td>
+			</tr>
+		</table>
+		<div class="pop_upDIV" id="pop_up">
+			<table>
+				<tr>
+					<td>Path name:</td>
+					<td><input id="way_name" type="text" name="way_name">
+					</td>
+				</tr>
+				<tr>
+					<td>New name:</td>
+					<td><input id="new_name" type="text" name="new_name">
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input id="submit" onclick="waySubmit();" type="button" value="Submit" name="Submit">
+						<input id="Cancel" onclick="wayCancel();" type="button" value="Cancel" name="Cancel">
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

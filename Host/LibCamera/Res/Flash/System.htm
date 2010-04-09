@@ -1,0 +1,281 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="author" content="ChenXiaohui" />
+<title>IPCam</title>
+<link rel="stylesheet" href="ipcam.css" type="text/css" media="all"  />
+<script type="text/javascript" src="ipcam.js"></script>
+<script type="text/javascript">
+var FMT_MP4 = 1;
+var FMT_H263 = 0;
+var FMT_AMR = 0;
+var FMT_PCM = 1;
+var FMT_IMAADPCM = 2;
+var FMT_ULAW = 3;
+var FMT_ALAW = 4;
+function onSend_Reboot(s)
+{
+CheckReboot ("IPCam is rebooting! Please wait ...");
+}
+function onReboot()
+{
+if (confirm ("About to reboot IPCam, are you sure?"))
+{
+ConfigBegin ();
+DownLoad ("/Reboot.cgi", "", onSend_Reboot);
+}
+}
+function onSend_SetFactoryDefault(s)
+{
+CheckReboot ("IPCam is rebooting to finish the factory-default settings! Please wait ...");
+}
+function onSetFactoryDefault()
+{
+if (confirm ("About to set factory default and reboot, are you sure?"))
+{
+ConfigBegin ();
+DownLoad ("/SetFactoryDefault.cgi", "", onSend_SetFactoryDefault);
+}
+}
+function onSetConfig(s)
+{
+CheckReboot ("IPCam is rebooting to finish configuration! Please wait ...");
+}
+function FormSubmit_SetMediaFormat(oForm, sFun)
+{
+
+var fm = document.forms['media'];
+if (fm.VideoFormat[0].checked)
+{
+fm.Video.value = FMT_MP4;
+}
+else if (fm.VideoFormat[1].checked)
+{
+fm.Video.value = FMT_H263;
+}
+else
+{
+alert ("You do not choose the media format!");
+return false;
+}
+
+if (fm.AudioFormat[0].checked)
+{
+fm.Audio.value = FMT_AMR;
+}
+else if (fm.AudioFormat[1].checked)
+{
+fm.Audio.value = FMT_PCM;
+}
+else if (fm.AudioFormat[2].checked)
+{
+fm.Audio.value = FMT_IMAADPCM;
+}
+else if (fm.AudioFormat[3].checked)
+{
+fm.Audio.value = FMT_ALAW;
+}
+/*
+else if (fm.AudioFormat[4].checked)
+{
+fm.Audio.value = FMT_ULAW;
+}
+*/
+else
+{
+alert ("You do not choose the media format!");
+return false;
+}
+if (! confirm("About to set the media format. IPCam need to be rebooted! Continue?"))
+return false;
+return FormSubmit(oForm, sFun);
+
+}
+function MacFormSubmit(oForm, sFun)
+{
+	var fm = document.forms['macaddress'];
+	var s = fm.mac.value;
+	s = s.replace(/(^\s+|\s+$)/g, "");
+
+	var arr = s.split(":");
+	if (arr.length != 6)
+	{
+		alert("Input Mac address is invalid   0!");
+		return false;
+	}
+	var i = 0;
+	for ( ; i < arr.length; i++)
+	{
+		var word = arr[i].replace(/(^\s+|\s+$)/g, "");
+		if (word.length != 2)
+			break;
+		var c0 = word.charCodeAt(0);
+		//alert(c0);
+		if (!((c0 >= '0'.charCodeAt(0) && c0 <= '9'.charCodeAt(0))
+			|| (c0 >= 'a'.charCodeAt(0) && c0 <= 'f'.charCodeAt(0))
+			|| (c0 >= 'A'.charCodeAt(0) && c0 <= 'F'.charCodeAt(0))))
+			break;
+		var c1 = word.charCodeAt(1);
+		//alert(c1);
+		if (!((c1 >= '0'.charCodeAt(0) && c1 <= '9'.charCodeAt(0))
+			|| (c1 >= 'a'.charCodeAt(0) && c1 <= 'f'.charCodeAt(0))
+			|| (c1 >= 'A'.charCodeAt(0) && c1 <= 'F'.charCodeAt(0))))
+			break;
+	}
+	if (i < arr.length)
+	{
+		alert("Input Mac address is invalid!");
+		return false;
+	}
+	fm.mac.value = s;	
+	
+	if (! confirm("About to set the Mac Address. IPCam need to be rebooted! Continue?"))
+		return false;
+	return FormSubmit(oForm, sFun);
+}
+function onGetMedia(sMedia)
+{
+	var fm = document.forms['media'];
+	var iVideo = parseInt(sMedia.Video,10);
+	var iAudio = parseInt(sMedia.Audio,10);
+
+	if (iVideo == FMT_MP4 )	//MP4+IMAADPCM
+		fm.VideoFormat[0].checked = true;
+	else if (iVideo == FMT_H263)	//H263+AMR
+		fm.VideoFormat[1].checked = true;
+	else
+		;	//Unknow formats
+    
+	if (iAudio == FMT_AMR )	//MP4+IMAADPCM
+		fm.AudioFormat[0].checked = true;
+	else if (iAudio == FMT_PCM)	//H263+AMR
+		fm.AudioFormat[1].checked = true;
+	else if (iAudio == FMT_IMAADPCM)	//H263+AMR
+		fm.AudioFormat[2].checked = true;
+	else if (iAudio == FMT_ALAW)	//H263+AMR
+		fm.AudioFormat[3].checked = true;
+        /*
+	else if (iAudio == FMT_ULAW)	//H263+AMR
+		fm.AudioFormat[4].checked = true;
+	*/
+    else
+		;	//Unknow formats        
+}
+function onGetMac(sConfig)
+{
+    var fm = document.forms['macaddress'];
+    fm.mac.value = sConfig.MAC;
+}
+function onFirmUpdate()
+{
+return confirm ("It is strongly recommended to stop any remote connections while updating firmware.\nContinue?");
+}
+
+function onGetConfig(s)
+{
+eval(s);
+if (typeof(sConfig) == "object")
+{
+ 	onGetMedia(sConfig.GetMediaFormat);
+	onGetMac(sConfig.GetMac);
+}
+}
+function onPageLoad()
+{
+	DownLoad("/Cmd.cgi", "Cmd=GetMediaFormat.cgi&Cmd=GetMac.cgi&JsObj=sConfig", onGetConfig);
+
+}
+</script>
+</head>
+<body class="tab_body" onload="javascript:onPageLoad();">
+<div id="main_area">
+<h1 class="tab_name">IPCam MAC Address</h1>
+<form name="macaddress" action="/SetMac.cgi" onsubmit="javascript:return MacFormSubmit(this, onSetConfig);">
+	<table class="tab_info">
+		<tr>
+		<td class="tab_title">MAC Address (eg:01:02:03:04:05:06)</td></tr>
+			<tr><td class="tab_content"><input class="tab_input" name= "mac" maxlength="127"/></td>		</tr>
+        
+		<tr>	<td class="tab_title"  colspan='2'>  
+				<input class="tab_submit" type='submit' value="Apply" />	</td>	</tr>	
+        </table></form>	
+<h1 class="tab_name">RTSP streaming format</h1>
+<form name="media" action="/SetMediaFormat.cgi" onsubmit="javascript:return FormSubmit_SetMediaFormat(this, onSetConfig);">
+<table class="tab_info">
+<tr>
+<td class="tab_title">Video</td>
+<td class="tab_content">
+<input name="VideoFormat" type="radio" value="FMT_MPEG4"/>MPEG4
+<input name="VideoFormat" type="radio" value="FMT_H263"/>H263
+</td>
+</tr>
+<tr>
+<td class="tab_title">Audio</td>
+<td class="tab_content">
+<input name="AudioFormat" type="radio" value="FMT_AMR"/>AMR
+<input name="AudioFormat" type="radio" value="FMT_PCM"/>PCM
+<input name="AudioFormat" type="radio" value="FMT_IMAADPCM"/>IMAADPCM
+<!--<input name="AudioFormat" type="radio" value="FMT_ULAW"/>ULAW-->
+<input name="AudioFormat" type="radio" value="FMT_ALAW"/>ALAW
+</td>
+</tr>
+<tr>
+<td colspan="2" class="tab_content">
+<div>Warning:</div>
+<div>It is required to reboot the system to chanage video or audio format.</div>
+</td>
+</tr>
+		<tr>
+			<td colspan="2" class="tab_title">
+				<input type="hidden" name="Audio" />
+				<input type="hidden" name="Video" />
+				<input class="tab_submit" type="submit" value="Apply" />
+			</td>
+		</tr>
+</table>
+</form>
+
+<h1 class="tab_name">Reboot</h1>
+<button class="tab_button" onclick="javascript:onReboot();">Reboot</button>
+<table class="tab_info" width="100%">
+<tr>
+<td class="tab_content">
+<div>Warning:</div>
+<div>IP address may be changed after reboot. You may receive a failure message when connecting to the same IP address.</div>
+</td>
+</tr>
+</table>
+
+<h1 class="tab_name">Restore to default settings</h1>
+<button class="tab_button" onclick="javascript:onSetFactoryDefault();">Restore</button>
+<table class="tab_info" width="100%">
+<tr>
+<td class="tab_content">
+<div>Warning:</div>
+<div>After default settings was restored, IP address may be changed. You may receive a failure message when connecting to the same IP address.</div>
+</td>
+</tr>
+</table>
+<!--
+<h1 class="tab_name">Update IPCam firmware</h1>
+<form name="Upload" method="post" enctype="multipart/form-data" action="/FMUpload.cgi">
+<table class="tab_info">
+<tr>
+<td class="tab_title">Select software:</td>
+<td class="tab_content">
+<input class="tab_input" name="SourceFile" type="file" />
+<input class="tab_input" name="RedirectUrl" type="hidden" value="CheckUpdate.htm" />
+</td>
+</tr>
+<tr>
+<td class="tab_title" colspan="2">
+<input onclick="javascript:return onFirmUpdate();" class="tab_submit" type="submit" value="Upload" />
+</td>
+</tr>
+</table>
+</form>
+-->
+</div>
+</body>
+</html>

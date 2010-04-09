@@ -1,0 +1,693 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="author" content="ChenXiaohui" />
+<title>IPCam</title>
+
+    <style type="text/css" media="all" title="Default">
+      @import "main.css";
+      @import "slider.css";
+      .imageSlider1 { margin:0;padding:0; height:15px; width:280px; background-color:#eff; border:2px solid #EAE6DD; }
+      .imageBar1    { margin:0;padding:0; height:17px; width:10px; border:1px outset buttonhighlight; background-color:#D4D0C8;}
+
+      .Brightness    { margin:0;padding:0; height:15px; width:280px; background-color:#aee; border:2px solid #EAE6DD; }
+      .winBar       { margin:0;padding:0; height:15px; width:10px; border:1px outset buttonhighlight; background-color:#D4D0C8; }
+      #ipcam_player  {float:left;}
+    </style>
+
+<link rel="stylesheet" href="ipcam.css" type="text/css" media="all"  />
+<script type="text/javascript" src="ipcam.js"></script>
+<script type="text/javascript" src="slider_extras.js"></script>
+<script type="text/javascript">
+parent.sMainPath = location.pathname;
+document.onkeydown = function (event)
+{
+try
+{
+if (event.keyCode == 27)	//ESC
+return false;
+else
+return true;
+} catch (e) {}
+}
+var iGetStatusInterval = 1200;
+var iLastMotionIndex = 999999;
+var iLastMotionDetect = -1;
+var iLastResolution = -1;
+var iLastQuality = -1;
+var iLastDirectionX = -1;
+var iLastDirectionY = -1;
+var iStatusDebug = 0;
+var iLastBrightness = -1;
+var iLastMicVolume = -1;
+function onCmdSendMail(s)
+{
+	alert ("Send Camera Image to your mail box,please check!");
+}
+function onSendMail()
+{
+	DownLoad ("/SendMail.cgi", "",onCmdSendMail);
+}
+
+function onGetInitData (s)
+{
+eval (s);
+CameraStateChange (sInit.GetStatus.Status);
+}
+function onPageLoad()
+{
+DownLoad("/Cmd.cgi", "Cmd=GetStatus.cgi&JsObj=sInit", onGetInitData);
+LoadStatus();
+}
+var oXHR = null;
+function LoadStatus()
+{
+$("UseMic").checked = $("oCamCtl").UseMic ? true : false;
+oXHR = DownLoadEx(oXHR, "/GetStatus.cgi", "JsObj=sStatus", onGetStatus);
+}
+var iLoadTime = 0;
+function onGetStatus(s)
+{
+eval(s);
+sStatus	= sStatus.Status;
+CameraStateChange(sStatus);
+setTimeout("LoadStatus();", iGetStatusInterval);
+}
+function SetOptStatus(o, status)
+{
+var s = o.options[0].innerHTML;
+s = s.substr (0, s.lastIndexOf ('-') + 1) + " (" + status + ")";
+if (s != o.options[0].innerHTML)
+o.options[0].innerHTML = s;
+}
+function CameraStateChange(s)
+{
+var r = "";
+var rTop, rRight, rLeft, rBottom;
+var ist;
+/* Bit 6,7,8 => x direction */
+r += "<span class='tab_status'>";
+r += "X-dir:";
+ist = parseInt(s.substr(6, 3), 10);
+iLastDirectionX = ist;
+r += ist + " <\/span>";
+/* Bit 9,10,11 => y direction */
+r += "<span class='tab_status'>";
+r += "Y-dir:";
+ist = parseInt(s.substr(9, 3), 10);
+iLastDirectionY = ist;
+r += ist + " <\/span>";
+/* Bit 21 => Resolution */
+r += "<span class='tab_status'>";
+r += "Resolution:";
+ist = parseInt(s.substr(21, 1), 10);
+if (ist >= 0 && ist < $('ResBox').options.length - 1)
+r += $('ResBox').options[ist+1].innerHTML;
+r += " <\/span>";
+var resolution = $('ResBox').options[ist+1].innerHTML;
+if (iLastResolution != ist)
+{
+var width = parseInt(resolution, 10);
+var height = parseInt(resolution.substr(resolution.indexOf('*')+1), 10);
+if (iLastResolution == -1 || $('oCamCtl').tagName.toUpperCase() == 'IMG')
+{
+//$('ipcam_player').innerHTML = GetPlayerCode (width, height);
+$('oCamCtl').width = width;
+$('oCamCtl').height = height;
+}
+iLastResolution = ist;
+}
+SetOptStatus($('ResBox'), resolution);
+
+
+/* Bit 22 => Quality */
+r += "<span class='tab_status'>";
+r += "Quality:";
+ist = parseInt(s.substr(22, 1), 10);
+var quality = "Unknown";
+if (ist == 0) quality = "Low";
+else if (ist == 1) quality = "High";
+else if (ist == 2) quality = "Very high";
+r += quality;
+r += " <\/span>";
+SetOptStatus($('QuaBox'), quality);
+
+/* Bit 82,83,84 => Framerate */
+r += "<span class='tab_status'>";
+r += "Framerate:";
+ist = parseInt(s.substr(82,3), 10);
+var framerate = "Unknown";
+if (ist >= 0) framerate = ist + " fps";
+SetOptStatus($('FramerateBox'), framerate);
+r += " <\/span>";
+
+	r += "<span class='tab_status'>";
+	r += "Brightness:";
+	ist = parseInt(s.substr(15, 3), 10);
+    if ((ist >= 0) && (iLastBrightness != ist))
+    {
+        iLastBrightness = ist;
+        Brightness.setValue(iLastBrightness);
+    }
+    r += ist;
+	r += " <\/span>";
+    
+	r += "<span class='tab_status'>";
+	r += "MicVolume";
+	ist = parseInt(s.substr(88, 3), 10);
+    if ((ist >= 0) &&  (iLastMicVolume != ist)) 
+    {
+        iLastMicVolume = ist;
+        MicVolume.setValue(iLastMicVolume);
+    }
+	r += ist;
+	r += " <\/span>";
+    
+	r += "<span class='tab_status'>";
+	r += "WiFiStrength";
+	ist = parseInt(s.substr(92, 2), 10);
+    if(ist >0)
+    {
+        AntennaSetPos("tx", ist);
+    }
+	r += ist;
+	r += " <\/span>";
+    
+	r += "<span class='tab_status'>";
+	r += "BatteryLevel";
+	ist = parseInt(s.substr(94, 2), 16);
+    var s = "Battery Level is ";
+    if (ist >= 0) 
+    {
+        s = s.substr (0, s.lastIndexOf ('s') + 1)  +" "+ ist;
+        $('BatteryLevel').value = s;
+    }  
+    r += " <\/span>";     
+/* Bit 72 => Motion detect 
+r += "<span class='tab_status'>";
+r += "Motion-detect:";
+ist = parseInt(s.substr(72, 1), 10);
+var motion = (ist==0?"Disable":"Enable");
+r += motion;
+r += " <\/span>";
+SetOptStatus($('Motion'), motion);*/
+/* Bit 60 - 65 => Image index of motion-detected. 
+r += "<span class='tab_status'>";
+ist = parseInt(s.substr(60, 6), 10);
+if (iLastMotionIndex != ist)
+{
+iLastMotionIndex = ist;
+var tm = new Date;
+$('motion_index').innerHTML = "("+ist+"):"+tm;
+delete tm;
+}
+r += "<\/span>";*/
+$('status').innerHTML = r;
+
+$('status_code').innerHTML = s + "(" + iStatusDebug++ + ")";
+}
+function onChangeRes(o)
+{
+if (o.value != -1)
+{
+SetOptStatus(o, "Waiting...");
+DoCommand("/ChangeResolution.cgi", "ResType=" + o.value, null);
+}
+o.selectedIndex = 0;
+}
+function onChangeQua(o)
+{
+if (o.value != -1)
+{
+SetOptStatus(o, "Waiting...");
+DoCommand("/ChangeCompressRatio.cgi", "Ratio=" + o.value, null);
+}
+o.selectedIndex = 0;
+}
+function onChangeFramerate(o)
+{
+if (o.value != -1)
+{
+SetOptStatus(o, "Waiting...");
+DoCommand("/ChangeFramerate.cgi", "Framerate=" + o.value, null);
+}
+o.selectedIndex = 0;
+}
+function ControlCameraCommand(o, sUrl, sParam)
+{
+var iV;
+if (o.value != -1)
+{
+if (o.value == -2)
+{
+iV = prompt("Please input(0-255):", "");
+if (iV == null)
+{
+o.selectedIndex = 0;
+return;
+}
+iV = parseInt(iV);
+}
+else iV = parseInt(o.options[o.selectedIndex].innerHTML, 10);
+
+SetOptStatus(o, "Waiting...");
+DoCommand(sUrl, sParam + iV, null);
+}
+o.selectedIndex = 0;
+}
+function onChangeMotion(o)
+{
+if (o.value != -1)
+{
+SetOptStatus(o, "Waiting...");
+DoCommand("/SetMotionDetect.cgi", "Enable=" + o.value, null);
+}
+o.selectedIndex = 0;
+}
+function onChangeVideoFormat(o)
+{
+if (o.value != -1)
+{
+if (confirm ("Changing video format only takes effect after next reboot, continue?"))
+DoCommand ("/SetVideoFormat.cgi", "Format=" + o.value);
+}
+o.selectedIndex = 0;
+}
+function onChangeAudioFormat(o)
+{
+if (o.value != -1)
+{
+if (confirm ("Changing audio format only takes effect after next reboot, continue?"))
+DoCommand ("/SetAudioFormat.cgi", "Format=" + o.value);
+}
+o.selectedIndex = 0;
+}
+function onRotateMirror()
+{
+DoCommand ("/ChangeDirection.cgi", "Dir=" +
+((iLastDirectionX == 0 ? 2 : 0) + (iLastDirectionY == 0 ? 0 : 1)));
+return false;
+}
+function onRotateFlip()
+{
+DoCommand ("/ChangeDirection.cgi", "Dir=" +
+((iLastDirectionX == 0 ? 0 : 2) + (iLastDirectionY == 0 ? 1 : 0)));
+return false;
+}
+function onRotate180()
+{
+DoCommand ("/ChangeDirection.cgi", "Dir=" +
+((iLastDirectionX == 0 ? 2 : 0) + (iLastDirectionY == 0 ? 1 : 0)));
+return false;
+}
+function onSetUserCheck()
+{
+if ($('user_check').innerHTML=="Enable")
+DoCommand("/SetUserCheck.cgi", "Check=true", null);
+else
+DoCommand("/SetUserCheck.cgi", "Check=false", null);
+}
+
+function AutoAdjustBrightness()
+{
+	DoCommand("/ChangeBrightness.cgi", "Brightness=" + 4, null);
+}
+var g_iSpeed = 1;
+var o_MCU_Time = null;
+function IsRototCommandAllowed()
+{
+	if (o_MCU_Time == null)
+	{
+		o_MCU_Time = new Date();
+		return true;
+	}
+
+	if (new Date() - o_MCU_Time >= 1500)
+	{
+		o_MCU_Time = new Date();
+		return true;
+	}
+
+	return false;	
+}
+
+function onChangeRobot(o)
+{
+	if (o.value != -1)
+	{
+		SetOptStatus(o, o.value);
+		g_iSpeed = parseInt(o.value, 10);
+		alert("Set robot speed to " + g_iSpeed + ".\n"
+			+ "It only takes effect after click the control button.");
+	}
+	o.selectedIndex = 0;
+}
+
+function onRobotCommandOK(s)
+{
+	o_MCU_Time = null;
+	eval(s);
+	$("robot_message").innerHTML = "Response: [" + sResponse.mcu.responses + "]";
+}
+
+function onRobotCommand(iAction)
+{
+	if (parent.customer != "wowwee")
+	{
+		alert("Forbidden: Only for wowwee demo!");
+		return false;
+	}
+
+	
+	if (!IsRototCommandAllowed())
+		return false;
+
+	function hex(v)
+	{
+		var s = "00" + v.toString(16);
+		s = s.substr(s.length - 2);
+		return s;
+	}
+
+	if (iAction == 0x00)
+		iSpeed = 0x00;
+	else
+		iSpeed = g_iSpeed;
+	if (iAction != 0x00 && iSpeed == 0)
+		iSpeed = 1;
+
+	SetOptStatus($('RobotSpeed'), iSpeed);
+
+	DoCommand("/rev.cgi",
+		"JsObj=sResponse&Cmd=LED&which=6&color=yellow&Cmd=mcu&parameters="
+			+ "11 4D 4D 00 01 00 53 48 52 54 00 01 00 01".replace(/\s/g, "")
+			+ hex(iAction) + hex(iSpeed)
+			+ "00 00".replace(/\s/g, ""),
+		onRobotCommandOK);
+	return false;
+}
+
+function onRobotStop()
+{
+	return onRobotCommand(0x00);
+}
+function onRobotForward()
+{
+	return onRobotCommand(0x01);
+}
+function onRobotBackward()
+{
+	return onRobotCommand(0x02);
+}
+function onRobotStrafeLeft()
+{
+	return onRobotCommand(0x03);
+}
+function onRobotStrafeRight()
+{
+	return onRobotCommand(0x04);
+}
+function onRobotLeft()
+{
+	return onRobotCommand(0x05);
+}
+function onRobotRight()
+{
+	return onRobotCommand(0x06);
+}
+function onRobotForwardLeft()
+{
+	return onRobotCommand(0x07);
+}
+function onRobotForwardRight()
+{
+	return onRobotCommand(0x08);
+}
+function onRobotBackwardLeft()
+{
+	return onRobotCommand(0x09);
+}
+function onRobotBackwardRight()
+{
+	return onRobotCommand(0x0A);
+}
+
+
+function onRobotStutusOK(s)
+{
+	onRobotCommandOK(s);
+	eval(s);
+	alert("Robot report: [" + sResponse.mcu.responses + "]");
+}
+
+function onRobotStatus()
+{
+	if (parent.customer != "wowwee")
+	{
+		alert("Forbidden: Only for wowwee demo!");
+		return false;
+	}
+
+	if (!IsRototCommandAllowed())
+		return false;
+
+	DoCommand("/rev.cgi",
+		"JsObj=sResponse&Cmd=LED&which=6&color=yellow&Cmd=mcu&parameters="
+			+ "11 4D 4D 00 01 00 52 50 52 54 00 01 00 01 7F 00 00 00".replace(/\s/g, ""),
+			onRobotStutusOK);
+	return false;
+}
+
+// ]]>
+</script>
+</head>
+<body class="tab_body" onload="javascript:onPageLoad();" oncontextmenu="javascript:return false;">
+<div class='debug_info'>
+<div>(Status: <span id='status_code'></span>)</div>
+<div id='status'></div>
+<div>Motion index<span id='motion_index'></span></div>
+</div>
+<div id='control'>
+<h1 class="tab_name">Camera Control (Motion-JPEG)</h1>
+<!--
+<select class="tab_input" id="Motion" onchange="javascript:onChangeMotion(this);">
+<option value="-1">-Motion Detect-</option>
+<option value="true">Enable</option>
+<option value="false">Disable</option>
+</select>
+-->
+<select class="tab_input" id="ResBox" onchange="javascript:onChangeRes(this);">
+<option value="-1">-Resolution-</option>
+<option value="0">176*144</option>
+<option value="1">320*240</option>
+<option value="2">352*288</option>
+<option value="3">640*480</option>
+</select>
+<select class="tab_input" id="QuaBox" onchange="javascript:onChangeQua(this);">
+<option value="-1">-Quality-</option>
+<option value="0">low</option>
+<option value="1">high</option>
+<option value="2">very high</option>
+</select>
+<select class="tab_input" id="FramerateBox" onchange="javascript:onChangeFramerate(this);">
+<option value="-1">-Frame Rate-</option>
+<script type="text/javascript">
+	var s = '';
+	for (var i = 2; i <= 30; i+=2)
+		s += '<option value="'+i+'">'+i+' fps</option>';
+	document.write(s);
+</script>
+</select>
+<div>
+<button class="tab_button" onclick="javascript:onSendMail();">Mail Image</button>
+</div>
+<div class="content" style="margin-top:15pt;">
+	<script type="text/javascript">
+function CheckIE()
+{
+	if (navigator.appName != "Microsoft Internet Explorer")
+	{
+		alert("Microphone only available in Microsoft Internet Explorer");
+		return false;
+	}
+	return true;
+}
+function EnableMic(o)
+{
+	if(!CheckIE())
+		return false;
+	$('oCamCtl').UseMic = o.checked;
+	return true;
+}
+	</script>
+	<input id="UseMic" type="checkbox" onclick="javascript:return EnableMic(this);"/>Enable Microphone 
+	<div id="sliderDetail" style="font-weight:bolder;"></div>
+	<div style="height:40px; width:300px; margin:0px; ">
+		<div id="sliderDemo1" style="height:40px;"></div>
+	</div>
+        <script type="text/javascript">
+var MicVolume = new neverModules.modules.slider({targetId: "sliderDemo1",
+						 sliderCss: "imageSlider1",
+						 barCss: "imageBar1",
+						 min: 0,
+						 max: 31,
+						 hints: "move the slider"
+						 });
+MicVolume.onstart  = function ()
+{
+	getElementById("sliderDetail").innerHTML = "MicVolume = " +MicVolume.getValue();
+}
+MicVolume.onchange = function ()
+{
+	getElementById("sliderDetail").innerHTML = "MicVolume = " +MicVolume.getValue();
+}
+MicVolume.onfinish = function ()
+{
+	if(!CheckIE())
+		return false;
+	DoCommand("/ChangeMicVolume.cgi", "MicVolume=" + MicVolume.getValue(), null);
+}
+MicVolume.create();
+	</script>
+	
+	<div id="sliderDetail3" style="font-weight:bolder;"></div>
+	<div style="height:40px; width:1px; margin:0px; ">
+        <input class="tab_button" type="button" value="Auto Adjust" onclick="javascript:return AutoAdjustBrightness();" />
+		<div id="sliderDemo3" style="height:40px;"></div>
+	</div>
+	<script type="text/javascript">       
+var Brightness = new neverModules.modules.slider({targetId: "sliderDemo3",
+						  sliderCss: "Brightness",
+						  barCss: "winBar",
+						  min: 0,
+						  max: 6,
+						  hints: "move the slider"
+						  });
+Brightness.onstart  = function ()
+{
+	getElementById("sliderDetail3").innerHTML = "Brightness = " +Brightness.getValue();
+}
+Brightness.onchange = function ()
+{
+	getElementById("sliderDetail3").innerHTML = "Brightness = " +Brightness.getValue();
+}
+Brightness.onfinish = function ()
+{
+	//getElementById("sliderDetail3").innerHTML += " => " +Brightness.getValue();
+	DoCommand("/ChangeBrightness.cgi", "Brightness=" + Brightness.getValue(), null);
+}
+Brightness.create();
+	</script>
+</div>
+
+
+<div id="robot_controls">
+<h2 class="tab_name">Robot Control</h2>
+<table>
+	<tr align="center">
+		<td></td>
+		<td><input class="tab_control" type="button" value="↖" onclick="javascript:return onRobotForwardLeft();" /></td>
+		<td><input class="tab_control" type="button" value="↑" onclick="javascript:return onRobotForward();" /></td>
+		<td><input class="tab_control" type="button" value="↗" onclick="javascript:return onRobotForwardRight();" /></td>
+		<td></td>
+	</tr>
+	<tr align="center">
+		<td>
+			<input class="tab_control" type="button" value="<<" onclick="javascript:return onRobotStrafeLeft();" />
+		</td>
+		<td>
+			<input class="tab_control" type="button" value="←" onclick="javascript:return onRobotLeft();" />
+		</td>
+		<td><input class="tab_control" type="button" value="⊙" onclick="javascript:return onRobotStop();" /></td>
+		<td>
+			<input class="tab_control" type="button" value="→" onclick="javascript:return onRobotRight();" />
+		</td>
+		<td>
+			<input class="tab_control" type="button" value=">>" onclick="javascript:return onRobotStrafeRight();" />
+		</td>
+		<td></td>
+	</tr>
+	<tr align="center">
+		<td></td>
+		<td><input class="tab_control" type="button" value="↙" onclick="javascript:return onRobotBackwardLeft();" /></td>
+		<td><input class="tab_control" type="button" value="↓" onclick="javascript:return onRobotBackward();" /></td>
+		<td><input class="tab_control" type="button" value="↘" onclick="javascript:return onRobotBackwardRight();" /></td>
+		<td></td>
+	</tr>
+</table>
+<select class="tab_input" id="RobotSpeed" onchange="javascript:onChangeRobot(this);">
+	<option value="-1">-Robot Speed-</option>
+	<option value="0">0</option>
+	<option value="1">1</option>
+	<option value="2">2</option>
+	<option value="3">3</option>
+	<option value="4">4</option>
+	<option value="5">5</option>
+	<option value="6">6</option>
+	<option value="7">7</option>
+	<option value="8">8</option>
+	<option value="9">9</option>
+	<option value="10">10</option>
+</select>
+<input class="tab_button" type="button" value="Get Robot Status" onclick="javascript:return onRobotStatus();" />
+<input class="tab_input" type="button" id="BatteryLevel"/>
+<div id="robot_message"></div>
+</div>
+<script>
+	if ( parent.customer != "wowwee" )
+		$('robot_controls').style.display = "none";
+</script>
+
+<!--
+<h2 class="tab_name">Rotation</h2>
+<input class="tab_button" type="button" value="Mirror" onclick="javascript:return onRotateMirror();" />
+<input class="tab_button" type="button" value="Flip" onclick="javascript:return onRotateFlip();" />
+<input class="tab_button" type="button" value="180" onclick="javascript:return onRotate180();" />
+-->
+
+</div>
+
+<table id="ipcam_player" border="0">
+<tr><td>
+
+<script type="text/javascript">
+function GetPlayerCode(width, height)
+{
+if (navigator.appName == "Microsoft Internet Explorer")
+{
+var path = location.hostname + (location.port ? ":" + location.port : "");
+return ('<object id="oCamCtl" width="' + width + '" height="' + height + '"'
++ ' classid="clsid:115B1886-2AE0-4259-9FE4-E32A5DEE5454"'
++ ' codebase="WebSee.cab" />'
++ '<param name="RtspURL" value="http://' + path + '/GetData.cgi" />'
++ '<param name="URL" value="http://' + path + '" />'
++ '<param name="AutoStart" value="1" />'
++ '</object>');
+}
+else if (navigator.appName == "Netscape"
+|| navigator.appName == "Opera" )
+{
+return ('<img id="oCamCtl" src="/GetData.cgi" />');
+}
+else
+{
+return ('<div id="oCamCtl">To display MJPEG over HTTP, please use netscape/mozilla/firefox compatible browser or Microsoft IE.</div>');
+}
+}
+document.write (GetPlayerCode(320, 240));
+</script>
+<script for="oCamCtl" event="SetPlayerSize(width,height)" type="text/javascript">
+$('oCamCtl').width = width;
+$('oCamCtl').height = height;
+</script>
+</td><td valign="bottom">
+<script type="text/javascript">
+    document.write(AntennaDraw("tx", 16));
+    //AntennaSetPos("tx", 5);
+</script>
+</td></tr>
+</table>
+
+</body>
+</html>

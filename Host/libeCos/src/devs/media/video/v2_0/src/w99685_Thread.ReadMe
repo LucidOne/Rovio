@@ -1,0 +1,68 @@
+					W99685 with Thread Readme.
+multi-buffer system design:
+	-------------------------------------
+	|		reading position			|
+	-------------------------------------
+	|		write	position			|
+	-------------------------------------
+	|		Image Data[0]				|
+	|		-------------				|
+	|		pointer to a rawbuffer		|
+	|		rawbuffer length			|
+	|		semaphore ilock				|
+	-------------------------------------
+	|		Image Data[1]				|
+	|		-------------				|
+	|		pointer to a rawbuffer		|
+	|		rawbuffer length			|
+	|		semaphore ilock				|
+	-------------------------------------
+
+in ioctl(), 
+	getImageLen() special handle:
+	{
+		Get Reading Position;
+		if( ImageLen[in Reading Position] == 0) {
+			return 0;
+		}
+		else if(Maxlen > ImageLen[in Reading Position] > 0)
+		{
+			return ImageLen[in Reading Position];
+		}
+		else
+			return err;
+	}
+	
+in Thread(), do write:
+	{
+		Get Valid Image Length;
+		Get Write Position;
+		down(pos_sema);
+		if( ImageLen[in Write Position] > 0)
+			goto out_up;
+		Write Image Data to Position Buffer;
+		ImageLen[in Write Position] = Writen length;
+	out_up:
+		up(pos_sema);
+		Write Position -> Next Write Position;
+	}
+
+In Read(int count), do read:
+	{
+		Get Reading Position;
+		down(pos_sema);
+		if( ImageLen[in Reading Position] == 0 )
+		{
+			goto out_up;
+		}
+		else if(ImageLen[in Reading Position] != count )
+		{
+			ImageLen[in Reading Position] = 0; // Clean it
+			goto out_up;
+		}
+		Copy image data to user;
+		ImageLen[in Reading Position] = 0; // Clean it
+		Reading Position -> Next Reading Position;
+	out_up;
+		up(pos_sema);
+	}

@@ -1,0 +1,347 @@
+<!-- Copyright (C) 2003 Red Hat, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<HTML
+><HEAD
+><TITLE
+>CHAT Scripts</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="eCos PPP User Guide"
+HREF="ppp.html"><LINK
+REL="PREVIOUS"
+TITLE="Configuring PPP"
+HREF="ppp-config-config.html"><LINK
+REL="NEXT"
+TITLE="ABORT Strings"
+HREF="ppp-chat-abort.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+><SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+> PPP User Guide</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ppp-config-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ppp-chat-abort.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="PPP-CHAT"
+></A
+>Chapter 1. CHAT Scripts</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="ppp-chat.html#PPP-CHAT-SCRIPT"
+>Chat Script</A
+></DT
+><DT
+><A
+HREF="ppp-chat-abort.html"
+>ABORT Strings</A
+></DT
+><DT
+><A
+HREF="ppp-chat-timeout.html"
+>TIMEOUT</A
+></DT
+><DT
+><A
+HREF="ppp-chat-eot.html"
+>Sending EOT</A
+></DT
+><DT
+><A
+HREF="ppp-chat-escape.html"
+>Escape Sequences</A
+></DT
+></DL
+></DIV
+><P
+>The automated conversational scripting supported by the
+<SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+> PPP package is a subset of the
+scripting language provided by the <B
+CLASS="COMMAND"
+>chat</B
+> command
+found on most UNIX and Linux systems.</P
+><P
+>Unlike the <B
+CLASS="COMMAND"
+>chat</B
+> command, the
+<SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+> <TT
+CLASS="FUNCTION"
+>cyg_ppp_chat()</TT
+>
+function takes as a parameter a zero-terminated array of pointers to
+strings. In most programs this will be defined by means of an
+initializer for a static array, although there is nothing to stop the
+application constructing it at runtime. A simple script would be
+defined like this:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#13;static char *chat_script[] =
+{
+    "ABORT"        ,  "BUSY"        ,
+    "ABORT"        ,  "NO CARRIER"  ,
+    ""             ,  "ATD5551234"  ,
+    "ogin:--ogin:" ,  "ppp"         ,
+    "ssword:"      ,  "hithere"     ,
+    0
+};&#13;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The following sections have been abstracted from the public domain
+documentation for the <B
+CLASS="COMMAND"
+>chat</B
+> command. </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PPP-CHAT-SCRIPT"
+></A
+>Chat Script</H1
+><P
+>       A script consists of one or more "expect-send" pairs of
+       strings, separated by spaces, with an optional "subexpect-
+       subsend" string pair, separated by a dash as in the following
+       example:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#13;    "ogin:--ogin:"     ,  "ppp"       ,
+    "ssword:"          ,   "hello2u2" ,
+    0&#13;</PRE
+></TD
+></TR
+></TABLE
+><P
+>       This script fragment indicates that the
+       <TT
+CLASS="FUNCTION"
+>cyg_ppp_chat()</TT
+> function should expect the
+       string "ogin:". If it fails to receive a login prompt within
+       the time interval allotted, it is to send a carriage return
+       to the remote and then expect the string "ogin:" again.  If
+       the first "ogin:" is received then the carriage return is not
+       generated.</P
+><P
+>       Once it received the login prompt the
+       <TT
+CLASS="FUNCTION"
+>cyg_ppp_chat()</TT
+> function will send the
+       string "ppp" and then expect the prompt "ssword:".  When it
+       receives the prompt for the password, it will send the password
+       "hello2u2".</P
+><P
+>       A carriage return is normally sent following the reply string.
+       It is not expected in the "expect" string unless it is
+       specifically requested by using the "\r" character sequence.</P
+><P
+>       The expect sequence should contain only what is needed to
+       identify the string. It should not contain variable
+       information. It is generally not acceptable to look for time
+       strings, network identification strings, or other variable
+       pieces of data as an expect string.</P
+><P
+>       To help correct for characters which may be corrupted during
+       the initial sequence, look for the string "ogin:" rather than
+       "login:". It is possible that the leading "l" character may be
+       received in error and you may never find the string even though
+       it was sent by the system. For this reason, scripts look for
+       "ogin:" rather than "login:" and "ssword:" rather than
+       "password:".</P
+><P
+>       A very simple script might look like this:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#13;    "ogin:"    , "ppp"       ,
+    "ssword:"  , " hello2u2" ,
+    0&#13;</PRE
+></TD
+></TR
+></TABLE
+><P
+>       In other words, expect "....ogin:", send "ppp", expect "...ssword:",
+       send "hello2u2".</P
+><P
+>       In actual practice, simple scripts are rare. At the very least,
+       you should include sub-expect sequences should the original
+       string not be received. For example, consider the following
+       script:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#13;    "ogin:--ogin:"  , "ppp"     ,
+    "ssword:"       , "hello2u2",
+    0&#13;</PRE
+></TD
+></TR
+></TABLE
+><P
+>       This would be a better script than the simple one used earlier.
+       This would look for the same "login:" prompt, however, if one
+       was not received, a single return sequence is sent and then it
+       will look for "login:" again. Should line noise obscure the
+       first login prompt then sending the empty line will usually
+       generate a login prompt again.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ppp-config-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ppp.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ppp-chat-abort.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Configuring PPP</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ABORT Strings</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

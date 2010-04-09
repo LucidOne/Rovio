@@ -1,0 +1,1080 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<article>
+  <title>Remote Func Library Unit Testing Plan</title>
+
+  <articleinfo>
+    <corpname>Winbond Electronics Corp.</corpname>
+
+    <revhistory>
+      <revision>
+        <revnumber>1.0</revnumber>
+
+        <date>May 14, 2007</date>
+
+        <revremark>Initial Version</revremark>
+      </revision>
+    </revhistory>
+  </articleinfo>
+
+  <section>
+    <title>引言</title>
+
+    <para></para>
+  </section>
+
+  <section>
+    <title>適用軟体（或軟体模塊）</title>
+
+    <orderedlist>
+      <listitem>
+        <para>代碼路徑</para>
+
+        <para><uri>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source]</uri></para>
+      </listitem>
+
+      <listitem>
+        <para>代碼版本</para>
+
+        <para>[svn r 1499]</para>
+      </listitem>
+    </orderedlist>
+  </section>
+
+  <section>
+    <title>測試項目</title>
+
+    <section>
+      <title>模塊功能測試</title>
+
+      <section>
+        <title>inet_addr</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>测试一系列合法的字符串地址，将结果转化为字符串，与源字符串地址比较</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_inet_addr.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>inet_aton</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>测试一系列合法的字符串地址，将结果转化为字符串，与源字符串地址比较</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_inet_addr.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>inet_ntoa</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>测试一系列合法的整型地址，将结果与目标字符串地址比较</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_inet_addr.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>gethostbyname</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>以一系列已知的主机名，测试能否正确获取主机的IP地址信息</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_gethostbyname.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>gethostbyaddr</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>以一系列已知主机的整型IP地址，测试能否正确获取主机名</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_gethostbyname.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>gethostname</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>测试能否正确获取本机的主机名</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_gethostbyname.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>uname</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>测试能否根据本机主机名获取本机操作系统名称、版本、发布日期等信息</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_gethostbyname.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>socket（TCP），netclose</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>通过TCP连续创建socket，以socket返回值判断创建是否成功，同时可判断netclose是否成功</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_tcp_socket.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>bind（TCP）</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>通过TCP连续创建socket并bind地址端口，以bind返回值判断创建是否成功</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_tcp_socket.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>listen</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>通过TCP连续创建socket并listen，以listen返回值判断创建是否成功</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_tcp_socket.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>accept，connect</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>多个client连接多个server，多次连接－断开－连接－断开……，最后判断是否全部成功</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_tcp_socket.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>socket（UDP）</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>通过UDP连续创建socket，以socket返回值判断创建是否成功，同时可判断netclose是否成功</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_udp_socket.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>bind（UDP）</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>通过TCP连续创建socket并bind地址端口，以bind返回值判断创建是否成功</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_udp_socket.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>netread</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>建n个同样的线程做netread，在另一台PC建对应的n个线程发送数据，并判断读到的数据是否正确</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_netread.c]
+          [http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/run_on_pc/test_netread.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>netwrite</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>建n个同样的线程做netwrite，在另一台PC建对应的n个线程读取数据，并判断读到的数据是否正确</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_netwrite.c]
+          [http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/run_on_pc/test_netwrite.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>send</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>建n个同样的线程做send，在另一台PC建对应的n个线程读取数据，并判断读到的数据是否正确</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_send.c]
+          [http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/run_on_pc/test_send.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>recv</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>建n个同样的线程做recv，在另一台PC建对应的n个线程发送数据，并判断读到的数据是否正确</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_recv.c]
+          [http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/run_on_pc/test_recv.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>recvmsg</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>建n个同样的线程做recvmsg，在另一台PC建对应的n个线程发送数据，并判断读到的数据是否正确</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_recvmsg.c]
+          [http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/run_on_pc/test_recvmsg.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>sendmsg</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>建n个同样的线程做sendmsg，在另一台PC建对应的n个线程读取数据，并判断读到的数据是否正确</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_sendmsg.c]
+          [http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/run_on_pc/test_sendmsg.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>sendto</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>建n个同样的线程做sendto，在另一台PC建对应的n个线程接收数据，并判断读到的数据是否正确</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_sendto.c]
+          [http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/run_on_pc/test_sendto.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>recvfrom</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>建n个同样的线程做recvfrom，在另一台PC建对应的n个线程发送数据，并判断读到的数据是否正确</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_recvfrom.c]
+          [http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/run_on_pc/test_recvfrom.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>getsockname</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>创建socket并bind地址，通过getsockname查看获取的地址是否正确</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_getsockname.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>getpeername</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>创建一个server，从另一台PC连接server，通过getpeername查看获取的地址是否正确</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_getsockname.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>setsockopt ，getsockopt</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>通过setsockopt设置一系列选项的值，然后通过getsockopt读取被设置选项的值，判断和设置的值是否一致</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_getsockopt.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>netfcntl</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>对netfcntl只测试最常用的O_NONBLOCK
+          建n个同样的线程做client，在另一台PC建对应的n个线程做server。Client同时连接server，并发送数据，根据发送是否成功及server读到的数据是否正确来判断。</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_netfcntl.c]
+          [http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/run_on_pc/test_netfcntl.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>netioctl</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>测试SIOGIFADDR、SIOSIFADDR、SIOGIFNETMASK、SIOSIFNETMASK
+          通过SIOSIFADDR、SIOSIFNETMASK设置IP地址和掩码，再通过SIOGIFADDR、SIOGIFNETMASK读取，判断和之前设置的是否一致</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_netioctl.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>netioctl_withbuf</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>测试SIOGIFCONF、SIOCADDRT、SIOCDELRT 通过SIOGIFCONF查看获取的接口是否正确
+          通过SIOCADDRT、SIOCDELRT添加删除路由，并通过W740 route命令查看是否正确</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_
+          netioctl_withbuf.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>wb740getgateway</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>通过wb740getgateway查看获取的网关是否正确</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_
+          wb740getgateway.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>wb740reboot</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>调用wb740reboot并通过W740 console查看W740是否已重启</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteFuncTest/Src/test_
+          wb740reboot.c]</para>
+        </section>
+      </section>
+    </section>
+
+    <section>
+      <title>邊界條件測試</title>
+
+      <section>
+        <title>inet_addr</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数为0.0.0.0、255.255.255.255时，是否返回0和-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          inet_addr.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>inet_aton</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回0 参数为0.0.0.0、255.255.255.255时，得到的地址是否正确 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          inet_addr.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>inet_ntoa</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回NULL
+          参数为0x00000000、0xFFFFFFFF时，得到的地址是否时”0.0.0.0”、”255.255.255.255”
+          </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          inet_addr.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>gethostbyname</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回NULL 参数为空串时，是否返回NULL </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          gethostbyname.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>gethostbyaddr</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回NULL 参数不合法时，是否返回NULL </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          gethostbyname.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>gethostname</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 Buffer长度不够时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          gethostbyname.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>uname</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          gethostbyname.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>socket</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          socket.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>bind</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          socket.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>listen</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          socket.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>accept</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          socket.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>connect</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          socket.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>netclose</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          socket.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>netread</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          netread.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>netwrite</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          netwrite.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>send</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_
+          send.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>recv</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_recv.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>sendmsg</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_sendmsg.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>recvmsg</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_recvmsg.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>sendto</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_sendto.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>recvfrom</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_recvfrom.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>netselect</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_netselect.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>getsockopt</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_getsockopt.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>setsockopt</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_setsockopt.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>fcntl</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_fcntl.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>netioctl</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_netioctl.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>netioctl_withbuf</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_netioctl_withbuf.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>wb740getgateway</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1 参数不合法时，是否返回-1 </para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_wb740getgateway.c]</para>
+        </section>
+      </section>
+
+      <section>
+        <title>wb740reboot</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>参数为NULL时，是否返回-1</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteBoundaryTest/Src/test_wb740reboot.c]</para>
+        </section>
+      </section>
+    </section>
+
+    <section>
+      <title>壓力測試</title>
+
+      <section>
+        <title>压力测试1</title>
+
+        <section>
+          <title>測試方法</title>
+
+          <para>创建5个server发数据，并在另一台PC创建相应的5个client接收数据，每次发送的数据大小为40K。测试每秒发送的数据量（k/s）和每秒发送的次数（次/s）。</para>
+        </section>
+
+        <section>
+          <title>測試代碼路徑</title>
+
+          <para>[http://10.132.249.3/trac-svn/Project/develop/IPCam_W99802/browser/trunk/Source/Host/libRemoteFunc/Samples/RemoteStressTest/Src/test_speed.c]</para>
+        </section>
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <title>Check List</title>
+
+    <informaltable border="1" rules="all">
+      <thead>
+        <tr align="center">
+          <th>Yes</th>
+
+          <th>No</th>
+
+          <th>Check List</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>Y</td>
+
+          <td></td>
+
+          <td>The unit test covers all of the intended functions?</td>
+        </tr>
+
+        <tr>
+          <td>Y</td>
+
+          <td></td>
+
+          <td>The unit test covers all of the boundary conditions?</td>
+        </tr>
+
+        <tr>
+          <td>Y</td>
+
+          <td></td>
+
+          <td>The unit test covers all of the unexpected values and error
+          conditions?</td>
+        </tr>
+      </tbody>
+    </informaltable>
+  </section>
+</article>
